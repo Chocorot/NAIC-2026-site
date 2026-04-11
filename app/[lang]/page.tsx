@@ -1,7 +1,7 @@
 import { getDictionary, Locale } from "./dictionaries";
 import ScreeningInterface from "@/src/components/ScreeningInterface";
 
-export default async function Page({ a
+export default async function Page({
   params,
 }: {
   params: Promise<{ lang: string }>;
