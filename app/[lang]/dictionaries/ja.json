@@ -1,0 +1,57 @@
+{
+  "navigation": {
+    "screening": "スクリーニング",
+    "about": "モデル情報",
+    "performance": "パフォーマンス"
+  },
+  "screening": {
+    "title": "DRスクリーニング・プロトタイプ",
+    "description": "AI支援による予備評価のために網膜底画像をアップロードしてください。",
+    "upload_zone": "クリックまたはドラッグして画像をアップロード",
+    "analyze": "スクリーニング実行",
+    "analyzing": "分析中...",
+    "results": "分析結果",
+    "prediction": "予測された重症度",
+    "confidence": "信頼度スコア",
+    "heatmap_title": "視覚的評価（ヒートマップ）",
+    "tune_heatmap": "ヒートマップ強度の調整",
+    "source_material": "素材",
+    "visualization_engine": "可視化エンジン",
+    "active_overlay": "アクティブ・オーバーレイ",
+    "file_types": "JPG, JPEG または PNG (最大 5MB)",
+    "ready_status": "準備完了",
+    "disclaimer": "これはプロトタイプのスクリーニング結果であり、最終的な医学的診断として使用されるべきではありません。必ず資格のある眼科医に相談してください。"
+  },
+  "severity_classes": [
+    "DRなし",
+    "軽度DR",
+    "中等度DR",
+    "重度DR",
+    "増殖性DR"
+  ],
+  "about": {
+    "title": "モデルについて",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 px",
+    "classes_desc": "モデルは、病変の有無と重症度に基づいて画像を5つのカテゴリーに分類します。",
+    "platform_documentation": "プラットフォームドキュメント",
+    "technical_specifications": "技術仕様",
+    "backbone": "ニューラルネットワーク・バックボーン",
+    "input_resolution": "標準化された入力サイズ",
+    "build_version": "ビルドバージョン",
+    "architecture": "アーキテクチャ",
+    "architecture_desc": "高解像度眼底画像から最適な特徴抽出を行うために、反転残差ブロックとMBConvモジュールを利用したカスタム調整済みCNN。",
+    "classification_hierarchy": "分類階層"
+  },
+  "performance": {
+    "title": "モデルのパフォーマンス",
+    "accuracy": "正確度",
+    "recall": "再現率",
+    "f1_score": "F1スコア",
+    "confusion_matrix": "混乱行列",
+    "validation_analytics": "バリデーション分析",
+    "hit": "的中",
+    "miss": "ミス",
+    "analysis_note": "2,240枚の標準化された眼底画像の検証セットで実施された分析。パフォーマンス指標は標準的な交差検証の結果を表しています。"
+  }
+}

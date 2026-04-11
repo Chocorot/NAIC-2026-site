@@ -1,0 +1,57 @@
+{
+  "navigation": {
+    "screening": "筛查",
+    "about": "模型信息",
+    "performance": "性能"
+  },
+  "screening": {
+    "title": "糖尿病视网膜病变筛查原型",
+    "description": "上传视网膜眼底图像进行初步的AI辅助评估。",
+    "upload_zone": "点击或拖拽图像上传",
+    "analyze": "运行筛查",
+    "analyzing": "分析中...",
+    "results": "分析结果",
+    "prediction": "预测严重程度",
+    "confidence": "置信度评分",
+    "heatmap_title": "视觉评估 (热图)",
+    "tune_heatmap": "调节热图强度",
+    "source_material": "原材料",
+    "visualization_engine": "可视化引擎",
+    "active_overlay": "动态叠加层",
+    "file_types": "JPG, JPEG 或 PNG (最大 5MB)",
+    "ready_status": "就绪",
+    "disclaimer": "这是一个原型筛查结果，不应作为最终医疗诊断。请务必咨询合格的眼科医生。"
+  },
+  "severity_classes": [
+    "无 DR",
+    "轻度 DR",
+    "中度 DR",
+    "重度 DR",
+    "增殖性 DR"
+  ],
+  "about": {
+    "title": "关于模型",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 像素",
+    "classes_desc": "模型根据病变的存在和严重程度将图像分为五类。",
+    "platform_documentation": "平台文档",
+    "technical_specifications": "技术规范",
+    "backbone": "神经网络骨干",
+    "input_resolution": "标准化输入尺寸",
+    "build_version": "构建版本",
+    "architecture": "架构",
+    "architecture_desc": "采用倒置残差块和MBConv模块的定制CNN，用于从高分辨率眼底图像中进行最佳特征提取。",
+    "classification_hierarchy": "分类层级"
+  },
+  "performance": {
+    "title": "模型性能",
+    "accuracy": "准确率",
+    "recall": "召回率",
+    "f1_score": "F1 分数",
+    "confusion_matrix": "混淆矩阵",
+    "validation_analytics": "验证分析",
+    "hit": "命中",
+    "miss": "遗漏",
+    "analysis_note": "对2,240张标准化眼底图像的验证集进行的分析。性能指标代表标准的交叉验证结果。"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "navigation": {
+    "screening": "Screening",
+    "about": "Modell-Info",
+    "performance": "Leistung"
+  },
+  "screening": {
+    "title": "DR-Screening-Prototyp",
+    "description": "Laden Sie ein Netzhautbild für eine vorläufige KI-gestützte Bewertung hoch.",
+    "upload_zone": "Klicken oder ziehen Sie ein Bild zum Hochladen",
+    "analyze": "Screening ausführen",
+    "analyzing": "Analysiere...",
+    "results": "Analyseergebnisse",
+    "prediction": "Vorhergesagte Schwere",
+    "confidence": "Konfidenzwerte",
+    "heatmap_title": "Visuelle Bewertung (Heatmap)",
+    "tune_heatmap": "Heatmap-Intensität anpassen",
+    "source_material": "Ausgangsmaterial",
+    "visualization_engine": "Visualisierungs-Engine",
+    "active_overlay": "Aktives Overlay",
+    "file_types": "JPG, JPEG oder PNG (MAX. 5MB)",
+    "ready_status": "BEREIT",
+    "disclaimer": "Dies ist ein Prototyp-Screening-Ergebnis und sollte nicht als endgültige medizinische Diagnose verwendet werden. Konsultieren Sie immer einen qualifizierten Augenarzt."
+  },
+  "severity_classes": [
+    "Keine DR",
+    "Milde DR",
+    "Moderate DR",
+    "Schwere DR",
+    "Proliferative DR"
+  ],
+  "about": {
+    "title": "Über das Modell",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 px",
+    "classes_desc": "Das Modell klassifiziert Bilder basierend auf dem Vorhandensein und der Schwere von Läsionen in fünf Kategorien.",
+    "platform_documentation": "Plattform-Dokumentation",
+    "technical_specifications": "Technische Spezifikationen",
+    "backbone": "Neuronales Netzwerk-Backbone",
+    "input_resolution": "Standardisierte Eingabegröße",
+    "build_version": "Build-Version",
+    "architecture": "Architektur",
+    "architecture_desc": "Speziell abgestimmtes CNN mit invertierten Residualblöcken und MBConv-Modulen für die optimale Merkmalsextraktion aus hochauflösenden Fundusbildern.",
+    "classification_hierarchy": "Klassifizierunghierarchie"
+  },
+  "performance": {
+    "title": "Modellleistung",
+    "accuracy": "Genauigkeit",
+    "recall": "Trefferquote",
+    "f1_score": "F1-Wert",
+    "confusion_matrix": "Konfusionsmatrix",
+    "validation_analytics": "Validierungsanalyse",
+    "hit": "Treffer",
+    "miss": "Fehlschlag",
+    "analysis_note": "Analyse durchgeführt an einem Validierungsset von 2.240 standardisierten Fundusbildern. Leistungsmetriken repräsentieren standardmäßige Kreuzvalidierungsergebnisse."
+  }
+}

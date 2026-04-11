@@ -1,0 +1,62 @@
+{
+  "navigation": {
+    "screening": "Screening",
+    "about": "Model Info",
+    "performance": "Performance"
+  },
+  "screening": {
+    "title": "DR Screening Prototype",
+    "description": "Upload a retinal fundus image for preliminary AI-assisted assessment.",
+    "upload_zone": "Click or drag images to upload",
+    "analyze": "Run Screening",
+    "analyzing": "Analyzing...",
+    "results": "Analysis Results",
+    "prediction": "Predicted Severity",
+    "confidence": "Confidence Scores",
+    "heatmap_title": "Visual Assessment (Heatmap)",
+    "tune_heatmap": "Tune Heatmap Intensity",
+    "source_material": "Source Material",
+    "visualization_engine": "Visualization Engine",
+    "active_overlay": "Active Overlay",
+    "file_types": "JPG, JPEG or PNG (MAX. 5MB)",
+    "ready_status": "READY",
+    "upload_batch": "Add more images",
+    "batch_process": "Process All",
+    "batch_ready": "Batch ready for analysis",
+    "batch_count": "files selected",
+    "selection_mode": "Select image to view results",
+    "disclaimer": "This is a prototype screening result and should not be used as a final medical diagnosis. Always consult with a qualified ophthalmologist."
+  },
+  "severity_classes": [
+    "No DR",
+    "Mild DR",
+    "Moderate DR",
+    "Severe DR",
+    "Proliferative DR"
+  ],
+  "about": {
+    "title": "About the Model",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 px",
+    "classes_desc": "The model classifies images into five categories based on the presence and severity of lesions.",
+    "platform_documentation": "Platform Documentation",
+    "technical_specifications": "Technical Specifications",
+    "backbone": "Neural Network Backbone",
+    "input_resolution": "Standardized Input Size",
+    "build_version": "Build Version",
+    "architecture": "Architecture",
+    "architecture_desc": "Custom-tuned CNN utilizing inverted residual blocks and MBConv modules for optimal feature extraction from high-resolution fundus images.",
+    "classification_hierarchy": "Classification Hierarchy"
+  },
+  "performance": {
+    "title": "Model Performance",
+    "accuracy": "Accuracy",
+    "recall": "Recall",
+    "f1_score": "F1 Score",
+    "confusion_matrix": "Confusion Matrix",
+    "validation_analytics": "Validation Analytics",
+    "hit": "Hit",
+    "miss": "Miss",
+    "analysis_note": "Analysis conducted on a validation set of 2,240 standardized fundus images. Performance metrics represent standard cross-validation results."
+  }
+}

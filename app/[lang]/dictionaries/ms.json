@@ -1,0 +1,57 @@
+{
+  "navigation": {
+    "screening": "Saringan",
+    "about": "Info Model",
+    "performance": "Prestasi"
+  },
+  "screening": {
+    "title": "Prototip Saringan DR",
+    "description": "Muat naik imej fundus retina untuk penilaian awal bantuan AI.",
+    "upload_zone": "Klik atau seret imej untuk muat naik",
+    "analyze": "Jalankan Saringan",
+    "analyzing": "Menganalisis...",
+    "results": "Keputusan Analisis",
+    "prediction": "Keterukan Diramal",
+    "confidence": "Skor Keyakinan",
+    "heatmap_title": "Penilaian Visual (Heatmap)",
+    "tune_heatmap": "Laraskan Intensiti Heatmap",
+    "source_material": "Bahan Mentah",
+    "visualization_engine": "Enjin Visualisasi",
+    "active_overlay": "Pertindihan Aktif",
+    "file_types": "JPG, JPEG atau PNG (MAKS. 5MB)",
+    "ready_status": "SEDIA",
+    "disclaimer": "Ini adalah keputusan saringan prototip dan tidak boleh digunakan sebagai diagnosis perubatan akhir. Sentiasa berunding dengan pakar oftalmologi yang bertauliah."
+  },
+  "severity_classes": [
+    "Tiada DR",
+    "DR Ringan",
+    "DR Sederhana",
+    "DR Teruk",
+    "DR Proliferatif"
+  ],
+  "about": {
+    "title": "Mengenai Model",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 px",
+    "classes_desc": "Model ini mengklasifikasikan imej kepada lima kategori berdasarkan kehadiran dan keterukan lesi.",
+    "platform_documentation": "Dokumentasi Platform",
+    "technical_specifications": "Spesifikasi Teknikal",
+    "backbone": "Tulang Belakang Rangkaian Neural",
+    "input_resolution": "Saiz Input Standard",
+    "build_version": "Versi Binaan",
+    "architecture": "Seni Bina",
+    "architecture_desc": "CNN yang ditala khas menggunakan blok sisa terbalik dan modul MBConv untuk pengekstrakan ciri optimum daripada imej fundus resolusi tinggi.",
+    "classification_hierarchy": "Hierarki Klasifikasi"
+  },
+  "performance": {
+    "title": "Prestasi Model",
+    "accuracy": "Ketepatan",
+    "recall": "Recall",
+    "f1_score": "Skor F1",
+    "confusion_matrix": "Matriks Kekeliruan",
+    "validation_analytics": "Analitis Pengesahan",
+    "hit": "Kenalan",
+    "miss": "Terlepas",
+    "analysis_note": "Analisis dijalankan ke atas set pengesahan 2,240 imej fundus standard. Metrik prestasi mewakili keputusan pengesahan silang standard."
+  }
+}

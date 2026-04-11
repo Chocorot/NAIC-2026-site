@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NAIC 2026 - DR Screening Prototype
+
+This is a high-performance, AI-aided Diabetic Retinopathy (DR) screening interface built with Next.js 14, featuring a premium design and advanced visualization capabilities.
+
+## Key Features
+
+- **Batch Upload**: Process multiple retinal fundus images simultaneously.
+- **AI-Aided Analysis**: Preliminary classification of DR severity (No DR to Proliferative DR).
+- **Interactive Heatmaps**: Visual assessment overlays with adjustable intensity to identify areas of concern.
+- **Multilingual Support**: Fully localized interface (EN, ZH, MS, JA, DE).
+- **Responsive & Dark Mode**: Premium, fluid UI that adapts to all devices and lighting preferences.
+
+## Batch Upload Workflow
+
+1. **Upload**: Drag and drop multiple images or click the upload zone in the "Source Material" section.
+2. **Review Batch**: View the gallery of selected images. You can add more or remove individual files.
+3. **Analyze**: Click "Run Batch Screening" to process all images sequentially.
+4. **View Results**: Click on any thumbnail in the batch tray to switch between results, confidence scores, and visual heatmaps.
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Vanilla CSS with modern modules
+- **Icons**: React Icons
+- **Deployment**: Optimized for Vercel
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Disclaimer: This is a prototype screening result and should not be used as a final medical diagnosis. Always consult with a qualified ophthalmologist.*
