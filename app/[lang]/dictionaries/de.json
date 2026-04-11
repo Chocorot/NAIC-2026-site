@@ -20,6 +20,11 @@
     "active_overlay": "Aktives Overlay",
     "file_types": "JPG, JPEG oder PNG (MAX. 5MB)",
     "ready_status": "BEREIT",
+    "upload_batch": "Weitere Bilder hinzufügen",
+    "batch_process": "Alle verarbeiten",
+    "batch_ready": "Batch bereit zur Analyse",
+    "batch_count": "Dateien ausgewählt",
+    "selection_mode": "Bild auswählen, um Ergebnisse anzuzeigen",
     "disclaimer": "Dies ist ein Prototyp-Screening-Ergebnis und sollte nicht als endgültige medizinische Diagnose verwendet werden. Konsultieren Sie immer einen qualifizierten Augenarzt."
   },
   "severity_classes": [

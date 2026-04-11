@@ -20,6 +20,11 @@
     "active_overlay": "Pertindihan Aktif",
     "file_types": "JPG, JPEG atau PNG (MAKS. 5MB)",
     "ready_status": "SEDIA",
+    "upload_batch": "Tambah lagi imej",
+    "batch_process": "Proses Semua",
+    "batch_ready": "Kelompok sedia untuk analisis",
+    "batch_count": "fail dipilih",
+    "selection_mode": "Pilih imej untuk melihat keputusan",
     "disclaimer": "Ini adalah keputusan saringan prototip dan tidak boleh digunakan sebagai diagnosis perubatan akhir. Sentiasa berunding dengan pakar oftalmologi yang bertauliah."
   },
   "severity_classes": [

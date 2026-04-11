@@ -20,6 +20,11 @@
     "active_overlay": "动态叠加层",
     "file_types": "JPG, JPEG 或 PNG (最大 5MB)",
     "ready_status": "就绪",
+    "upload_batch": "添加更多图像",
+    "batch_process": "处理全部",
+    "batch_ready": "批量处理已就绪",
+    "batch_count": "个文件已选择",
+    "selection_mode": "选择图像查看结果",
     "disclaimer": "这是一个原型筛查结果，不应作为最终医疗诊断。请务必咨询合格的眼科医生。"
   },
   "severity_classes": [

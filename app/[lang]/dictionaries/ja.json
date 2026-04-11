@@ -20,6 +20,11 @@
     "active_overlay": "アクティブ・オーバーレイ",
     "file_types": "JPG, JPEG または PNG (最大 5MB)",
     "ready_status": "準備完了",
+    "upload_batch": "画像を追加",
+    "batch_process": "すべて処理",
+    "batch_ready": "バッチ分析の準備完了",
+    "batch_count": "個のファイルを選択済み",
+    "selection_mode": "画像を選択して結果を表示",
     "disclaimer": "これはプロトタイプのスクリーニング結果であり、最終的な医学的診断として使用されるべきではありません。必ず資格のある眼科医に相談してください。"
   },
   "severity_classes": [
