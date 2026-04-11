@@ -1,19 +1,38 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { ScreeningResult } from '@/src/services/StorageService';
 
-export async function POST(request: Request) {
+/**
+ * Interface for the Prediction Request
+ */
+interface PredictRequest {
+  gcsKey: string;
+}
+
+/**
+ * Interface for Error Response
+ */
+interface ErrorResponse {
+  error: string;
+}
+
+/**
+ * POST /api/predict
+ * Receives a GCS key and returns a simulated screening result.
+ * In a real-world scenario, this would download the file from GCS and run a model.
+ */
+export async function POST(request: NextRequest): Promise<NextResponse<ScreeningResult | ErrorResponse>> {
   try {
-    const formData = await request.formData();
-    const image = formData.get('image');
+    const body = await request.json() as PredictRequest;
+    const { gcsKey } = body;
 
-    if (!image) {
-      return NextResponse.json({ error: 'No image provided' }, { status: 400 });
+    if (!gcsKey) {
+      return NextResponse.json({ error: 'No GCS key provided' }, { status: 400 });
     }
 
     // Simulate model inference delay
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    await new Promise((resolve) => setTimeout(resolve, 2500));
 
     // Generate randomized but realistic results for the demo
-    // We'll favor "Moderate DR" (2) as it's a common screening result
     const seed = Math.random();
     let prediction = 0;
     if (seed < 0.2) prediction = 0;
@@ -28,14 +47,15 @@ export async function POST(request: Request) {
     raw[prediction] = 1.0 + Math.random();
     
     const sum = raw.reduce((a, b) => a + b, 0);
-    const probabilities = raw.map(v => v / sum);
+    const probabilities = raw.map((v) => v / sum);
 
     return NextResponse.json({
       prediction,
       probabilities
     });
-  } catch (error) {
-    console.error('Inference error:', error);
-    return NextResponse.json({ error: 'Inference failed' }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Inference failed";
+    console.error('Inference error:', errorMessage);
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

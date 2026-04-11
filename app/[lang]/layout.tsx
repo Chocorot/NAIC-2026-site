@@ -6,6 +6,7 @@ import "../globals.css";
 import LanguageSwitcher from "@/src/components/LanguageSwitcher";
 import ThemeToggle from "@/src/components/ThemeToggle";
 import Navbar from "@/src/components/Navbar";
+import MobileMenu from "@/src/components/MobileMenu";
 import { getDictionary, Locale } from "./dictionaries";
 
 const geistSans = Geist({
@@ -59,12 +60,19 @@ export default async function RootLayout({
                 <span className="bg-blue-600 text-white p-1 rounded-md text-sm group-hover:scale-110 transition-transform">NAIC</span>
                 <span>DR Screening</span>
               </Link>
-              <Navbar lang={lang} dict={dict} />
+              <div className="hidden md:block">
+                <Navbar lang={lang} dict={dict} />
+              </div>
             </div>
             <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <div className="h-4 w-px bg-zinc-200 dark:bg-slate-800" />
-              <LanguageSwitcher currentLocale={lang} />
+              <div className="hidden md:flex items-center gap-4">
+                <ThemeToggle />
+                <div className="h-4 w-px bg-zinc-200 dark:bg-slate-800" />
+                <LanguageSwitcher currentLocale={lang} />
+              </div>
+              <div className="md:hidden">
+                <MobileMenu lang={lang} dict={dict} />
+              </div>
             </div>
           </div>
         </header>

@@ -1,90 +1,228 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Dictionary } from "@/app/[lang]/dictionaries";
 import ImageUpload from "./ImageUpload";
 import HeatmapView from "./HeatmapView";
 import AnalysisResults from "./AnalysisResults";
+import {
+  storageService,
+  PersistedScreeningItem,
+  ScreeningResult,
+} from "@/src/services/StorageService";
+import { UploadResponse } from "@/app/api/upload/route";
 
-interface ScreeningItem {
-  file: File;
-  url: string;
-  result: { prediction: number; probabilities: number[] } | null;
-  status: "idle" | "analyzing" | "done" | "error";
+/**
+ * Local interface for items during the screening process
+ */
+interface ScreeningItem extends PersistedScreeningItem {
+  isUploading?: boolean;
 }
 
 export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
   const [items, setItems] = useState<ScreeningItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isBatchAnalyzing, setIsBatchAnalyzing] = useState(false);
-  const [heatmapIntensity, setHeatmapIntensity] = useState(60);
+  const [isBatchAnalyzing, setIsBatchAnalyzing] = useState<boolean>(false);
+  const [heatmapIntensity, setHeatmapIntensity] = useState<number>(60);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(true);
+  const [sessionId, setSessionId] = useState<string>("");
 
-  // Cleanup URLs on unmount
+  /**
+   * Initialize or retrieve Session ID
+   */
   useEffect(() => {
-    return () => {
-      items.forEach((item) => URL.revokeObjectURL(item.url));
-    };
-  }, [items]);
+    let id = localStorage.getItem("NAIC_SESSION_ID");
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem("NAIC_SESSION_ID", id);
+    }
+    setSessionId(id);
+  }, []);
 
-  const handleUpload = (uploadedFiles: File[]) => {
-    const newItems: ScreeningItem[] = uploadedFiles.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
+  /**
+   * Run screening for a specific file index
+   */
+  const runScreeningForFile = useCallback(
+    async (index: number, currentItems: ScreeningItem[]) => {
+      const item = currentItems[index];
+      if (!item || item.status === "done" || item.status === "analyzing")
+        return;
+
+      setItems((prev) => {
+        const newItems = [...prev];
+        if (newItems[index]) {
+          newItems[index] = { ...newItems[index], status: "analyzing" };
+        }
+        return newItems;
+      });
+
+      const formData = new FormData();
+      formData.append("gcsKey", item.key);
+
+      try {
+        const response = await fetch("/api/predict", {
+          method: "POST",
+          body: JSON.stringify({ gcsKey: item.key }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) throw new Error("Prediction failed");
+
+        const data = (await response.json()) as ScreeningResult;
+
+        setItems((prev) => {
+          const newItems = [...prev];
+          if (newItems[index]) {
+            newItems[index] = {
+              ...newItems[index],
+              status: "done",
+              result: data,
+            };
+          }
+          return newItems;
+        });
+      } catch (err) {
+        console.error("Screening error:", err);
+        setItems((prev) => {
+          const newItems = [...prev];
+          if (newItems[index]) {
+            newItems[index] = { ...newItems[index], status: "error" };
+          }
+          return newItems;
+        });
+      }
+    },
+    [],
+  );
+
+  /**
+   * Load session on mount
+   */
+  useEffect(() => {
+    const load = async () => {
+      if (storageService) {
+        const persistedItems = storageService.loadSession();
+        if (persistedItems.length > 0) {
+          const castItems = persistedItems as ScreeningItem[];
+          setItems(castItems);
+
+          // Resume any analyzing items
+          const analyzingIndices = castItems
+            .map((item, idx) => (item.status === "analyzing" ? idx : -1))
+            .filter((idx) => idx !== -1);
+
+          if (analyzingIndices.length > 0) {
+            analyzingIndices.forEach((idx) =>
+              runScreeningForFile(idx, castItems),
+            );
+          }
+        }
+      }
+      setIsRefreshing(false);
+    };
+    load();
+  }, [runScreeningForFile]);
+
+  /**
+   * Save session when items change
+   */
+  useEffect(() => {
+    if (isRefreshing) return;
+    if (storageService) {
+      // Cast items back to PersistedScreeningItem to avoid saving 'isUploading'
+      const itemsToSave: PersistedScreeningItem[] = items.map(
+        ({ ...rest }) => rest,
+      );
+      storageService.saveSession(itemsToSave);
+    }
+  }, [items, isRefreshing]);
+
+  /**
+   * Handle image uploads
+   */
+  const handleUpload = async (uploadedFiles: File[]) => {
+    if (!sessionId) return;
+
+    // Create placeholders
+    const placeholders: ScreeningItem[] = uploadedFiles.map((file) => ({
+      key: "",
+      url: URL.createObjectURL(file), // Temporary local preview
+      fileName: file.name,
       result: null,
       status: "idle",
+      isUploading: true,
     }));
-    setItems(newItems);
-    setCurrentIndex(0);
-  };
 
-  const handleReset = () => {
-    items.forEach((item) => URL.revokeObjectURL(item.url));
-    setItems([]);
-    setCurrentIndex(0);
-    setIsBatchAnalyzing(false);
-  };
+    const startIndex = items.length;
+    setItems((prev) => [...prev, ...placeholders]);
 
-  const runScreeningForFile = async (index: number) => {
-    const item = items[index];
-    if (!item || item.status === "done") return;
+    // Upload each to GCS
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      const file = uploadedFiles[i];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("sessionId", sessionId);
 
-    setItems((prev) => {
-      const newItems = [...prev];
-      newItems[index] = { ...newItems[index], status: "analyzing" };
-      return newItems;
-    });
+      try {
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const data = (await res.json()) as UploadResponse;
 
-    const formData = new FormData();
-    formData.append("image", item.file);
-
-    try {
-      const response = await fetch("/api/predict", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-
-      setItems((prev) => {
-        const newItems = [...prev];
-        newItems[index] = { ...newItems[index], status: "done", result: data };
-        return newItems;
-      });
-    } catch (err) {
-      console.error(err);
-      setItems((prev) => {
-        const newItems = [...prev];
-        newItems[index] = { ...newItems[index], status: "error" };
-        return newItems;
-      });
+        if (data.success) {
+          setItems((prev) => {
+            const next = [...prev];
+            const targetIndex = startIndex + i;
+            if (next[targetIndex]) {
+              next[targetIndex] = {
+                ...next[targetIndex],
+                key: data.key,
+                url: data.url,
+                isUploading: false,
+              };
+            }
+            return next;
+          });
+        }
+      } catch (err) {
+        console.error("Upload failed for file:", file.name, err);
+        setItems((prev) => {
+          const next = [...prev];
+          const targetIndex = startIndex + i;
+          if (next[targetIndex]) {
+            next[targetIndex] = {
+              ...next[targetIndex],
+              status: "error",
+              isUploading: false,
+            };
+          }
+          return next;
+        });
+      }
     }
   };
 
+  /**
+   * Reset the screening interface
+   */
+  const handleReset = () => {
+    setItems([]);
+    setCurrentIndex(0);
+    setIsBatchAnalyzing(false);
+    storageService?.clearSession();
+  };
+
+  /**
+   * Run batch screening
+   */
   const runBatchScreening = async () => {
     setIsBatchAnalyzing(true);
+    // Use fresh items state for the loop
     for (let i = 0; i < items.length; i++) {
       if (items[i].status !== "done") {
-        await runScreeningForFile(i);
+        await runScreeningForFile(i, items);
       }
     }
     setIsBatchAnalyzing(false);
@@ -115,7 +253,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
 
           {items.length > 0 &&
             !isBatchAnalyzing &&
-            items.some((i) => i.status !== "done") && (
+            items.some((i) => i.status !== "done" && !i.isUploading) && (
               <button
                 onClick={runBatchScreening}
                 className="mt-10 w-full py-5 bg-blue-600 text-white rounded-4xl font-bold text-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.98]"
@@ -170,7 +308,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                     className="object-cover"
                     unoptimized
                   />
-                  {item.status === "analyzing" && (
+                  {(item.status === "analyzing" || item.isUploading) && (
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     </div>

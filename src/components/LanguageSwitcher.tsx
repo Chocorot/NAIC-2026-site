@@ -11,6 +11,11 @@ export default function LanguageSwitcher({ currentLocale }: { currentLocale: str
     // Set cookie for persistence
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}`
     
+    // Check if we are in a mobile menu (we can check for a flag or just always set it, 
+    // it won't hurt desktop)
+    localStorage.setItem('mobile-menu-stay-open', 'true')
+    localStorage.setItem('screening-stay-active', 'true')
+
     const segments = pathname.split('/')
     segments[1] = newLocale
     router.push(segments.join('/'))

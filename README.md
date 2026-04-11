@@ -31,6 +31,20 @@ Then, run the development server:
 npm run dev
 ```
 
+## Cloud Storage Setup
+
+This project uses Google Cloud Storage for persisting screening sessions.
+
+1. **Service Account**: Create a Google Cloud Service Account with "Storage Object Admin" permissions.
+2. **Key**: Generate a JSON key for the service account and place it in the project root as `service-account.json` (this file is ignored by Git).
+3. **Environment Variables**: Create a `.env.local` file with:
+   ```env
+   GCS_BUCKET_NAME=your-bucket-name
+   GCS_KEY_PATH=service-account.json
+   ```
+
+## Development Architecture
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Technology Stack
