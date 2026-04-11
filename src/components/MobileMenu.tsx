@@ -31,7 +31,8 @@ export default function MobileMenu({
 
   // Adjust state during render - This follows the "Adjusting state during render" pattern
   // from the docs. React handles this re-render before painting the first frame.
-  if (stayOpenFlag && !isOpen) {
+  // Adjust state during render - Only if on mobile width to prevent desktop menu show
+  if (stayOpenFlag && !isOpen && typeof window !== 'undefined' && window.innerWidth < 768) {
     setIsOpen(true);
   }
 
@@ -149,7 +150,7 @@ export default function MobileMenu({
                     <span className="text-sm font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                       Language Select
                     </span>
-                    <LanguageSwitcher currentLocale={lang} />
+                    <LanguageSwitcher currentLocale={lang} isMobile={true} />
                   </div>
                 </div>
               </motion.div>

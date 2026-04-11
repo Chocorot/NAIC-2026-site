@@ -5,8 +5,10 @@ const locales = ["en", "ms", "zh-hans", "zh-hant", "ja", "ko", "de", "ru"];
 
 export default function LanguageSwitcher({
   currentLocale,
+  isMobile = false,
 }: {
   currentLocale: string;
+  isMobile?: boolean;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -15,9 +17,9 @@ export default function LanguageSwitcher({
     // Set cookie for persistence
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}`;
 
-    // Check if we are in a mobile menu (we can check for a flag or just always set it,
-    // it won't hurt desktop)
-    localStorage.setItem("mobile-menu-stay-open", "true");
+    if (isMobile) {
+      localStorage.setItem("mobile-menu-stay-open", "true");
+    }
     localStorage.setItem("screening-stay-active", "true");
 
     const segments = pathname.split("/");
