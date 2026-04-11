@@ -1,0 +1,62 @@
+{
+  "navigation": {
+    "screening": "스크리닝",
+    "about": "모델 정보",
+    "performance": "성능"
+  },
+  "screening": {
+    "title": "DR 스크리닝 프로토타입",
+    "description": "예비 AI 지원 평가를 위해 망막 안저 이미지를 업로드하세요.",
+    "upload_zone": "업로드할 이미지를 클릭하거나 드래그하세요",
+    "analyze": "스크리닝 실행",
+    "analyzing": "분석 중...",
+    "results": "분석 결과",
+    "prediction": "예측된 중증도",
+    "confidence": "신뢰도 점수",
+    "heatmap_title": "시각적 평가 (히트맵)",
+    "tune_heatmap": "히트맵 강도 조정",
+    "source_material": "원본 데이터",
+    "visualization_engine": "시각화 엔진",
+    "active_overlay": "활성 오버레이",
+    "file_types": "JPG, JPEG 또는 PNG (최대 5MB)",
+    "ready_status": "준비됨",
+    "upload_batch": "이미지 더 추가",
+    "batch_process": "모두 처리",
+    "batch_ready": "분석을 위한 배치 준비 완료",
+    "batch_count": "개의 파일이 선택됨",
+    "selection_mode": "결과를 보려면 이미지를 선택하세요",
+    "disclaimer": "이것은 프로토타입 스크리닝 결과이며 최종 의료 진단으로 사용되어서는 안 됩니다. 항상 자격을 갖춘 안과 전문의와 상담하십시오."
+  },
+  "severity_classes": [
+    "DR 없음",
+    "경도 DR",
+    "중등도 DR",
+    "중증 DR",
+    "증식성 DR"
+  ],
+  "about": {
+    "title": "모델 정보",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 px",
+    "classes_desc": "모델은 병변의 유무와 중증도에 따라 이미지를 5개 카테고리로 분류합니다.",
+    "platform_documentation": "플랫폼 문서",
+    "technical_specifications": "기술 사양",
+    "backbone": "신경망 백본",
+    "input_resolution": "표준화된 입력 크기",
+    "build_version": "빌드 버전",
+    "architecture": "아키텍처",
+    "architecture_desc": "고해상도 안저 이미지에서 최적의 특징 추출을 위해 반전 잔차 블록과 MBConv 모듈을 활용하는 커스텀 튜닝된 CNN입니다.",
+    "classification_hierarchy": "분류 계층"
+  },
+  "performance": {
+    "title": "모델 성능",
+    "accuracy": "정확도",
+    "recall": "재현율",
+    "f1_score": "F1 스코어",
+    "confusion_matrix": "혼동 행렬",
+    "validation_analytics": "검증 분석",
+    "hit": "적중",
+    "miss": "실패",
+    "analysis_note": "2,240개의 표준화된 안저 이미지 검증 세트에 대해 수행된 분석입니다. 성능 지표는 표준 교차 검증 결과를 나타냅니다."
+  }
+}

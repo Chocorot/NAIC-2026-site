@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-const locales = ['en', 'zh', 'ms', 'ja', 'de']
+const locales = ['en', 'zh-hans', 'zh-hant', 'ko', 'ru', 'ms', 'ja', 'de']
 
 export default function LanguageSwitcher({ currentLocale }: { currentLocale: string }) {
   const pathname = usePathname()
@@ -18,7 +18,10 @@ export default function LanguageSwitcher({ currentLocale }: { currentLocale: str
 
   const localeNames: Record<string, string> = {
     en: 'English',
-    zh: '中文',
+    'zh-hans': '简体中文',
+    'zh-hant': '繁體中文',
+    ko: '한국어',
+    ru: 'Русский',
     ms: 'Bahasa Melayu',
     ja: '日本語',
     de: 'Deutsch'

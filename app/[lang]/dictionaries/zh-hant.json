@@ -1,0 +1,62 @@
+{
+  "navigation": {
+    "screening": "篩查",
+    "about": "模型信息",
+    "performance": "性能"
+  },
+  "screening": {
+    "title": "糖尿病視網膜病變篩查原型",
+    "description": "上傳視網膜眼底圖像進行初步的 AI 輔助評估。",
+    "upload_zone": "點擊或拖拽圖像上傳",
+    "analyze": "運行篩查",
+    "analyzing": "分析中...",
+    "results": "分析結果",
+    "prediction": "預測嚴重程度",
+    "confidence": "置信度評分",
+    "heatmap_title": "視覺評估 (熱圖)",
+    "tune_heatmap": "調節熱圖強度",
+    "source_material": "原材料",
+    "visualization_engine": "可視化引擎",
+    "active_overlay": "動態疊加層",
+    "file_types": "JPG, JPEG 或 PNG (最大 5MB)",
+    "ready_status": "就緒",
+    "upload_batch": "添加更多圖像",
+    "batch_process": "處理全部",
+    "batch_ready": "批量處理已就緒",
+    "batch_count": "個文件已選擇",
+    "selection_mode": "選擇圖像查看結果",
+    "disclaimer": "這是一個原型篩查結果，不應作為最終醫療診斷。請務必諮詢合格的眼科醫生。"
+  },
+  "severity_classes": [
+    "無 DR",
+    "輕度 DR",
+    "中度 DR",
+    "重度 DR",
+    "增殖性 DR"
+  ],
+  "about": {
+    "title": "關於模型",
+    "model_name": "EfficientNet-B7",
+    "input_size": "600x600 像素",
+    "classes_desc": "模型根據病變的存在和嚴重程度將圖像分為五類。",
+    "platform_documentation": "平台文檔",
+    "technical_specifications": "技術規範",
+    "backbone": "神經網絡骨幹",
+    "input_resolution": "標準化輸入尺寸",
+    "build_version": "構建版本",
+    "architecture": "架構",
+    "architecture_desc": "採用倒置殘差塊和 MBConv 模塊的定制 CNN，用於從高分辨率眼底圖像中進行最佳特徵提取。",
+    "classification_hierarchy": "分類層級"
+  },
+  "performance": {
+    "title": "模型性能",
+    "accuracy": "準確率",
+    "recall": "召回率",
+    "f1_score": "F1 分數",
+    "confusion_matrix": "混淆矩陣",
+    "validation_analytics": "驗證分析",
+    "hit": "命中",
+    "miss": "遺漏",
+    "analysis_note": "對 2,240 張標準化眼底圖像的驗證集進​​行的分析。性能指標代表標準的交叉驗證結果。"
+  }
+}

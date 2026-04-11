@@ -2,7 +2,10 @@ import 'server-only'
 
 const dictionaries = {
   en: () => import('./dictionaries/en.json').then((module) => module.default),
-  zh: () => import('./dictionaries/zh.json').then((module) => module.default),
+  'zh-hans': () => import('./dictionaries/zh-hans.json').then((module) => module.default),
+  'zh-hant': () => import('./dictionaries/zh-hant.json').then((module) => module.default),
+  ko: () => import('./dictionaries/ko.json').then((module) => module.default),
+  ru: () => import('./dictionaries/ru.json').then((module) => module.default),
   ms: () => import('./dictionaries/ms.json').then((module) => module.default),
   ja: () => import('./dictionaries/ja.json').then((module) => module.default),
   de: () => import('./dictionaries/de.json').then((module) => module.default),
