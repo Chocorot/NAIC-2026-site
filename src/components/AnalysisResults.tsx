@@ -7,27 +7,34 @@ export default function AnalysisResults({
   probabilities,
   dict 
 }: { 
-  prediction: number, 
+  prediction: string | number, 
   probabilities: number[],
   dict: Dictionary
 }) {
   const classes = dict.severity_classes;
   
+  // Normalize prediction to an index for array access
+  const predictionIndex = typeof prediction === 'number' 
+    ? prediction 
+    : (prediction === 'Negative' ? 0 : parseInt(prediction as string) || 0);
+
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl p-6 shadow-sm">
         <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-4">{dict.screening.prediction}</h3>
         <div className="flex items-center gap-4">
           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg ${
-            prediction === 0 ? 'bg-emerald-500' :
-            prediction === 1 ? 'bg-blue-500' :
-            prediction === 2 ? 'bg-amber-500' :
-            prediction === 3 ? 'bg-orange-600' : 'bg-rose-600'
+            predictionIndex === 0 ? 'bg-emerald-500' :
+            predictionIndex === 1 ? 'bg-blue-500' :
+            predictionIndex === 2 ? 'bg-amber-500' :
+            predictionIndex === 3 ? 'bg-orange-600' : 'bg-rose-600'
           }`}>
+
             {prediction}
           </div>
           <div>
-            <div className="text-2xl font-extrabold tracking-tight">{classes[prediction]}</div>
+            <div className="text-2xl font-extrabold tracking-tight">{classes[predictionIndex]}</div>
+
             <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider">AI-Aided Preliminary Classification</div>
           </div>
         </div>
@@ -39,16 +46,18 @@ export default function AnalysisResults({
           {probabilities.map((prob, idx) => (
             <div key={idx} className="space-y-2">
               <div className="flex justify-between text-xs font-bold uppercase tracking-wide">
-                <span className={idx === prediction ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-500'}>{classes[idx]}</span>
+                <span className={idx === predictionIndex ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-500'}>{classes[idx]}</span>
+
                 <span className="font-mono">{(prob * 100).toFixed(1)}%</span>
               </div>
               <div className="w-full h-2.5 bg-zinc-100 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div 
                   className={`h-full transition-all duration-1000 ease-out rounded-full ${
-                    idx === prediction 
+                    idx === predictionIndex 
                       ? 'bg-blue-600 dark:bg-blue-500' 
                       : 'bg-zinc-200 dark:bg-slate-700'
                   }`}
+
                   style={{ width: `${prob * 100}%` }}
                 />
               </div>

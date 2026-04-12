@@ -7,7 +7,10 @@ import LanguageSwitcher from "@/src/components/LanguageSwitcher";
 import ThemeToggle from "@/src/components/ThemeToggle";
 import Navbar from "@/src/components/Navbar";
 import MobileMenu from "@/src/components/MobileMenu";
+import AccountMenu from "@/src/components/AccountMenu";
 import { getDictionary, Locale } from "./dictionaries";
+
+import { AuthProvider } from "@/src/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,44 +56,48 @@ export default async function RootLayout({
   return (
     <html lang={lang} className={`${geistSans.variable} ${geistMono.variable} ${theme} h-full antialiased`} style={{ colorScheme: theme }}>
       <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-slate-950 transition-colors duration-300">
-        <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800 transition-colors duration-300">
-          <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-10">
-              <Link href={`/${lang}`} className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600 dark:text-blue-400 group">
-                <span className="bg-blue-600 text-white p-1 rounded-md text-sm group-hover:scale-110 transition-transform">NAIC</span>
-                <span>DR Screening</span>
-              </Link>
-              <div className="hidden md:block">
-                <Navbar lang={lang} dict={dict} />
+        <AuthProvider>
+          <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800 transition-colors duration-300">
+            <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center gap-10">
+                <Link href={`/${lang}`} className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600 dark:text-blue-400 group">
+                  <span className="bg-blue-600 text-white p-1 rounded-md text-sm group-hover:scale-110 transition-transform">NAIC</span>
+                  <span>DR Screening</span>
+                </Link>
+                <div className="hidden md:block">
+                  <Navbar lang={lang} dict={dict} />
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="hidden md:flex items-center gap-4">
+                  <LanguageSwitcher currentLocale={lang} />
+                  <ThemeToggle />
+                  <div className="h-4 w-px bg-zinc-200 dark:bg-slate-800" />
+                  <AccountMenu dict={dict} lang={lang} />
+                </div>
+                <div className="md:hidden">
+                  <MobileMenu lang={lang} dict={dict} />
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-4">
-                <ThemeToggle />
-                <div className="h-4 w-px bg-zinc-200 dark:bg-slate-800" />
-                <LanguageSwitcher currentLocale={lang} />
-              </div>
-              <div className="md:hidden">
-                <MobileMenu lang={lang} dict={dict} />
-              </div>
+          </header>
+          
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+          
+          <footer className="border-t py-12 bg-zinc-50 dark:bg-slate-950 dark:border-slate-800 transition-colors duration-300">
+            <div className="container mx-auto px-4 text-center">
+              <div className="text-zinc-400 dark:text-zinc-600 font-bold tracking-[0.2em] text-[10px] uppercase mb-4">&copy; 2026 NAIC - Research Division</div>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">Diabetic Retinopathy Screening Prototype</p>
+              <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-600 max-w-md mx-auto italic">
+                Computational Clinical Prototype - This platform is for research purposes only and does not constitute medical advice or clinical diagnosis.
+              </p>
             </div>
-          </div>
-        </header>
-        
-        <main className="flex-1 flex flex-col">
-          {children}
-        </main>
-        
-        <footer className="border-t py-12 bg-zinc-50 dark:bg-slate-950 dark:border-slate-800 transition-colors duration-300">
-          <div className="container mx-auto px-4 text-center">
-            <div className="text-zinc-400 dark:text-zinc-600 font-bold tracking-[0.2em] text-[10px] uppercase mb-4">&copy; 2026 NAIC - Research Division</div>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">Diabetic Retinopathy Screening Prototype</p>
-            <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-600 max-w-md mx-auto italic">
-              Computational Clinical Prototype - This platform is for research purposes only and does not constitute medical advice or clinical diagnosis.
-            </p>
-          </div>
-        </footer>
+          </footer>
+        </AuthProvider>
       </body>
     </html>
+
   );
 }

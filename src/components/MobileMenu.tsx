@@ -9,6 +9,10 @@ import { Dictionary } from "@/app/[lang]/dictionaries";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useAuth } from "@/src/context/AuthContext";
+import { auth } from "@/src/lib/firebase";
+import { HiOutlineUserCircle, HiLogout } from "react-icons/hi";
+
 
 export default function MobileMenu({
   lang,
@@ -19,6 +23,13 @@ export default function MobileMenu({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const handleSignOut = async () => {
+    await auth.signOut();
+    setIsOpen(false);
+  };
+
 
   // Define a minimal store for the persistence flag.
   // useSyncExternalStore is the "blessed" way in React 18+ to sync with external
@@ -75,9 +86,11 @@ export default function MobileMenu({
 
   const links = [
     { href: `/${lang}`, label: dict.navigation.screening },
+    { href: `/${lang}/history`, label: "History" },
     { href: `/${lang}/about`, label: dict.navigation.about },
     { href: `/${lang}/performance`, label: dict.navigation.performance },
   ];
+
 
   const isActive = (href: string) => {
     if (href === `/${lang}`) {
@@ -173,7 +186,27 @@ export default function MobileMenu({
                     </span>
                     <LanguageSwitcher currentLocale={lang} isMobile={true} />
                   </div>
+
+                  {!user || user.isAnonymous ? (
+                    <Link
+                      href={`/${lang}/login`}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-center gap-3 w-full p-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl font-bold transition-all shadow-lg shadow-zinc-950/20"
+                    >
+                      <HiOutlineUserCircle className="w-5 h-5" />
+                      {dict.auth?.sign_in || "Sign In"}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center justify-center gap-3 w-full p-4 bg-rose-500 text-white rounded-2xl font-bold transition-all shadow-lg shadow-rose-500/20"
+                    >
+                      <HiLogout className="w-5 h-5" />
+                      {dict.auth?.sign_out || "Sign Out"}
+                    </button>
+                  )}
                 </div>
+
               </motion.div>
             </main>
           </motion.div>
