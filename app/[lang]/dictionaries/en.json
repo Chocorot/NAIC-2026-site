@@ -56,8 +56,10 @@
     "confusion_matrix": "Confusion Matrix",
     "validation_analytics": "Validation Analytics",
     "hit": "Hit",
-    "miss": "Miss"
+    "miss": "Miss",
+    "analysis_note": "Analysis conducted on a validation set of 2,240 standardized fundus images. Performance metrics represent standard cross-validation results."
   },
+
 
   "auth": {
     "sign_in": "Sign In",
