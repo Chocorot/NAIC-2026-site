@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "Screening",
     "about": "Modell-Info",
-    "performance": "Leistung"
+    "performance": "Leistung",
+    "history": "Verlauf"
+
   },
   "screening": {
     "title": "DR-Screening-Prototyp",
@@ -25,7 +27,12 @@
     "batch_ready": "Batch bereit zur Analyse",
     "batch_count": "Dateien ausgewählt",
     "selection_mode": "Bild auswählen, um Ergebnisse anzuzeigen",
-    "disclaimer": "Dies ist ein Prototyp-Screening-Ergebnis und sollte nicht als endgültige medizinische Diagnose verwendet werden. Konsultieren Sie immer einen qualifizierten Augenarzt."
+    "disclaimer": "Dies ist ein Prototyp-Screening-Ergebnis und sollte nicht als endgültige medizinische Diagnose verwendet werden. Konsultieren Sie immer einen qualifizierten Augenarzt.",
+    "start_scan": "KI-Analyse starten",
+    "pending_upload": "Bereit zum Scannen",
+    "rescan": "Erneut scannen",
+    "clear_queue": "Warteschlange leeren",
+    "queue_empty": "Warteschlange ist leer"
   },
   "severity_classes": [
     "Keine DR",
@@ -60,17 +67,95 @@
     "analysis_note": "Analyse durchgeführt an einem Validierungsset von 2.240 standardisierten Fundusbildern. Leistungsmetriken repräsentieren standardmäßige Kreuzvalidierungsergebnisse."
   },
   "auth": {
-    "sign_in": "Anmelden",
-    "sign_up": "Registrieren",
+    "login": "Anmelden",
+    "register": "Registrieren",
     "create_account": "Konto erstellen",
     "welcome_back": "Willkommen zurück",
+    "login_subtitle": "Melden Sie sich an, um auf Ihren KI-Analyse-Verlauf zuzugreifen",
+    "register_subtitle": "Treten Sie NAIC bei, um Ihren Screening-Verlauf zu verfolgen.",
+    "username": "Benutzername",
+    "confirm_password": "Passwort bestätigen",
     "email": "E-Mail-Adresse",
     "password": "Passwort",
     "google_sign_in": "Mit Google fortfahren",
     "no_account": "Noch kein Konto? Registrieren",
     "already_have_account": "Bereits ein Konto? Anmelden",
+    "forgot_password": "Passwort vergessen?",
+    "send_reset_link": "Reset-Link senden",
+    "reset_password": "Passwort zurücksetzen",
+    "check_email": "Überprüfen Sie Ihre E-Mails",
+    "verify_email_sent": "Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.",
+    "agree_to_terms": "Ich stimme den Bedingungen und der Datenschutzrichtlinie zu",
     "sign_out": "Abmelden",
-    "account": "Konto"
+    "account": "Konto",
+    "anonymous": "Anonymer Benutzer",
+    "settings": "Kontoeinstellungen",
+    "resend_verification": "Bestätigungs-E-Mail erneut senden",
+    "verification_resent": "Bestätigungs-E-Mail erfolgreich erneut gesendet!",
+    "please_verify_captcha": "Bitte schließen Sie zuerst das reCAPTCHA ab.",
+    "unverified_error": "Bitte bestätigen Sie Ihre E-Mail-Adresse vor dem Anmelden. Überprüfen Sie Ihren Posteingang auf den Link oder",
+    "resend_link": "Klicken Sie hier zum Erneuten Senden"
+  },
+  "settings": {
+    "title": "Kontoeinstellungen",
+    "profile_section": "Profilinformationen",
+    "security_section": "Sicherheit",
+    "change_username": "Benutzernamen ändern",
+    "change_password": "Passwort ändern",
+    "enter_new_password": "Neues Passwort eingeben",
+    "update_password": "Passwort aktualisieren",
+    "email_readonly": "E-Mail (vom Anbieter verwaltet)",
+    "oauth_label": "Über Google authentifiziert",
+    "save_changes": "Änderungen speichern",
+    "update_success": "Einstellungen erfolgreich aktualisiert",
+    "reauth_required": "Bitte melden Sie sich erneut an, um Ihr Passwort zu ändern"
+  },
+  "legal": {
+    "terms_title": "Nutzungsbedingungen",
+    "privacy_title": "Datenschutzrichtlinie",
+    "last_updated": "Zuletzt aktualisiert: April 2026",
+    "disclaimer": "Wissenschaftlicher Forschungsprototyp",
+    "privacy_intro": "Bei NAIC 2026 verpflichten wir uns, den Schutz und die Sicherheit Ihrer medizinischen Daten zu gewährleisten. Diese Datenschutzrichtlinie erklärt, wie wir Ihre Informationen sammeln, verwenden und schützen.",
+    "privacy_s1_title": "1. Informationen, die wir sammeln",
+    "privacy_s1_content": "Wir sammeln Kontoinformationen (E-Mail, Benutzername) und medizinische Bilder (Netzhautscans), die Sie für die KI-Analyse hochladen.",
+    "privacy_s2_title": "2. Datennutzung",
+    "privacy_s2_content": "Die von Ihnen bereitgestellten Daten werden ausschließlich zum Zwecke der Demonstration unseres KI-Screening-Prototyps und für computergestützte Forschung verwendet. Wir verkaufen Ihre medizinischen Daten nicht an Dritte.",
+    "privacy_s3_title": "3. Bildspeicherung",
+    "privacy_s3_content": "Bilder werden sicher unter Verwendung von Google Cloud Storage gespeichert. Der Zugriff ist streng auf den authentifizierten Benutzer, der das Bild hochgeladen hat, und autorisiertes Forschungspersonal beschränkt.",
+    "privacy_s4_title": "4. Datenverschlüsselung",
+    "privacy_s4_content": "Alle Daten werden während der Übertragung mit SSL/TLS-Protokollen und im Ruhezustand mit einer von unserer Cloud-Infrastruktur bereitgestellten Verschlüsselung der Unternehmensklasse verschlüsselt.",
+    "terms_intro": "Willkommen beim NAIC 2026 Diabetische Retinopathie Screening-Prototyp. Durch den Zugriff auf oder die Nutzung dieser computergestützten Forschungsplattform erklären Sie sich damit einverstanden, an diese Nutzungsbedingungen gebunden zu sein.",
+    "terms_s1_title": "1. Haftungsausschluss für wissenschaftliche Forschung",
+    "terms_s1_content": "Diese Plattform ist ein Prototyp, der für computergestützte Forschung und klinisches Prototyping entwickelt wurde. Es ist KEIN Diagnoseinstrument und bietet KEINE medizinische Beratung.",
+    "terms_s2_title": "2. Nutzung der KI-Analyse",
+    "terms_s2_content": "Die von unseren Deep-Learning-Modellen bereitgestellten Analyseergebnisse dienen nur zu Informationszwecken. Sie sind als vorläufige KI-gestützte Bewertung gedacht und sollten immer von einem qualifizierten Augenarzt oder medizinischem Fachpersonal überprüft werden.",
+    "terms_s3_title": "3. Datenschutz",
+    "terms_s3_content": "Wir nehmen Ihre Privatsphäre ernst. Ihre Netzhautbilder und Kontoinformationen werden sicher gespeichert. Einzelheiten zur Datenhandhabung und -speicherung finden Sie in unserer Datenschutzrichtlinie.",
+    "terms_s4_title": "4. Benutzerkonten",
+    "terms_s4_content": "Sie sind dafür verantwortlich, die Vertraulichkeit Ihres Kontos und Passworts zu wahren. Jede unbefugte Nutzung Ihres Kontos sollte dem NAIC-Forschungspersonal unverzüglich gemeldet werden."
+  },
+  "history": {
+    "title": "Screening-Verlauf",
+    "subtitle": "Überprüfen Sie Ihre bisherigen KI-Screenings und verwalten Sie Ihre medizinischen Analyseunterlagen.",
+    "empty_title": "Keine Scans gefunden",
+    "empty_desc": "Sie haben noch keine KI-Screenings gestartet. Bereit, einige Fundusbilder zu analysieren?",
+    "start_new": "Neues Screening starten",
+    "prediction_label": "Vorhersage",
+    "confidence_label": "KI-Konfidenz",
+    "analyzing": "Analysiere..."
+  },
+  "screening_ui": {
+    "background_note": "Einmal gestartet, werden Ihre Scans im Hintergrund verarbeitet. Sie können deren Fortschritt auf der Verlaufsseite verfolgen. Wenn Sie die Seite jetzt verlassen, werden nicht gestartete Scans abgebrochen.",
+    "local_queue_label": "Dieses Bild befindet sich derzeit in Ihrer lokalen Warteschlange. Klicken Sie auf \"{start_btn}\", um die KI-Analyse zu starten und sie in Ihrem Verlauf zu speichern.",
+    "local_draft": "Lokaler Entwurf",
+    "clear_queue": "Warteschlange löschen",
+    "clear_all": "Alle löschen",
+    "queue_preview": "Warteschlangen-Vorschau",
+    "image_not_loaded": "Bild nicht geladen",
+    "soft": "Weich",
+    "intense": "Intensiv",
+    "platform_badge": "Prototyp-Screening-Plattform"
   }
 }
+
 

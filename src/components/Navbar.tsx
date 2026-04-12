@@ -15,7 +15,7 @@ export default function Navbar({
 
   const links = [
     { href: `/${lang}`, label: dict.navigation.screening },
-    { href: `/${lang}/history`, label: "History" },
+    { href: `/${lang}/history`, label: dict.navigation.history },
     { href: `/${lang}/about`, label: dict.navigation.about },
     { href: `/${lang}/performance`, label: dict.navigation.performance },
   ];

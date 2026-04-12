@@ -89,10 +89,18 @@ export default async function RootLayout({
           <footer className="border-t py-12 bg-zinc-50 dark:bg-slate-950 dark:border-slate-800 transition-colors duration-300">
             <div className="container mx-auto px-4 text-center">
               <div className="text-zinc-400 dark:text-zinc-600 font-bold tracking-[0.2em] text-[10px] uppercase mb-4">&copy; 2026 NAIC - Research Division</div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">Diabetic Retinopathy Screening Prototype</p>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">{dict.screening_ui.platform_badge}</p>
               <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-600 max-w-md mx-auto italic">
-                Computational Clinical Prototype - This platform is for research purposes only and does not constitute medical advice or clinical diagnosis.
+                {dict.legal.disclaimer} - {dict.legal.terms_s1_content}
               </p>
+              <div className="flex justify-center gap-6 mt-8">
+                <Link href={`/${lang}/legal/privacy`} className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-blue-600 transition-colors">
+                  {dict.legal.privacy_title}
+                </Link>
+                <Link href={`/${lang}/legal/terms`} className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-blue-600 transition-colors">
+                  {dict.legal.terms_title}
+                </Link>
+              </div>
             </div>
           </footer>
         </AuthProvider>

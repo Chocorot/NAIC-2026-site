@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "스크리닝",
     "about": "모델 정보",
-    "performance": "성능"
+    "performance": "성능",
+    "history": "기록"
+
   },
   "screening": {
     "title": "DR 스크리닝 프로토타입",
@@ -25,7 +27,12 @@
     "batch_ready": "분석을 위한 배치 준비 완료",
     "batch_count": "개의 파일이 선택됨",
     "selection_mode": "결과를 보려면 이미지를 선택하세요",
-    "disclaimer": "이것은 프로토타입 스크리닝 결과이며 최종 의료 진단으로 사용되어서는 안 됩니다. 항상 자격을 갖춘 안과 전문의와 상담하십시오."
+    "disclaimer": "이것은 프로토타입 스크리닝 결과이며 최종 의료 진단으로 사용되어서는 안 됩니다. 항상 자격을 갖춘 안과 전문의와 상담하십시오.",
+    "start_scan": "AI 분석 시작",
+    "pending_upload": "스캔 준비 완료",
+    "rescan": "재스캔",
+    "clear_queue": "큐를 비우기",
+    "queue_empty": "큐가 비어 있습니다"
   },
   "severity_classes": [
     "DR 없음",
@@ -60,17 +67,95 @@
     "analysis_note": "2,240개의 표준화된 안저 이미지 검증 세트에 대해 수행된 분석입니다. 성능 지표는 표준 교차 검증 결과를 나타냅니다."
   },
   "auth": {
-    "sign_in": "로그인",
-    "sign_up": "가입하기",
+    "login": "로그인",
+    "register": "가입하기",
     "create_account": "계정 만들기",
     "welcome_back": "다시 오신 것을 환영합니다",
+    "login_subtitle": "AI 분석 기록에 액세스하려면 로그인하세요",
+    "register_subtitle": "NAIC에 가입하여 스크리닝 기록을 추적하세요.",
+    "username": "사용자 이름",
+    "confirm_password": "비밀번호 확인",
     "email": "이메일 주소",
     "password": "비밀번호",
     "google_sign_in": "Google로 계속하기",
     "no_account": "계정이 없으신가요? 가입하기",
     "already_have_account": "이미 계정이 있으신가요? 로그인",
+    "forgot_password": "비밀번호를 잊으셨나요?",
+    "send_reset_link": "재설정 링크 전송",
+    "reset_password": "비밀번호 재설정",
+    "check_email": "이메일을 확인하세요",
+    "verify_email_sent": "인증 링크가 이메일 주소로 전송되었습니다.",
+    "agree_to_terms": "약관 및 개인정보 처리방침에 동의합니다",
     "sign_out": "로그아웃",
-    "account": "계정"
+    "account": "계정",
+    "anonymous": "익명",
+    "settings": "계정 설정",
+    "resend_verification": "인증 이메일 재전송",
+    "verification_resent": "인증 이메일이 성공적으로 재전송되었습니다!",
+    "please_verify_captcha": "먼저 reCAPTCHA를 완료해 주세요.",
+    "unverified_error": "로그인하기 전에 이메일 주소를 확인해 주세요. 받은 편지함에서 링크를 확인하거나,",
+    "resend_link": "여기를 클릭하여 재전송하세요"
+  },
+  "settings": {
+    "title": "계정 설정",
+    "profile_section": "프로필 정보",
+    "security_section": "보안",
+    "change_username": "사용자 이름 변경",
+    "change_password": "비밀번호 변경",
+    "enter_new_password": "새 비밀번호 입력",
+    "update_password": "비밀번호 업데이트",
+    "email_readonly": "이메일 (제공업체에서 관리)",
+    "oauth_label": "Google을 통해 인증됨",
+    "save_changes": "변경 사항 저장",
+    "update_success": "설정이 성공적으로 업데이트되었습니다",
+    "reauth_required": "비밀번호를 변경하려면 다시 인증해야 합니다"
+  },
+  "legal": {
+    "terms_title": "서비스 약관",
+    "privacy_title": "개인정보 처리방침",
+    "last_updated": "최종 업데이트: 2026년 4월",
+    "disclaimer": "과학 연구 프로토타입",
+    "privacy_intro": "NAIC 2026은 귀하의 의료 데이터에 대한 개인정보 보호 및 보안을 위해 최선을 다하고 있습니다. 이 개인정보 처리방침은 귀하의 정보를 수집, 사용 및 보호하는 방법을 설명합니다.",
+    "privacy_s1_title": "1. 수집하는 정보",
+    "privacy_s1_content": "AI 분석을 위해 업로드된 계정 정보(이메일, 사용자 이름) 및 의료 이미지(망막 안저 스캔)를 수집합니다.",
+    "privacy_s2_title": "2. 데이터 사용",
+    "privacy_s2_content": "제공된 데이터는 AI 스크리닝 프로토타입 시연 및 계산 연구 목적으로만 사용됩니다. 의료 데이터를 제3자에게 판매하지 않습니다.",
+    "privacy_s3_title": "3. 이미지 저장",
+    "privacy_s3_content": "이미지는 Google Cloud Storage를 사용하여 안전하게 저장됩니다. 액세스는 이미지를 업로드한 인증된 사용자 및 허가된 연구진으로 엄격히 제한됩니다.",
+    "privacy_s4_title": "4. 데이터 암호화",
+    "privacy_s4_content": "모든 데이터는 SSL/TLS 프로토콜을 사용하여 전송 중에 암호화되며, 클라우드 인프라에서 제공하는 기업용 암호화를 사용하여 저장 시 암호화됩니다.",
+    "terms_intro": "NAIC 2026 당뇨망막병증 스크리닝 프로토타입에 오신 것을 환영합니다. 이 계산 연구 플랫폼에 액세스하거나 사용함으로써 귀하는 이 서비스 약관의 구속을 받는 데 동의하게 됩니다.",
+    "terms_s1_title": "1. 과학 연구 면책 조항",
+    "terms_s1_content": "이 플랫폼은 계산 연구 및 임상 프로토타입 개발을 위해 개발된 프로토타입입니다. 진단 도구가 아니며 의료 조언을 제공하지 않습니다.",
+    "terms_s2_title": "2. AI 분석 사용",
+    "terms_s2_content": "딥러닝 모델이 제공하는 분석 결과는 정보 제공 목적으로만 제공됩니다. 이는 예비 AI 지원 평가로 의도되었으며 항상 자격을 갖춘 안과 의사 또는 의료 전문가에 의해 확인되어야 합니다.",
+    "terms_s3_title": "3. 데이터 개인정보 보호",
+    "terms_s3_content": "당사는 귀하의 개인정보를 중요하게 생각합니다. 귀하의 망막 안저 이미지 및 계정 정보는 안전하게 저장됩니다. 데이터 처리 및 저장에 대한 자세한 내용은 개인정보 처리방침을 참조하세요.",
+    "terms_s4_title": "4. 사용자 계정",
+    "terms_s4_content": "귀하는 계정 및 비밀번호의 기밀을 유지할 책임이 있습니다. 귀하의 계정이 무단으로 사용된 것을 인지한 경우 즉시 NAIC 연구진에게 보고해야 합니다."
+  },
+  "history": {
+    "title": "스크리닝 기록",
+    "subtitle": "이전 AI 스크리닝을 검토하고 의료 분석 기록을 관리하세요.",
+    "empty_title": "스캔을 찾을 수 없습니다",
+    "empty_desc": "아직 AI 스크리닝을 시작하지 않았습니다. 안저 이미지를 분석할 준비가 되셨나요?",
+    "start_new": "새 스크리닝 시작",
+    "prediction_label": "예측",
+    "confidence_label": "AI 신뢰도",
+    "analyzing": "분석 중..."
+  },
+  "screening_ui": {
+    "background_note": "시작하면 스캔이 백그라운드에서 처리됩니다. 기록 페이지에서 진행 상황을 추적할 수 있습니다. 지금 나가면 시작되지 않은 스캔은 취소됩니다.",
+    "local_queue_label": "이 이미지는 현재 로컬 대기열에 있습니다. \"{start_btn}\"을(를) 클릭하여 AI 분석을 시작하고 기록에 저장하세요.",
+    "local_draft": "로컬 초안",
+    "clear_queue": "대기열 지우기",
+    "clear_all": "모두 지우기",
+    "queue_preview": "대기열 미리보기",
+    "image_not_loaded": "이미지를 불러오지 못했습니다",
+    "soft": "부드럽게",
+    "intense": "강하게",
+    "platform_badge": "프로토타입 스크리닝 플랫폼"
   }
 }
+
 

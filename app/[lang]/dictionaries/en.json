@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "Screening",
     "about": "Model Info",
-    "performance": "Performance"
+    "performance": "Performance",
+    "history": "History"
+
   },
   "screening": {
     "title": "DR Screening Prototype",
@@ -25,7 +27,12 @@
     "batch_ready": "Batch ready for analysis",
     "batch_count": "files selected",
     "selection_mode": "Select image to view results",
-    "disclaimer": "This is a prototype screening result and should not be used as a final medical diagnosis. Always consult with a qualified ophthalmologist."
+    "disclaimer": "This is a prototype screening result and should not be used as a final medical diagnosis. Always consult with a qualified ophthalmologist.",
+    "start_scan": "Start AI Analysis",
+    "pending_upload": "Ready to scan",
+    "rescan": "Rescan Image",
+    "clear_queue": "Clear Queue",
+    "queue_empty": "Queue is empty"
   },
   "severity_classes": [
     "No DR",
@@ -62,17 +69,95 @@
 
 
   "auth": {
-    "sign_in": "Sign In",
-    "sign_up": "Sign Up",
+    "login": "Login",
+    "register": "Register",
     "create_account": "Create Account",
     "welcome_back": "Welcome Back",
+    "login_subtitle": "Sign in to access your AI analysis history",
+    "register_subtitle": "Join NAIC to track your screening history.",
+    "username": "Username",
+    "confirm_password": "Confirm Password",
     "email": "Email Address",
     "password": "Password",
     "google_sign_in": "Continue with Google",
     "no_account": "Don't have an account? Register",
     "already_have_account": "Already have an account? Login",
-    "sign_out": "Sign Out",
-    "account": "Account"
+    "forgot_password": "Forgot Password?",
+    "send_reset_link": "Send Reset Link",
+    "reset_password": "Reset Password",
+    "check_email": "Check your email",
+    "verify_email_sent": "A verification link has been sent to your email address.",
+    "agree_to_terms": "I agree to the Terms and Privacy Policy",
+    "sign_out": "Logout",
+    "account": "Account",
+    "anonymous": "Anonymous",
+    "settings": "Account Settings",
+    "resend_verification": "Resend verification email",
+    "verification_resent": "Verification email sent successfully!",
+    "please_verify_captcha": "Please complete the reCAPTCHA first.",
+    "unverified_error": "Please verify your email address before logging in. Check your inbox for the link or",
+    "resend_link": "Click here to resend"
+  },
+  "settings": {
+    "title": "Account Settings",
+    "profile_section": "Profile Information",
+    "security_section": "Security",
+    "change_username": "Change Username",
+    "change_password": "Change Password",
+    "enter_new_password": "Enter new password",
+    "update_password": "Update Password",
+    "email_readonly": "Email (Managed by Provider)",
+    "oauth_label": "Authenticated via Google",
+    "save_changes": "Save Changes",
+    "update_success": "Settings updated successfully",
+    "reauth_required": "Please re-authenticate to change your password"
+  },
+  "legal": {
+    "terms_title": "Terms of Service",
+    "privacy_title": "Privacy Policy",
+    "last_updated": "Last Updated: April 2026",
+    "disclaimer": "Scientific Research Prototype",
+    "privacy_intro": "At NAIC 2026, we are committed to protecting the privacy and security of your medical data. This Privacy Policy explains how we collect, use, and protect your information.",
+    "privacy_s1_title": "1. Information We Collect",
+    "privacy_s1_content": "We collect account information (email, username) and medical images (retinal fundus scans) that you upload for AI analysis.",
+    "privacy_s2_title": "2. Data Usage",
+    "privacy_s2_content": "The data you provide is used solely for the purpose of demonstrating our AI screening prototype and for computational research. We do not sell your medical data to third parties.",
+    "privacy_s3_title": "3. Image Storage",
+    "privacy_s3_content": "Images are stored securely using Google Cloud Storage. Access is strictly limited to the authenticated user who uploaded the image and authorized research staff.",
+    "privacy_s4_title": "4. Data Encryption",
+    "privacy_s4_content": "All data is encrypted in transit using SSL/TLS protocols and at rest using enterprise-grade encryption provided by our cloud infrastructure.",
+    "terms_intro": "Welcome to the NAIC 2026 Diabetic Retinopathy Screening Prototype. By accessing or using this computational research platform, you agree to be bound by these Terms of Service.",
+    "terms_s1_title": "1. Scientific Research Disclaimer",
+    "terms_s1_content": "This platform is a prototype developed for computational research and clinical prototyping. It is NOT a diagnostic tool and does NOT provide medical advice.",
+    "terms_s2_title": "2. Use of AI Analysis",
+    "terms_s2_content": "The analysis results provided by our deep learning models are for informational purposes only. They are intended as a preliminary AI-assisted assessment and should always be verified by a qualified ophthalmologist or medical professional.",
+    "terms_s3_title": "3. Data Privacy",
+    "terms_s3_content": "We take your privacy seriously. Your retinal fundus images and account information are stored securely. Please refer to our Privacy Policy for details on data handling and storage.",
+    "terms_s4_title": "4. User Accounts",
+    "terms_s4_content": "You are responsible for maintaining the confidentiality of your account and password. Any unauthorized use of your account should be reported to NAIC research staff immediately."
+  },
+  "history": {
+    "title": "Screening History",
+    "subtitle": "Review your previous AI screenings and manage your medical analysis records.",
+    "empty_title": "No scans found",
+    "empty_desc": "You haven't started any AI screenings yet. Ready to analyze some fundus images?",
+    "start_new": "Start New Screening",
+    "prediction_label": "Prediction",
+    "confidence_label": "AI Confidence",
+    "analyzing": "Analyzing..."
+  },
+  "screening_ui": {
+    "background_note": "Once started, your scans will be processed in the background. You can track their progress in the History page. Navigating away now will cancel unstarted scans.",
+    "local_queue_label": "This image is currently in your local queue. Click \"{start_btn}\" to begin the AI analysis and save it to your history.",
+    "local_draft": "Local Draft",
+    "clear_queue": "Clear Queue",
+    "clear_all": "Clear All",
+    "queue_preview": "Queue Preview",
+    "image_not_loaded": "Image not loaded",
+    "soft": "Soft",
+    "intense": "Intense",
+    "platform_badge": "Prototype screening platform"
   }
 }
+
 

@@ -24,7 +24,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2.5 rounded-2xl bg-zinc-100 hover:bg-zinc-200 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 dark:hover:bg-slate-800 transition-all text-zinc-600 dark:text-zinc-400 shadow-sm"
+      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-zinc-100 hover:bg-zinc-200 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 dark:hover:bg-slate-800 transition-all text-zinc-600 dark:text-zinc-400 shadow-sm"
       aria-label="Toggle theme"
     >
       <MdOutlineDarkMode className="w-5 h-5 block dark:hidden animate-in zoom-in duration-300" />

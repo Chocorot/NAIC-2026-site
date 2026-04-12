@@ -9,8 +9,14 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  updateProfile,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  updatePassword,
+  reauthenticateWithCredential,
   User
 } from 'firebase/auth';
+
 
 import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, updateDoc, doc, orderBy } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -27,7 +33,7 @@ const firebaseConfig = {
 // Initialize Firebase for SSR compatibility
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getFirestore(app, "naic-site-db");
 export const storage = getStorage(app);
 
 export { 
@@ -50,7 +56,13 @@ export {
   uploadBytes,
   getDownloadURL,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  updateProfile,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  updatePassword,
+  reauthenticateWithCredential
 };
+
 
 export type { User };

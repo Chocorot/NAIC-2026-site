@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "篩查",
     "about": "模型信息",
-    "performance": "性能"
+    "performance": "性能",
+    "history": "歷史記錄"
+
   },
   "screening": {
     "title": "糖尿病視網膜病變篩查原型",
@@ -25,7 +27,12 @@
     "batch_ready": "批量處理已就緒",
     "batch_count": "個文件已選擇",
     "selection_mode": "選擇圖像查看結果",
-    "disclaimer": "這是一個原型篩查結果，不應作為最終醫療診斷。請務必諮詢合格的眼科醫生。"
+    "disclaimer": "這是一個原型篩查結果，不應作為最終醫療診斷。請務必諮詢合格的眼科醫生。",
+    "start_scan": "開始 AI 分析",
+    "pending_upload": "準備就緒",
+    "rescan": "重新篩查",
+    "clear_queue": "清除隊列",
+    "queue_empty": "隊列為空"
   },
   "severity_classes": [
     "無 DR",
@@ -60,17 +67,95 @@
     "analysis_note": "對 2,240 張標準化眼底圖像的驗證集進​​行的分析。性能指標代表標準的交叉驗證結果。"
   },
   "auth": {
-    "sign_in": "登錄",
-    "sign_up": "註冊",
+    "login": "登錄",
+    "register": "註冊",
     "create_account": "建立帳號",
     "welcome_back": "歡迎回來",
+    "login_subtitle": "登入以存取您的 AI 分析歷史記錄",
+    "register_subtitle": "加入 NAIC 以追蹤您的篩查歷史記錄。",
+    "username": "用戶名",
+    "confirm_password": "確認密碼",
     "email": "電子郵件",
     "password": "密碼",
     "google_sign_in": "使用 Google 繼續",
     "no_account": "沒有帳號？註冊",
     "already_have_account": "已有帳號？登錄",
+    "forgot_password": "忘記密碼？",
+    "send_reset_link": "發送重置鏈接",
+    "reset_password": "重置密碼",
+    "check_email": "檢查您的郵箱",
+    "verify_email_sent": "驗證鏈接已發送到您的電子郵件。",
+    "agree_to_terms": "我同意條款和隱私政策",
     "sign_out": "登出",
-    "account": "帳戶"
+    "account": "帳戶",
+    "anonymous": "匿名人員",
+    "settings": "帳戶設置",
+    "resend_verification": "重新發送驗證郵件",
+    "verification_resent": "驗證郵件已成功重新發送！",
+    "please_verify_captcha": "請先完成 reCAPTCHA 驗證。",
+    "unverified_error": "登錄前請先驗證您的電子郵件地址。請檢查您的收件箱以獲取鏈接或",
+    "resend_link": "點擊此處重新發送"
+  },
+  "settings": {
+    "title": "帳戶設置",
+    "profile_section": "個人資料信息",
+    "security_section": "安全",
+    "change_username": "更改用戶名",
+    "change_password": "更改密碼",
+    "enter_new_password": "輸入新密碼",
+    "update_password": "更新密碼",
+    "email_readonly": "電子郵件（由提供商管理）",
+    "oauth_label": "已通過 Google 認證",
+    "save_changes": "保存更改",
+    "update_success": "設置更新成功",
+    "reauth_required": "請重新驗證以更改密碼"
+  },
+  "legal": {
+    "terms_title": "服務條款",
+    "privacy_title": "隱私政策",
+    "last_updated": "最後更新：2026年4月",
+    "disclaimer": "科學研究原型",
+    "privacy_intro": "在 NAIC 2026，我們致力於保護您醫療數據的隱私和安全。本隱私政策解釋了我們如何收集、使用和保護您的資訊。",
+    "privacy_s1_title": "1. 我們收集的資訊",
+    "privacy_s1_content": "我們收集帳戶資訊（電子郵件、用戶名）和您上傳用於 AI 分析的醫療圖像（視網膜眼底掃描）。",
+    "privacy_s2_title": "2. 數據用途",
+    "privacy_s2_content": "您提供的數據僅用於演示我們的 AI 篩查原型和計算研究。我們不會將您的醫療數據出售給第三方。",
+    "privacy_s3_title": "3. 圖像存儲",
+    "privacy_s3_content": "圖像使用 Google Cloud Storage 安全存儲。存取權限嚴格限於上傳圖像的經過身分驗證的用戶和授權的研究人員。",
+    "privacy_s4_title": "4. 數據加密",
+    "privacy_s4_content": "所有數據在傳輸過程中均使用 SSL/TLS 協議加密，並使用我們雲端基礎設施提供的企業級加密進行靜態加密。",
+    "terms_intro": "歡迎使用 NAIC 2026 糖尿病視網膜病變篩查原型。訪問或使用此計算研究平台，即表示您同意受這些服務條款的約束。",
+    "terms_s1_title": "1. 科學研究免責聲明",
+    "terms_s1_content": "此平台是為計算研究和臨床原型開發的原型。它不是診斷工具，不提供醫療建議。",
+    "terms_s2_title": "2. AI 分析的使用",
+    "terms_s2_content": "我們的深度學習模型提供的分析結果僅供參考。它們旨在作為初步的 AI 輔助評估，應始終由合格的眼科醫生或醫療專業人員進行驗證。",
+    "terms_s3_title": "3. 數據隱私",
+    "terms_s3_content": "我們非常重視您的隱私。您的視網膜眼底圖像和帳戶資訊均安全存儲。請參閱我們的隱私政策，了解數據處理和存儲的詳細資訊。",
+    "terms_s4_title": "4. 用戶帳戶",
+    "terms_s4_content": "您有責維護您的帳戶和密碼的機密性。如發現任何未經授權使用您帳戶的情況，應立即向 NAIC 研究人員報告。"
+  },
+  "history": {
+    "title": "篩查歷史",
+    "subtitle": "查看您之前的 AI 篩查並管理您的醫療分析記錄。",
+    "empty_title": "未找到掃描記錄",
+    "empty_desc": "您尚未開始任何 AI 篩查。準備好分析一些眼底圖像了嗎？",
+    "start_new": "開始新篩查",
+    "prediction_label": "預測",
+    "confidence_label": "AI 置信度",
+    "analyzing": "分析中..."
+  },
+  "screening_ui": {
+    "background_note": "一旦開始，您的掃描將在後台進行處理。您可以在「歷史記錄」頁面中追蹤其進度。現在離開將取消未開始的掃描。",
+    "local_queue_label": "此圖像當前在您的本地隊列中。點擊「{start_btn}」開始 AI 分析並將其保存到您的歷史記錄中。",
+    "local_draft": "本地草稿",
+    "clear_queue": "清空隊列",
+    "clear_all": "全部清空",
+    "queue_preview": "隊列預覽",
+    "image_not_loaded": "圖像未載入",
+    "soft": "柔和",
+    "intense": "強烈",
+    "platform_badge": "原型篩查平台"
   }
 }
+
 

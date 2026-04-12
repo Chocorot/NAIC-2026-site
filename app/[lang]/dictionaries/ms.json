@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "Saringan",
     "about": "Info Model",
-    "performance": "Prestasi"
+    "performance": "Prestasi",
+    "history": "Sejarah"
+
   },
   "screening": {
     "title": "Prototip Saringan DR",
@@ -25,7 +27,12 @@
     "batch_ready": "Kelompok sedia untuk analisis",
     "batch_count": "fail dipilih",
     "selection_mode": "Pilih imej untuk melihat keputusan",
-    "disclaimer": "Ini adalah keputusan saringan prototip dan tidak boleh digunakan sebagai diagnosis perubatan akhir. Sentiasa berunding dengan pakar oftalmologi yang bertauliah."
+    "disclaimer": "Ini adalah keputusan saringan prototip dan tidak boleh digunakan sebagai diagnosis perubatan akhir. Sentiasa berunding dengan pakar oftalmologi yang bertauliah.",
+    "start_scan": "Mulakan Analisis AI",
+    "pending_upload": "Sedia untuk saringan",
+    "rescan": "Saring Semula",
+    "clear_queue": "Kosongkan Barisan",
+    "queue_empty": "Barisan kosong"
   },
   "severity_classes": [
     "Tiada DR",
@@ -60,17 +67,95 @@
     "analysis_note": "Analisis dijalankan ke atas set pengesahan 2,240 imej fundus standard. Metrik prestasi mewakili keputusan pengesahan silang standard."
   },
   "auth": {
-    "sign_in": "Log Masuk",
-    "sign_up": "Daftar",
+    "login": "Log Masuk",
+    "register": "Daftar",
     "create_account": "Cipta Akaun",
     "welcome_back": "Selamat Kembali",
+    "login_subtitle": "Log masuk untuk mengakses sejarah analisis AI anda",
+    "register_subtitle": "Sertai NAIC untuk menjejaki sejarah saringan anda.",
+    "username": "Nama Pengguna",
+    "confirm_password": "Sahkan Kata Laluan",
     "email": "Alamat Emel",
     "password": "Kata Laluan",
     "google_sign_in": "Teruskan dengan Google",
     "no_account": "Tiada akaun? Daftar",
     "already_have_account": "Sudah ada akaun? Log Masuk",
+    "forgot_password": "Lupa Kata Laluan?",
+    "send_reset_link": "Hantar Pautan Set Semula",
+    "reset_password": "Set Semula Kata Laluan",
+    "check_email": "Semak emel anda",
+    "verify_email_sent": "Pautan pengesahan telah dihantar ke alamat emel anda.",
+    "agree_to_terms": "Saya setuju dengan Terma dan Dasar Privasi",
     "sign_out": "Log Keluar",
-    "account": "Akaun"
+    "account": "Akaun",
+    "anonymous": "Tanpa Nama",
+    "settings": "Tetapan Akaun",
+    "resend_verification": "Hantar semula e-mel pengesahan",
+    "verification_resent": "E-mel pengesahan telah berjaya dihantar semula!",
+    "please_verify_captcha": "Sila lengkapkan reCAPTCHA terlebih dahulu.",
+    "unverified_error": "Sila sahkan alamat e-mel anda sebelum log masuk. Semak peti masuk anda untuk pautan atau",
+    "resend_link": "Klik di sini untuk hantar semula"
+  },
+  "settings": {
+    "title": "Tetapan Akaun",
+    "profile_section": "Maklumat Profil",
+    "security_section": "Keselamatan",
+    "change_username": "Tukar Nama Pengguna",
+    "change_password": "Tukar Kata Laluan",
+    "enter_new_password": "Masukkan kata laluan baru",
+    "update_password": "Kemaskini Kata Laluan",
+    "email_readonly": "Emel (Diuruskan oleh Pembekal)",
+    "oauth_label": "Disertifikasi melalui Google",
+    "save_changes": "Simpan Perubahan",
+    "update_success": "Tetapan berjaya dikemaskini",
+    "reauth_required": "Sila log masuk semula untuk menukar kata laluan"
+  },
+  "legal": {
+    "terms_title": "Terma Perkhidmatan",
+    "privacy_title": "Dasar Privasi",
+    "last_updated": "Terakhir Dikemaskini: April 2026",
+    "disclaimer": "Prototip Penyelidikan Saintifik",
+    "privacy_intro": "Di NAIC 2026, kami komited untuk melindungi privasi dan keselamatan data perubatan anda. Dasar Privasi ini menerangkan cara kami mengumpul, menggunakan dan melindungi maklumat anda.",
+    "privacy_s1_title": "1. Maklumat yang Kami Kumpul",
+    "privacy_s1_content": "Kami mengumpul maklumat akaun (e-mel, nama pengguna) and imej perubatan (imbasan fundus retina) yang anda muat naik untuk analisis AI.",
+    "privacy_s2_title": "2. Penggunaan Data",
+    "privacy_s2_content": "Data yang anda berikan digunakan semata-mata untuk tujuan menunjukkan prototip saringan AI kami dan untuk penyelidikan komputer. Kami tidak menjual data perubatan anda kepada pihak ketiga.",
+    "privacy_s3_title": "3. Penyimpanan Imej",
+    "privacy_s3_content": "Imej disimpan dengan selamat menggunakan Google Cloud Storage. Akses adalah terhad kepada pengguna yang disahkan yang memuat naik imej dan kakitangan penyelidikan yang diberi kuasa.",
+    "privacy_s4_title": "4. Penyulitan Data",
+    "privacy_s4_content": "Semua data disulitkan semasa transit menggunakan protokol SSL/TLS dan semasa rehat menggunakan penyulitan gred perusahaan yang disediakan oleh infrastruktur awan kami.",
+    "terms_intro": "Selamat datang ke Prototip Saringan Diabetes Retinopati NAIC 2026. Dengan mengakses atau menggunakan platform penyelidikan komputer ini, anda bersetuju untuk terikat dengan Terma Perkhidmatan ini.",
+    "terms_s1_title": "1. Penafian Penyelidikan Saintifik",
+    "terms_s1_content": "Platform ini adalah prototip yang dibangunkan untuk penyelidikan komputer dan prototip klinikal. Ia BUKAN alat diagnostik dan TIDAK memberikan nasihat perubatan.",
+    "terms_s2_title": "2. Penggunaan Analisis AI",
+    "terms_s2_content": "Keputusan analisis yang disediakan oleh model pembelajaran mendalam kami adalah untuk tujuan maklumat sahaja. Ia bertujuan sebagai penilaian awal bantuan AI dan harus sentiasa disahkan oleh pakar oftalmologi atau profesional perubatan yang bertauliah.",
+    "terms_s3_title": "3. Privasi Data",
+    "terms_s3_content": "Kami memandang serius privasi anda. Imej fundus retina dan maklumat akaun anda disimpan dengan selamat. Sila rujuk Dasar Privasi kami untuk butiran tentang pengendalian dan penyimpanan data.",
+    "terms_s4_title": "4. Akaun Pengguna",
+    "terms_s4_content": "Anda bertanggungjawab untuk mengekalkan kerahsiaan akaun dan kata laluan anda. Sebarang penggunaan akaun anda tanpa kebenaran hendaklah dilaporkan kepada kakitangan penyelidikan NAIC dengan segera."
+  },
+  "history": {
+    "title": "Sejarah Saringan",
+    "subtitle": "Semak saringan AI anda sebelum ini dan urus rekod analisis perubatan anda.",
+    "empty_title": "Tiada imbasan ditemui",
+    "empty_desc": "Anda belum memulakan sebarang saringan AI lagi. Bersedia untuk menganalisis imej fundus?",
+    "start_new": "Mulakan Saringan Baru",
+    "prediction_label": "Ramalan",
+    "confidence_label": "Keyakinan AI",
+    "analyzing": "Menganalisis..."
+  },
+  "screening_ui": {
+    "background_note": "Setelah dimulakan, imbasan anda akan diproses di latar belakang. Anda boleh menjejaki kemajuan mereka dalam halaman Sejarah. Berpindah sekarang akan membatalkan imbasan yang belum dimulakan.",
+    "local_queue_label": "Imej ini sedang dalam barisan tempatan anda. Klik \"{start_btn}\" untuk memulakan analisis AI dan menyimpannya ke sejarah anda.",
+    "local_draft": "Draf Tempatan",
+    "clear_queue": "Kosongkan Barisan",
+    "clear_all": "Kosongkan Semua",
+    "queue_preview": "Pratonton Barisan",
+    "image_not_loaded": "Imej tidak dimuatkan",
+    "soft": "Lembut",
+    "intense": "Intens",
+    "platform_badge": "Platform saringan prototip"
   }
 }
+
 

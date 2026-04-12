@@ -1,7 +1,12 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { auth, onAuthStateChanged, signInAnonymously, User } from '@/src/lib/firebase';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  auth,
+  onAuthStateChanged,
+  signInAnonymously,
+  User,
+} from "@/src/lib/firebase";
 
 interface AuthContextType {
   user: User | null;
@@ -21,6 +26,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (
+        currentUser &&
+        !currentUser.isAnonymous &&
+        !currentUser.emailVerified
+      ) {
+        console.log(
+          "Listener caught an unverified user. Ignoring state update.",
+        );
+        // We return early and do NOT call setUser(currentUser).
+        // Your login function's signOut() will handle cleaning up Firebase.
+        return;
+      }
+
       if (!currentUser) {
         // Automatically sign in anonymously if no user is present
         try {

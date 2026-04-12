@@ -6,12 +6,15 @@ export interface ScreeningResult {
   heatmapUrl?: string | null;
 }
 
+export type ScanStatus = "idle" | "pending" | "processing" | "analyzing" | "completed" | "error" | "done";
+
 export interface Scan {
   id: string;
   ownerId: string;
   fileName: string;
   url: string;
-  status: "idle" | "analyzing" | "processing" | "completed" | "error" | "done";
+  status: ScanStatus;
+
   result: ScreeningResult | null;
   storagePath?: string;
   createdAt: Timestamp | { toDate: () => Date };

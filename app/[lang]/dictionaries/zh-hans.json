@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "筛查",
     "about": "模型信息",
-    "performance": "性能"
+    "performance": "性能",
+    "history": "历史记录"
+
   },
   "screening": {
     "title": "糖尿病视网膜病变筛查原型",
@@ -25,7 +27,12 @@
     "batch_ready": "批量处理已就绪",
     "batch_count": "个文件已选择",
     "selection_mode": "选择图像查看结果",
-    "disclaimer": "这是一个原型筛查结果，不应作为最终医疗诊断。请务必咨询合格的眼科医生。"
+    "disclaimer": "这是一个原型筛查结果，不应作为最终医疗诊断。请务必咨询合格的眼科医生。",
+    "start_scan": "开始 AI 分析",
+    "pending_upload": "准备就绪",
+    "rescan": "重新筛查",
+    "clear_queue": "清除队列",
+    "queue_empty": "队列为空"
   },
   "severity_classes": [
     "无 DR",
@@ -60,17 +67,95 @@
     "analysis_note": "对2,240张标准化眼底图像的验证集进行的分析。性能指标代表标准的交叉验证结果。"
   },
   "auth": {
-    "sign_in": "登录",
-    "sign_up": "注册",
+    "login": "登录",
+    "register": "注册",
     "create_account": "创建账号",
     "welcome_back": "欢迎回来",
+    "login_subtitle": "登录以访问您的 AI 分析历史记录",
+    "register_subtitle": "加入 NAIC 以追踪您的筛查历史记录。",
+    "username": "用户名",
+    "confirm_password": "确认密码",
     "email": "电子邮箱",
     "password": "密码",
     "google_sign_in": "使用 Google 继续",
     "no_account": "没有账号？注册",
     "already_have_account": "已有账号？登录",
+    "forgot_password": "忘记密码？",
+    "send_reset_link": "发送重置链接",
+    "reset_password": "重置密码",
+    "check_email": "检查您的邮箱",
+    "verify_email_sent": "验证链接已发送到您的电子邮箱。",
+    "agree_to_terms": "我同意条款和隐私政策",
     "sign_out": "退出登录",
-    "account": "账户"
+    "account": "账户",
+    "anonymous": "匿名人员",
+    "settings": "账户设置",
+    "resend_verification": "重新发送验证邮件",
+    "verification_resent": "验证邮件已成功重新发送！",
+    "please_verify_captcha": "请先完成 reCAPTCHA 验证。",
+    "unverified_error": "登录前请先验证您的电子邮件地址。请检查您的收件箱以获取链接或",
+    "resend_link": "点击此处重新发送"
+  },
+  "settings": {
+    "title": "账户设置",
+    "profile_section": "个人资料信息",
+    "security_section": "安全",
+    "change_username": "更改用户名",
+    "change_password": "更改密码",
+    "enter_new_password": "输入新密码",
+    "update_password": "更新密码",
+    "email_readonly": "电子邮箱（由提供商管理）",
+    "oauth_label": "已通过 Google 认证",
+    "save_changes": "保存更改",
+    "update_success": "设置更新成功",
+    "reauth_required": "请重新验证以更改密码"
+  },
+  "legal": {
+    "terms_title": "服务条款",
+    "privacy_title": "隐私政策",
+    "last_updated": "最后更新：2026年4月",
+    "disclaimer": "科学研究原型",
+    "privacy_intro": "在 NAIC 2026，我们致力于保护您医疗数据的隐私和安全。本隐私政策解释了我们如何收集、使用和保护您的信息。",
+    "privacy_s1_title": "1. 我们收集的信息",
+    "privacy_s1_content": "我们收集账户信息（电子邮件、用户名）和您上传用于 AI 分析的医疗图像（视网膜眼底扫描）。",
+    "privacy_s2_title": "2. 数据用途",
+    "privacy_s2_content": "您提供的数据仅用于演示我们的 AI 筛查原型和计算研究。我们不会将您的医疗数据出售给第三方。",
+    "privacy_s3_title": "3. 图像存储",
+    "privacy_s3_content": "图像使用 Google Cloud Storage 安全存储。访问权限严格限于上传图像的经过身分验证的用户和授权的研究人员。",
+    "privacy_s4_title": "4. 数据加密",
+    "privacy_s4_content": "所有数据在传输过程中均使用 SSL/TLS 协议加密，并使用我们云基础设施提供的企业级加密进行静态加密。",
+    "terms_intro": "欢迎使用 NAIC 2026 糖尿病视网膜病变筛查原型。访问或使用此计算研究平台，即表示您同意受这些服务条款的约束。",
+    "terms_s1_title": "1. 科学研究免责声明",
+    "terms_s1_content": "此平台是为计算研究和临床原型开发的原型。它不是诊断工具，不提供医疗建议。",
+    "terms_s2_title": "2. AI 分析的使用",
+    "terms_s2_content": "我们的深度学习模型提供的分析结果仅供参考。它们旨在作为初步的 AI 辅助评估，应始终由合格的眼科医生或医疗专业人员进行验证。",
+    "terms_s3_title": "3. 数据隐私",
+    "terms_s3_content": "我们非常重视您的隐私。您的视网膜眼底图像和账户信息均安全存储。请参阅我们的隐私政策，了解数据处理和存储的详细信息。",
+    "terms_s4_title": "4. 用户账户",
+    "terms_s4_content": "您有责任维护您的账户和密码的机密性。如发现任何未经授权使用您账户的情况，应立即向 NAIC 研究人员报告。"
+  },
+  "history": {
+    "title": "筛查历史",
+    "subtitle": "查看您之前的 AI 筛查并管理您的医疗分析记录。",
+    "empty_title": "未找到扫描记录",
+    "empty_desc": "您尚未开始任何 AI 筛查。准备好分析一些眼底图像了吗？",
+    "start_new": "开始新筛查",
+    "prediction_label": "预测",
+    "confidence_label": "AI 置信度",
+    "analyzing": "分析中..."
+  },
+  "screening_ui": {
+    "background_note": "一旦开始，您的扫描将在后台进行处理。您可以在“历史记录”页面中追踪其进度。现在离开将取消未开始的扫描。",
+    "local_queue_label": "此图像当前在您的本地队列中。点击“{start_btn}”开始 AI 分析并将其保存到您的历史记录中。",
+    "local_draft": "本地草稿",
+    "clear_queue": "清空队列",
+    "clear_all": "全部清空",
+    "queue_preview": "队列预览",
+    "image_not_loaded": "图像未加载",
+    "soft": "柔和",
+    "intense": "强烈",
+    "platform_badge": "原型筛查平台"
   }
 }
+
 

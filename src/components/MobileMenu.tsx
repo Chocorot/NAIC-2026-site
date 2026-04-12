@@ -194,7 +194,7 @@ export default function MobileMenu({
                       className="flex items-center justify-center gap-3 w-full p-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl font-bold transition-all shadow-lg shadow-zinc-950/20"
                     >
                       <HiOutlineUserCircle className="w-5 h-5" />
-                      {dict.auth?.sign_in || "Sign In"}
+                      {dict.auth?.login || "Login"}
                     </Link>
                   ) : (
                     <button
@@ -202,7 +202,7 @@ export default function MobileMenu({
                       className="flex items-center justify-center gap-3 w-full p-4 bg-rose-500 text-white rounded-2xl font-bold transition-all shadow-lg shadow-rose-500/20"
                     >
                       <HiLogout className="w-5 h-5" />
-                      {dict.auth?.sign_out || "Sign Out"}
+                      {dict.auth?.sign_out || "Logout"}
                     </button>
                   )}
                 </div>

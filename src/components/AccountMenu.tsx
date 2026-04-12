@@ -40,10 +40,10 @@ export default function AccountMenu({
     return (
       <Link
         href={`/${lang}/login`}
-        className="flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl text-xs font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-zinc-950/20"
+        className="flex items-center gap-2 h-10 px-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl text-sm font-black hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-zinc-950/20"
       >
-        <HiOutlineUserCircle className="w-4 h-4" />
-        {dict.auth?.sign_in || "Sign In"}
+        <HiOutlineUserCircle className="w-6 h-6" />
+        {dict.auth.login}
       </Link>
     );
   }
@@ -52,16 +52,18 @@ export default function AccountMenu({
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-1 pr-3 bg-zinc-50 dark:bg-slate-900 rounded-2xl border border-zinc-200 dark:border-slate-800 hover:bg-zinc-100 dark:hover:bg-slate-800 transition-all"
+        className="flex items-center gap-2 h-10 p-1 pr-4 bg-zinc-100 dark:bg-slate-900 rounded-2xl border border-zinc-200 dark:border-slate-800 hover:bg-zinc-200 dark:hover:bg-slate-800 transition-all group"
       >
-        <div className="w-8 h-8 rounded-xl bg-blue-600 overflow-hidden flex items-center justify-center text-white text-xs font-bold">
+        <div className="w-8 h-8 rounded-xl bg-blue-600 overflow-hidden flex items-center justify-center text-white text-[10px] font-black shadow-sm group-hover:scale-105 transition-transform">
           {user.photoURL ? (
             <Image src={user.photoURL} alt="Profile" width={32} height={32} />
           ) : (
-            user.email?.[0].toUpperCase() || "U"
+            user.displayName?.[0].toUpperCase() ||
+            user.email?.[0].toUpperCase() ||
+            "U"
           )}
         </div>
-        <span className="text-xs font-bold truncate max-w-20">
+        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
           {user.displayName || user.email?.split("@")[0]}
         </span>
       </button>
@@ -78,11 +80,19 @@ export default function AccountMenu({
           </div>
 
           <Link
+            href={`/${lang}/account/settings`}
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-blue-600 rounded-xl transition-all"
+          >
+            {dict.auth.settings}
+          </Link>
+
+          <Link
             href={`/${lang}/history`}
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-blue-600 rounded-xl transition-all"
           >
-            {dict.navigation.screening} History
+            {dict.navigation.history}
           </Link>
 
           <button

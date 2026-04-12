@@ -93,7 +93,7 @@ export default function HeatmapView({
             className="max-w-full max-h-full object-contain"
           />
         ) : (
-          <div className="text-zinc-500 text-sm italic">Image not loaded</div>
+          <div className="text-zinc-500 text-sm italic">{dict.screening_ui.image_not_loaded}</div>
         )}
       </div>
       
@@ -115,8 +115,8 @@ export default function HeatmapView({
             className="w-full h-1.5 bg-zinc-100 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:bg-slate-800"
           />
           <div className="flex justify-between mt-1 px-1">
-            <span className="text-[10px] text-zinc-400">Soft</span>
-            <span className="text-[10px] text-zinc-400">Intense</span>
+            <span className="text-[10px] text-zinc-400">{dict.screening_ui.soft}</span>
+            <span className="text-[10px] text-zinc-400">{dict.screening_ui.intense}</span>
           </div>
         </div>
       )}

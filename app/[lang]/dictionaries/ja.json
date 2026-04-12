@@ -2,7 +2,9 @@
   "navigation": {
     "screening": "スクリーニング",
     "about": "モデル情報",
-    "performance": "パフォーマンス"
+    "performance": "パフォーマンス",
+    "history": "履歴"
+
   },
   "screening": {
     "title": "DRスクリーニング・プロトタイプ",
@@ -25,7 +27,12 @@
     "batch_ready": "バッチ分析の準備完了",
     "batch_count": "個のファイルを選択済み",
     "selection_mode": "画像を選択して結果を表示",
-    "disclaimer": "これはプロトタイプのスクリーニング結果であり、最終的な医学的診断として使用されるべきではありません。必ず資格のある眼科医に相談してください。"
+    "disclaimer": "これはプロトタイプのスクリーニング結果であり、最終的な医学的診断として使用されるべきではありません。必ず資格のある眼科医に相談してください。",
+    "start_scan": "AI分析を開始",
+    "pending_upload": "スキャン準備完了",
+    "rescan": "再スキャン",
+    "clear_queue": "キューをクリア",
+    "queue_empty": "キューは空です"
   },
   "severity_classes": [
     "DRなし",
@@ -60,17 +67,95 @@
     "analysis_note": "2,240枚の標準化された眼底画像の検証セットで実施された分析。パフォーマンス指標は標準的な交差検証の結果を表しています。"
   },
   "auth": {
-    "sign_in": "サインイン",
-    "sign_up": "新規登録",
+    "login": "ログイン",
+    "register": "新規登録",
     "create_account": "アカウント作成",
     "welcome_back": "おかえりなさい",
+    "login_subtitle": "サインインして AI 分析履歴にアクセスする",
+    "register_subtitle": "NAIC に参加してスクリーニング履歴を追跡しましょう。",
+    "username": "ユーザー名",
+    "confirm_password": "パスワードの確認",
     "email": "メールアドレス",
     "password": "パスワード",
     "google_sign_in": "Googleで続行",
     "no_account": "アカウントをお持ちでないですか？登録",
     "already_have_account": "既にアカウントをお持ちですか？ログイン",
-    "sign_out": "サインアウト",
-    "account": "アカウント"
+    "forgot_password": "パスワードをお忘れですか？",
+    "send_reset_link": "リセットリンクを送信",
+    "reset_password": "パスワードをリセット",
+    "check_email": "メールを確認してください",
+    "verify_email_sent": "確認リンクがメールアドレスに送信されました。",
+    "agree_to_terms": "利用規約とプライバシーポリシーに同意する",
+    "sign_out": "ログアウト",
+    "account": "アカウント",
+    "anonymous": "非公開ユーザー",
+    "settings": "アカウント設定",
+    "resend_verification": "認証メールを再送する",
+    "verification_resent": "認証メールを正常に再送しました！",
+    "please_verify_captcha": "最初に reCAPTCHA を完了してください。",
+    "unverified_error": "ログインする前にメールアドレスを確認してください。受信トレイでリンクを確認するか、",
+    "resend_link": "ここをクリックして再送してください"
+  },
+  "settings": {
+    "title": "アカウント設定",
+    "profile_section": "プロフィール情報",
+    "security_section": "セキュリティ",
+    "change_username": "ユーザー名を変更",
+    "change_password": "パスワードを変更",
+    "enter_new_password": "新しいパスワードを入力",
+    "update_password": "パスワードを更新",
+    "email_readonly": "メールアドレス（プロバイダー管理）",
+    "oauth_label": "Googleで認証済み",
+    "save_changes": "変更を保存",
+    "update_success": "設定が正常に更新されました",
+    "reauth_required": "パスワードを変更するには再認証が必要です"
+  },
+  "legal": {
+    "terms_title": "利用規約",
+    "privacy_title": "プライバシーポリシー",
+    "last_updated": "最終更新日：2026年4月",
+    "disclaimer": "科学研究用プロトタイプ",
+    "privacy_intro": "NAIC 2026 では、お客様の医療データのプライバシーとセキュリティの保護に努めています。このプライバシーポリシーでは、情報の収集、使用、保護の方法について説明します。",
+    "privacy_s1_title": "1. 収集する情報",
+    "privacy_s1_content": "AI 分析のためにアップロードされたアカウント情報（メールアドレス、ユーザー名）および医療画像（網膜底スキャン）を収集します。",
+    "privacy_s2_title": "2. データの使用",
+    "privacy_s2_content": "提供されたデータは、AI スクリーニングプロトタイプのデモンストレーションおよび計算研究の目的のみに使用されます。医療データを第三者に販売することはありません。",
+    "privacy_s3_title": "3. 画像の保存",
+    "privacy_s3_content": "画像は Google Cloud Storage を使用して安全に保存されます。アクセスは、画像をアップロードした認証済みユーザーおよび許可された研究スタッフに厳格に制限されます。",
+    "privacy_s4_title": "4. データの暗号化",
+    "privacy_s4_content": "すべてのデータは、SSL/TLS プロトコルを使用して通信中に暗号化され、クラウドインフラストラクチャが提供するエンタープライズグレードの暗号化を使用して保存時に暗号化されます。",
+    "terms_intro": "NAIC 2026 糖尿病視網膜病変スクリーニングプロトタイプへようこそ。この計算研究プラットフォームにアクセスまたは使用することにより、これらの利用規約に拘束されることに同意したものとみなされます。",
+    "terms_s1_title": "1. 科学研究に関する免責事項",
+    "terms_s1_content": "このプラットフォームは、計算研究および臨床プロトタイプ開発のために開発されたプロトタイプです。診断ツールではなく、医学的なアドバイスを提供するものでもありません。",
+    "terms_s2_title": "2. AI 分析の使用",
+    "terms_s2_content": "ディープラーニングモデルによって提供される分析結果は、情報提供のみを目的としています。これらは予備的な AI 支援評価として意図されており、常に資格のある眼科医または医療専門家によって確認される必要があります。",
+    "terms_s3_title": "3. データプライバシー",
+    "terms_s3_content": "当社はお客様のプライバシーを重視しています。網膜底画像およびアカウント情報は安全に保存されます。データ処理および保存の詳細については、プライバシーポリシーを参照してください。",
+    "terms_s4_title": "4. ユーザーアカウント",
+    "terms_s4_content": "アカウントとパスワードの機密保持はお客様の責任です。アカウントの不正使用に気付いた場合は、直ちに NAIC 研究スタッフに報告してください。"
+  },
+  "history": {
+    "title": "スクリーニング履歴",
+    "subtitle": "過去の AI スクリーニングを確認し、医療分析記録を管理します。",
+    "empty_title": "スキャンが見つかりません",
+    "empty_desc": "AI スクリーニングはまだ開始されていません。眼底画像の分析を開始しますか？",
+    "start_new": "新規スクリーニングを開始",
+    "prediction_label": "予測",
+    "confidence_label": "AI 信頼度",
+    "analyzing": "分析中..."
+  },
+  "screening_ui": {
+    "background_note": "開始すると、スキャンはバックグラウンドで処理されます。履歴ページで進行状況を確認できます。今すぐ移動すると、開始されていないスキャンはキャンセルされます。",
+    "local_queue_label": "この画像は現在ローカルキューにあります。「{start_btn}」をクリックして AI 分析を開始し、履歴に保存してください。",
+    "local_draft": "ローカルドラフト",
+    "clear_queue": "キューをクリア",
+    "clear_all": "すべてクリア",
+    "queue_preview": "キュープレビュー",
+    "image_not_loaded": "画像が読み込まれていません",
+    "soft": "ソフト",
+    "intense": "インテンシブ",
+    "platform_badge": "プロトタイプ・スクリーニング・プラットフォーム"
   }
 }
+
 

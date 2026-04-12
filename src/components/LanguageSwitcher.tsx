@@ -66,12 +66,12 @@ export default function LanguageSwitcher({
     <div className="relative inline-block text-left" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-2 rounded-xl bg-zinc-100 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 hover:bg-zinc-200 dark:hover:bg-slate-800 transition-all text-zinc-600 dark:text-zinc-400 group shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+        className="flex items-center gap-2 h-10 px-3 rounded-2xl bg-zinc-100 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 hover:bg-zinc-200 dark:hover:bg-slate-800 transition-all text-zinc-600 dark:text-zinc-400 group shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
         aria-label="Select language"
       >
         <HiOutlineGlobeAlt className="w-5 h-5 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
         <HiChevronDown
-          className={`w-4 h-4 opacity-50 transition-transform duration-200 ${
+          className={`w-3.5 h-3.5 opacity-50 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
