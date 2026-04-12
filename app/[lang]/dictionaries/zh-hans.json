@@ -58,5 +58,19 @@
     "hit": "命中",
     "miss": "遗漏",
     "analysis_note": "对2,240张标准化眼底图像的验证集进行的分析。性能指标代表标准的交叉验证结果。"
+  },
+  "auth": {
+    "sign_in": "登录",
+    "sign_up": "注册",
+    "create_account": "创建账号",
+    "welcome_back": "欢迎回来",
+    "email": "电子邮箱",
+    "password": "密码",
+    "google_sign_in": "使用 Google 继续",
+    "no_account": "没有账号？注册",
+    "already_have_account": "已有账号？登录",
+    "sign_out": "退出登录",
+    "account": "账户"
   }
 }
+

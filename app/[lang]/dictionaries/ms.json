@@ -58,5 +58,19 @@
     "hit": "Kenalan",
     "miss": "Terlepas",
     "analysis_note": "Analisis dijalankan ke atas set pengesahan 2,240 imej fundus standard. Metrik prestasi mewakili keputusan pengesahan silang standard."
+  },
+  "auth": {
+    "sign_in": "Log Masuk",
+    "sign_up": "Daftar",
+    "create_account": "Cipta Akaun",
+    "welcome_back": "Selamat Kembali",
+    "email": "Alamat Emel",
+    "password": "Kata Laluan",
+    "google_sign_in": "Teruskan dengan Google",
+    "no_account": "Tiada akaun? Daftar",
+    "already_have_account": "Sudah ada akaun? Log Masuk",
+    "sign_out": "Log Keluar",
+    "account": "Akaun"
   }
 }
+

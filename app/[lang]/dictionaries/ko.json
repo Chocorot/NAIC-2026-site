@@ -58,5 +58,19 @@
     "hit": "적중",
     "miss": "실패",
     "analysis_note": "2,240개의 표준화된 안저 이미지 검증 세트에 대해 수행된 분석입니다. 성능 지표는 표준 교차 검증 결과를 나타냅니다."
+  },
+  "auth": {
+    "sign_in": "로그인",
+    "sign_up": "가입하기",
+    "create_account": "계정 만들기",
+    "welcome_back": "다시 오신 것을 환영합니다",
+    "email": "이메일 주소",
+    "password": "비밀번호",
+    "google_sign_in": "Google로 계속하기",
+    "no_account": "계정이 없으신가요? 가입하기",
+    "already_have_account": "이미 계정이 있으신가요? 로그인",
+    "sign_out": "로그아웃",
+    "account": "계정"
   }
 }
+

@@ -58,5 +58,19 @@
     "hit": "Treffer",
     "miss": "Fehlschlag",
     "analysis_note": "Analyse durchgeführt an einem Validierungsset von 2.240 standardisierten Fundusbildern. Leistungsmetriken repräsentieren standardmäßige Kreuzvalidierungsergebnisse."
+  },
+  "auth": {
+    "sign_in": "Anmelden",
+    "sign_up": "Registrieren",
+    "create_account": "Konto erstellen",
+    "welcome_back": "Willkommen zurück",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "google_sign_in": "Mit Google fortfahren",
+    "no_account": "Noch kein Konto? Registrieren",
+    "already_have_account": "Bereits ein Konto? Anmelden",
+    "sign_out": "Abmelden",
+    "account": "Konto"
   }
 }
+

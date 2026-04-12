@@ -58,5 +58,19 @@
     "hit": "的中",
     "miss": "ミス",
     "analysis_note": "2,240枚の標準化された眼底画像の検証セットで実施された分析。パフォーマンス指標は標準的な交差検証の結果を表しています。"
+  },
+  "auth": {
+    "sign_in": "サインイン",
+    "sign_up": "新規登録",
+    "create_account": "アカウント作成",
+    "welcome_back": "おかえりなさい",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "google_sign_in": "Googleで続行",
+    "no_account": "アカウントをお持ちでないですか？登録",
+    "already_have_account": "既にアカウントをお持ちですか？ログイン",
+    "sign_out": "サインアウト",
+    "account": "アカウント"
   }
 }
+
