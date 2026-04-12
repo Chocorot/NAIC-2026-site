@@ -20,19 +20,26 @@ export default function MobileMenu({
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Define a minimal store for the persistence flag. 
-  // useSyncExternalStore is the "blessed" way in React 18+ to sync with external 
+  // Define a minimal store for the persistence flag.
+  // useSyncExternalStore is the "blessed" way in React 18+ to sync with external
   // systems like localStorage while handling hydration and evitando cascading renders.
   const stayOpenFlag = useSyncExternalStore(
     () => () => {}, // No need to subscribe to changes after mount
-    () => typeof window !== 'undefined' && localStorage.getItem("mobile-menu-stay-open") === "true",
-    () => false // Server default
+    () =>
+      typeof window !== "undefined" &&
+      localStorage.getItem("mobile-menu-stay-open") === "true",
+    () => false, // Server default
   );
 
   // Adjust state during render - This follows the "Adjusting state during render" pattern
   // from the docs. React handles this re-render before painting the first frame.
   // Adjust state during render - Only if on mobile width to prevent desktop menu show
-  if (stayOpenFlag && !isOpen && typeof window !== 'undefined' && window.innerWidth < 768) {
+  if (
+    stayOpenFlag &&
+    !isOpen &&
+    typeof window !== "undefined" &&
+    window.innerWidth < 768
+  ) {
     setIsOpen(true);
   }
 
@@ -41,7 +48,10 @@ export default function MobileMenu({
     if (isOpen) {
       document.body.style.overflow = "hidden";
       // Cleanup the persistence flag once it has been consumed
-      if (typeof window !== 'undefined' && localStorage.getItem("mobile-menu-stay-open") === "true") {
+      if (
+        typeof window !== "undefined" &&
+        localStorage.getItem("mobile-menu-stay-open") === "true"
+      ) {
         localStorage.removeItem("mobile-menu-stay-open");
       }
     } else {
@@ -50,6 +60,17 @@ export default function MobileMenu({
     return () => {
       document.body.style.overflow = "unset";
     };
+  }, [isOpen]);
+
+  // Close menu when window is resized to desktop width
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [isOpen]);
 
   const links = [
@@ -146,7 +167,7 @@ export default function MobileMenu({
                     <ThemeToggle />
                   </div>
 
-                  <div className="flex flex-col gap-3 p-4 bg-zinc-50 dark:bg-slate-900 rounded-2xl border border-zinc-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-slate-900 rounded-2xl border border-zinc-100 dark:border-slate-800">
                     <span className="text-sm font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                       Language Select
                     </span>
