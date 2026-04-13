@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useAuth } from "@/src/context/AuthContext";
 import {
   db,
@@ -24,9 +25,12 @@ import {
 } from "react-icons/hi";
 import AnalysisResults from "./AnalysisResults";
 import HeatmapView from "./HeatmapView";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function HistoryInterface({ dict }: { dict: Dictionary }) {
   const { user } = useAuth();
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
   const [scans, setScans] = useState<Scan[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedScan, setSelectedScan] = useState<Scan | null>(null);
@@ -146,7 +150,7 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center p-12">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <LoadingSpinner size="lg" color="primary" />
       </div>
     );
   }
@@ -225,7 +229,7 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                     <div className="flex items-center gap-2">
                       {(scan.status === "processing" ||
                         scan.status === "analyzing") && (
-                        <div className="w-2.5 h-2.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <LoadingSpinner size="sm" color="white" />
                       )}
                       {scan.status}
                     </div>
@@ -243,8 +247,10 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                       <div className="flex items-center gap-1.5 text-zinc-400">
                         <HiOutlineClock className="w-3 h-3" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">
-                          {scan.createdAt
-                            ? scan.createdAt.toDate().toLocaleDateString()
+                          {scan.createdAt instanceof Timestamp
+                            ? new Intl.DateTimeFormat(lang, {
+                                dateStyle: "medium",
+                              }).format(scan.createdAt.toDate())
                             : "Pending"}
                         </span>
                       </div>
@@ -283,7 +289,7 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                     </div>
                   ) : (
                     <div className="py-4 flex flex-col items-center justify-center bg-zinc-50 dark:bg-slate-950/50 rounded-2xl border border-zinc-100 dark:border-slate-800">
-                      <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2" />
+                      <LoadingSpinner size="md" color="primary" className="mb-2" />
                       <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">
                         {dict.history.analyzing}
                       </span>
@@ -338,9 +344,12 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                       {selectedScan.fileName}
                     </h2>
                     <p className="text-zinc-500 font-medium text-sm">
-                      Processed on{" "}
+                      {dict.history.processed_on}{" "}
                       {selectedScan.createdAt instanceof Timestamp
-                        ? selectedScan.createdAt.toDate().toLocaleString()
+                        ? new Intl.DateTimeFormat(lang, {
+                            dateStyle: "medium",
+                            timeStyle: "medium",
+                          }).format(selectedScan.createdAt.toDate())
                         : "Unknown Date"}
                     </p>
                   </div>

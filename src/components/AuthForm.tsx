@@ -15,14 +15,15 @@ import {
 } from "@/src/lib/firebase";
 import { useAuth } from "@/src/context/AuthContext";
 import { Dictionary } from "@/app/[lang]/dictionaries";
+import { AuthError } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { Auth, linkWithPopup, signOut } from "firebase/auth";
 import Link from "next/link";
+import LoadingSpinner from "./LoadingSpinner";
 import {
   HiOutlineMail,
   HiOutlineCheckCircle,
   HiArrowLeft,
-  HiOutlineRefresh,
 } from "react-icons/hi";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -69,9 +70,17 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
       }
       router.push(`/${lang}`);
     } catch (err: unknown) {
-      const error = err as Error;
-      console.error(error);
-      setError(error.message || "An error occurred with Google Sign-In");
+      const authErr = err as AuthError;
+      console.error(authErr);
+      if (authErr.code === "auth/popup-closed-by-user") {
+        setError(dict.auth.popup_closed_error);
+      } else if (authErr.code === "auth/popup-blocked") {
+        setError(dict.auth.popup_blocked_error);
+      } else if (authErr.code === "auth/cancelled-popup-request") {
+        // Silently ignore if multiple requests were made
+      } else {
+        setError(authErr.message || "An error occurred with Google Sign-In");
+      }
     } finally {
       setLoading(false);
     }
@@ -266,8 +275,9 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
                   disabled={loading || (showResendCaptcha && !captchaToken)}
                   className="flex items-center gap-2 text-blue-600 font-bold hover:underline disabled:opacity-50 disabled:no-underline"
                 >
-                  <HiOutlineRefresh
-                    className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
+                  <LoadingSpinner
+                    size="sm"
+                    className={loading ? "opacity-100" : "opacity-0"}
                   />
                   {showResendCaptcha
                     ? dict.auth.resend_verification
@@ -472,13 +482,18 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
             disabled={loading}
             className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98] disabled:opacity-50"
           >
-            {loading
-              ? "..."
-              : mode === "register"
-                ? dict.auth.register
-                : mode === "forgot-password"
-                  ? dict.auth.send_reset_link
-                  : dict.auth.login}
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <LoadingSpinner size="sm" color="white" />
+                <span>{dict.auth.processing || "Processing..."}</span>
+              </div>
+            ) : mode === "register" ? (
+              dict.auth.register
+            ) : mode === "forgot-password" ? (
+              dict.auth.send_reset_link
+            ) : (
+              dict.auth.login
+            )}
           </button>
         </form>
 

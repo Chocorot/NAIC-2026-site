@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Dictionary } from "@/app/[lang]/dictionaries";
 import ImageUpload from "./ImageUpload";
+import LoadingSpinner from "./LoadingSpinner";
 import { useAuth } from "@/src/context/AuthContext";
 import {
   storage,
@@ -252,7 +253,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                   className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black flex items-center gap-3 transition-all active:scale-95 disabled:opacity-50"
                 >
                   {isProcessing ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <LoadingSpinner size="sm" color="white" />
                   ) : (
                     <HiOutlinePlay className="w-6 h-6" />
                   )}
@@ -362,10 +363,11 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                     fill
                     className="object-contain"
                     unoptimized
+                    priority
                   />
                   {currentItem.status === "processing" && (
                     <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-                      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                      <LoadingSpinner size="lg" color="primary" />
                       <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600">
                         Analyzing...
                       </p>

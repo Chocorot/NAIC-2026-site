@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef } from 'react'
 import { Dictionary } from '@/app/[lang]/dictionaries'
+import LoadingSpinner from './LoadingSpinner'
 
 export default function HeatmapView({ 
   src, 
@@ -76,13 +77,7 @@ export default function HeatmapView({
       <div className="relative rounded-3xl overflow-hidden border-2 border-zinc-100 dark:border-slate-800 bg-black aspect-square flex items-center justify-center">
         {isLoading ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-slate-900/60 backdrop-blur-md z-10">
-            <div className="relative">
-              <div className="w-16 h-16 border-4 border-blue-500/20 rounded-full" />
-              <div className="absolute top-0 w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping" />
-              </div>
-            </div>
+            <LoadingSpinner size="xl" color="primary" />
             <p className="text-white text-sm font-bold tracking-widest uppercase animate-pulse">{dict.screening.analyzing}</p>
           </div>
         ) : null}
