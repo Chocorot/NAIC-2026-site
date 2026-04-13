@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/context/AuthContext";
 import { auth } from "@/src/lib/firebase";
 import { Dictionary } from "@/app/[lang]/dictionaries";
@@ -16,6 +17,7 @@ export default function AccountMenu({
   lang: string;
 }) {
   const { user } = useAuth();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -30,8 +32,13 @@ export default function AccountMenu({
   }, []);
 
   const handleSignOut = async () => {
-    await auth.signOut();
-    setIsOpen(false);
+    try {
+      await auth.signOut();
+      setIsOpen(false);
+      router.push(`/${lang}`);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const isGuest = !user || user.isAnonymous;

@@ -1,5 +1,18 @@
+import { Metadata } from "next";
 import { getDictionary, Locale } from "../dictionaries";
 import HistoryInterface from "@/src/components/HistoryInterface";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
+  return {
+    title: dict.metadata.history,
+  };
+}
 
 export default async function HistoryPage({
   params,

@@ -22,10 +22,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "NAIC 2026 - DR Screening Tool",
-  description: "AI-assisted diabetic retinopathy screening prototype",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
+
+  return {
+    title: {
+      template: `%s ${dict.metadata.title_suffix}`,
+      default: dict.metadata.default_title,
+    },
+    description: dict.screening.description,
+  };
+}
 
 export async function generateStaticParams() {
   return [
@@ -62,7 +74,7 @@ export default async function RootLayout({
               <div className="flex items-center gap-10">
                 <Link href={`/${lang}`} className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600 dark:text-blue-400 group">
                   <span className="bg-blue-600 text-white p-1 rounded-md text-sm group-hover:scale-110 transition-transform">NAIC</span>
-                  <span>DR Screening</span>
+                  <span>{dict.navigation.screening}</span>
                 </Link>
                 <div className="hidden md:block">
                   <Navbar lang={lang} dict={dict} />
@@ -70,8 +82,8 @@ export default async function RootLayout({
               </div>
               <div className="flex items-center gap-4">
                 <div className="hidden md:flex items-center gap-4">
-                  <LanguageSwitcher currentLocale={lang} />
-                  <ThemeToggle />
+                  <LanguageSwitcher currentLocale={lang} dict={dict} />
+                  <ThemeToggle dict={dict} />
                   <div className="h-4 w-px bg-zinc-200 dark:bg-slate-800" />
                   <AccountMenu dict={dict} lang={lang} />
                 </div>

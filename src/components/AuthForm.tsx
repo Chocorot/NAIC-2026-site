@@ -24,8 +24,12 @@ import {
   HiOutlineMail,
   HiOutlineCheckCircle,
   HiArrowLeft,
+  HiCheck,
+  HiOutlineEye,
+  HiOutlineEyeOff,
 } from "react-icons/hi";
 import ReCAPTCHA from "react-google-recaptcha";
+import { FcGoogle } from "react-icons/fc";
 
 interface AuthFormProps {
   mode: "login" | "register" | "forgot-password";
@@ -53,6 +57,8 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [showResendCaptcha, setShowResendCaptcha] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const recaptchaRef = React.useRef<ReCAPTCHA>(null);
 
   const { user } = useAuth();
@@ -165,11 +171,22 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
 
     try {
       if (mode === "register") {
+        const passwordRequirements = {
+          hasLength: password.length >= 8,
+          hasUpper: /[A-Z]/.test(password),
+          hasLower: /[a-z]/.test(password),
+          hasNumber: /[0-9]/.test(password),
+          hasSymbol: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        };
+
+        if (!Object.values(passwordRequirements).every(Boolean)) {
+          throw new Error(dict.auth.error_password_complexity);
+        }
         if (password !== confirmPassword) {
-          throw new Error("Passwords do not match");
+          throw new Error(dict.auth.error_password_mismatch);
         }
         if (!agreedToTerms) {
-          throw new Error("Please agree to the Terms and Privacy Policy");
+          throw new Error(dict.auth.error_agree_to_terms);
         }
 
         setResendEmailForm({
@@ -217,7 +234,18 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
     } catch (err: unknown) {
       const error = err as Error & { code?: string };
       console.error(error);
-      setError(error.message || "An error occurred");
+
+      if (error.code === "auth/email-already-in-use") {
+        setError(dict.auth.error_email_in_use);
+      } else if (
+        error.code === "auth/invalid-credential" ||
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
+      ) {
+        setError(dict.auth.error_invalid_login);
+      } else {
+        setError(error.message || "An error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -242,7 +270,7 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
           <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-10 leading-relaxed">
             {view === "verify_sent"
               ? dict.auth.verify_email_sent
-              : "A password reset link has been sent to your email address."}
+              : dict.auth.reset_link_sent}
           </p>
 
           {view === "verify_sent" && (
@@ -309,6 +337,14 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
     );
   }
 
+  const passwordRequirements = {
+    hasLength: password.length >= 8,
+    hasUpper: /[A-Z]/.test(password),
+    hasLower: /[a-z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSymbol: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+  };
+
   return (
     <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-center">
@@ -323,7 +359,7 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
           {mode === "register"
             ? dict.auth.register_subtitle
             : mode === "forgot-password"
-              ? "Enter your email to receive a reset link."
+              ? dict.auth.forgot_password_subtitle
               : dict.auth.login_subtitle}
         </p>
       </div>
@@ -371,14 +407,51 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
                 <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 px-1">
                   {dict.auth.password}
                 </label>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-500 outline-none transition-all dark:text-white text-sm"
-                  placeholder="••••••••"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-500 outline-none transition-all dark:text-white text-sm pr-12"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+                  >
+                    {showPassword ? (
+                      <HiOutlineEyeOff className="w-5 h-5" />
+                    ) : (
+                      <HiOutlineEye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+                {mode === "register" && (
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 px-1">
+                    <RequirementItem
+                      met={passwordRequirements.hasLength}
+                      label={dict.auth.password_req_length}
+                    />
+                    <RequirementItem
+                      met={passwordRequirements.hasUpper}
+                      label={dict.auth.password_req_upper}
+                    />
+                    <RequirementItem
+                      met={passwordRequirements.hasLower}
+                      label={dict.auth.password_req_lower}
+                    />
+                    <RequirementItem
+                      met={passwordRequirements.hasNumber}
+                      label={dict.auth.password_req_number}
+                    />
+                    <RequirementItem
+                      met={passwordRequirements.hasSymbol}
+                      label={dict.auth.password_req_symbol}
+                    />
+                  </div>
+                )}
               </div>
 
               {mode === "register" && (
@@ -386,14 +459,29 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 px-1">
                     {dict.auth.confirm_password}
                   </label>
-                  <input
-                    type="password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-500 outline-none transition-all dark:text-white text-sm"
-                    placeholder="••••••••"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 dark:bg-slate-800 border-2 border-transparent focus:border-blue-500 outline-none transition-all dark:text-white text-sm pr-12"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <HiOutlineEyeOff className="w-5 h-5" />
+                      ) : (
+                        <HiOutlineEye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               )}
             </>
@@ -512,24 +600,7 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
               disabled={loading}
               className="w-full py-4 bg-white dark:bg-slate-800 text-zinc-900 dark:text-white font-black rounded-2xl border-2 border-zinc-100 dark:border-slate-700 hover:bg-zinc-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-3 shadow-sm active:scale-[0.98]"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                />
-              </svg>
+              <FcGoogle className="w-5 h-5" />
               {dict.auth.google_sign_in}
             </button>
           </>
@@ -560,6 +631,21 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
             : dict.auth.no_account}
         </button>
       </div>
+    </div>
+  );
+}
+
+function RequirementItem({ met, label }: { met: boolean; label: string }) {
+  return (
+    <div
+      className={`flex items-center gap-2 transition-colors duration-300 ${met ? "text-emerald-500" : "text-zinc-400"}`}
+    >
+      <div
+        className={`w-4 h-4 aspect-square rounded-full flex items-center justify-center border transition-all duration-300 ${met ? "bg-emerald-500 border-emerald-500 text-white" : "border-zinc-200 dark:border-slate-700 bg-transparent text-transparent"}`}
+      >
+        <HiCheck className="w-3 h-3" />
+      </div>
+      <span className="text-[10px] font-bold">{label}</span>
     </div>
   );
 }

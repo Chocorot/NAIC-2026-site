@@ -3,7 +3,14 @@
     "screening": "篩查",
     "about": "模型信息",
     "performance": "性能",
-    "history": "歷史記錄"
+    "history": "歷史記錄",
+    "select_language": "選擇語言",
+    "appearance": "外觀",
+    "appearance_desc": "深色或淺色模式",
+    "language_select": "語言選擇",
+    "open_menu": "打開菜單",
+    "close_menu": "關閉菜單",
+    "toggle_theme": "切換主題"
 
   },
   "screening": {
@@ -83,8 +90,10 @@
     "no_account": "沒有帳號？註冊",
     "already_have_account": "已有帳號？登錄",
     "forgot_password": "忘記密碼？",
+    "forgot_password_subtitle": "輸入您的電子郵件以接收重置鏈接。",
     "send_reset_link": "發送重置鏈接",
     "reset_password": "重置密碼",
+    "reset_link_sent": "密碼重置鏈接已發送到您的電子郵件地址。",
     "check_email": "檢查您的郵箱",
     "verify_email_sent": "驗證鏈接已發送到您的電子郵件。",
     "agree_to_terms": "我已閱讀並同意服務條款和隱私政策",
@@ -99,7 +108,17 @@
     "verification_resent": "驗證郵件已成功重新發送！",
     "please_verify_captcha": "請先完成 reCAPTCHA 驗證。",
     "unverified_error": "登錄前請先驗證您的電子郵件地址。請檢查您的收件箱以獲取鏈接或",
-    "resend_link": "點擊此處重新發送"
+    "resend_link": "點擊此處重新發送",
+    "error_email_in_use": "此電子郵件已在使用中。",
+    "error_invalid_login": "無效的電子郵件或密碼。",
+    "error_password_complexity": "密碼必須符合複雜度要求",
+    "password_req_length": "至少 8 個字元",
+    "password_req_upper": "至少一個大寫字母 (A-Z)",
+    "password_req_lower": "至少一個小寫字母 (a-z)",
+    "password_req_number": "至少一個數字 (0-9)",
+    "password_req_symbol": "至少一個符號 (!@#$%^&*)",
+    "error_password_mismatch": "密碼不相符",
+    "error_agree_to_terms": "請同意服務條款和隱私政策"
   },
   "settings": {
     "title": "帳戶設置",
@@ -149,7 +168,9 @@
     "start_new": "開始新篩查",
     "prediction_label": "預測",
     "confidence_label": "AI 置信度",
-    "analyzing": "分析中..."
+    "analyzing": "分析中...",
+    "status_completed": "已完成",
+    "status_processing": "處理中"
   },
   "screening_ui": {
     "background_note": "一旦開始，您的掃描將在後台進行處理。您可以在「歷史記錄」頁面中追蹤其進度。現在離開將取消未開始的掃描。",
@@ -162,6 +183,19 @@
     "soft": "柔和",
     "intense": "強烈",
     "platform_badge": "原型篩查平台"
+  },
+  "metadata": {
+    "home": "首頁",
+    "history": "歷史記錄",
+    "about": "模型信息",
+    "performance": "性能分析",
+    "login": "登錄",
+    "register": "註冊",
+    "settings": "帳戶設置",
+    "privacy": "隱私政策",
+    "terms": "服務條款",
+    "title_suffix": "| NAIC 2026",
+    "default_title": "NAIC 2026 - DR 篩查工具"
   }
 }
 

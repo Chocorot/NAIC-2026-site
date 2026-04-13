@@ -231,7 +231,12 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                         scan.status === "analyzing") && (
                         <LoadingSpinner size="sm" color="white" />
                       )}
-                      {scan.status}
+                      {scan.status === "completed" || scan.status === "done"
+                        ? dict.history.status_completed
+                        : scan.status === "processing" ||
+                            scan.status === "analyzing"
+                          ? dict.history.status_processing
+                          : scan.status}
                     </div>
                   </div>
                 </div>

@@ -5,14 +5,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { HiOutlineGlobeAlt, HiChevronDown, HiCheck } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { setLanguageCookie } from "@/src/lib/cookies";
+import { Dictionary } from "@/app/[lang]/dictionaries";
 
 const locales = ["en", "ms", "zh-hans", "zh-hant", "ja", "ko", "de", "ru"];
 
 export default function LanguageSwitcher({
   currentLocale,
+  dict,
   isMobile = false,
 }: {
   currentLocale: string;
+  dict: Dictionary;
   isMobile?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,8 +92,8 @@ export default function LanguageSwitcher({
             }`}
           >
             <div className="max-h-87.5 overflow-y-auto scrollbar-hide">
-              <div className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-                Select Language
+              <div id="select-language-label" className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                {dict.navigation.select_language}
               </div>
               {locales.map((locale) => (
                 <button

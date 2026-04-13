@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/context/AuthContext";
 import {
   updateProfile,
@@ -19,15 +20,17 @@ import {
 
 interface AccountSettingsProps {
   dict: Dictionary;
+  lang: string;
 }
 
-export default function AccountSettings({ dict }: AccountSettingsProps) {
-  const { user } = useAuth();
+export default function AccountSettings({ dict, lang }: AccountSettingsProps) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [username, setUsername] = useState(user?.displayName || "");
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState(""); // For re-auth
 
-  const [loading, setLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -40,7 +43,13 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
     }
   }, [user]);
 
-  if (!user) return null;
+  useEffect(() => {
+    if (!loading && (!user || user.isAnonymous)) {
+      router.push(`/${lang}/login`);
+    }
+  }, [user, loading, router, lang]);
+  
+  if (loading || !user || user.isAnonymous) return null;
 
   const isGoogleUser = user.providerData.some(
     (p) => p.providerId === "google.com",
@@ -48,7 +57,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsProcessing(true);
     setMessage(null);
     try {
       await updateProfile(user, { displayName: username });
@@ -57,13 +66,13 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
       const error = err as AuthError;
       setMessage({ type: "error", text: error.message || "An error occurred" });
     } finally {
-      setLoading(false);
+      setIsProcessing(false);
     }
   };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsProcessing(true);
     setMessage(null);
     try {
       if (reauthRequired) {
@@ -88,7 +97,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
         setMessage({ type: "error", text: error.message || "An error occurred" });
       }
     } finally {
-      setLoading(false);
+      setIsProcessing(false);
     }
   };
 
@@ -154,7 +163,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={isProcessing}
               className="px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-zinc-950/20 disabled:opacity-50 text-sm"
             >
               {dict.settings.save_changes}
@@ -211,7 +220,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isProcessing}
                 className="px-8 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-rose-500/20 disabled:opacity-50 text-sm"
               >
                 {dict.settings.update_password}

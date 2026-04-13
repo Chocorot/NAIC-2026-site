@@ -3,7 +3,14 @@
     "screening": "スクリーニング",
     "about": "モデル情報",
     "performance": "パフォーマンス",
-    "history": "履歴"
+    "history": "履歴",
+    "select_language": "言語を選択",
+    "appearance": "外観",
+    "appearance_desc": "ダークモードまたはライトモード",
+    "language_select": "言語選択",
+    "open_menu": "メニューを開く",
+    "close_menu": "メニューを閉じる",
+    "toggle_theme": "テーマを切り替え"
 
   },
   "screening": {
@@ -81,8 +88,10 @@
     "no_account": "アカウントをお持ちでないですか？登録",
     "already_have_account": "既にアカウントをお持ちですか？ログイン",
     "forgot_password": "パスワードをお忘れですか？",
+    "forgot_password_subtitle": "パスワード再設定リンクを受け取るためにメールアドレスを入力してください。",
     "send_reset_link": "リセットリンクを送信",
     "reset_password": "パスワードをリセット",
+    "reset_link_sent": "パスワード再設定リンクがメールアドレスに送信されました。",
     "check_email": "メールを確認してください",
     "verify_email_sent": "確認リンクがメールアドレスに送信されました。",
     "agree_to_terms": "利用規約とプライバシーポリシーを読み、これに同意します",
@@ -97,7 +106,17 @@
     "verification_resent": "認証メールを正常に再送しました！",
     "please_verify_captcha": "最初に reCAPTCHA を完了してください。",
     "unverified_error": "ログインする前にメールアドレスを確認してください。受信トレイでリンクを確認するか、",
-    "resend_link": "ここをクリックして再送してください"
+    "resend_link": "ここをクリックして再送してください",
+    "error_email_in_use": "このメールアドレスは既に使用されています。",
+    "error_invalid_login": "メールアドレスまたはパスワードが正しくありません。",
+    "error_password_complexity": "パスワードは複雑度の要件を満たす必要があります",
+    "password_req_length": "8文字以上",
+    "password_req_upper": "大文字（A-Z）を1文字以上含める",
+    "password_req_lower": "小文字（a-z）を1文字以上含める",
+    "password_req_number": "数字（0-9）を1文字以上含める",
+    "password_req_symbol": "記号（!@#$%^&*）を1文字以上含める",
+    "error_password_mismatch": "パスワードが一致しません",
+    "error_agree_to_terms": "利用規約とプライバシーポリシーに同意してください"
   },
   "settings": {
     "title": "アカウント設定",
@@ -147,7 +166,9 @@
     "start_new": "新規スクリーニングを開始",
     "prediction_label": "予測",
     "confidence_label": "AI 信頼度",
-    "analyzing": "分析中..."
+    "analyzing": "分析中...",
+    "status_completed": "完了",
+    "status_processing": "処理中"
   },
   "screening_ui": {
     "background_note": "開始すると、スキャンはバックグラウンドで処理されます。履歴ページで進行状況を確認できます。今すぐ移動すると、開始されていないスキャンはキャンセルされます。",
@@ -159,8 +180,19 @@
     "image_not_loaded": "画像が読み込まれていません",
     "soft": "ソフト",
     "intense": "インテンシブ",
-    "platform_badge": "プロトタイプ・スクリーニング・プラットフォーム"
+    "platform_badge": "プロトタイプスクリーニングプラットフォーム"
+  },
+  "metadata": {
+    "home": "ホーム",
+    "history": "スクリーニング履歴",
+    "about": "モデルについて",
+    "performance": "検証分析",
+    "login": "サインイン",
+    "register": "アカウント作成",
+    "settings": "アカウント設定",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "title_suffix": "| NAIC 2026",
+    "default_title": "NAIC 2026 - DRスクリーニングツール"
   }
 }
-
-

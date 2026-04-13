@@ -3,7 +3,7 @@
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
 import { Dictionary } from "@/app/[lang]/dictionaries";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +12,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useAuth } from "@/src/context/AuthContext";
 import { auth } from "@/src/lib/firebase";
 import { HiOutlineUserCircle, HiLogout } from "react-icons/hi";
-
+import Image from "next/image";
 
 export default function MobileMenu({
   lang,
@@ -23,13 +23,18 @@ export default function MobileMenu({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { user } = useAuth();
 
   const handleSignOut = async () => {
-    await auth.signOut();
-    setIsOpen(false);
+    try {
+      await auth.signOut();
+      setIsOpen(false);
+      router.push(`/${lang}`);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
-
 
   // Define a minimal store for the persistence flag.
   // useSyncExternalStore is the "blessed" way in React 18+ to sync with external
@@ -86,11 +91,10 @@ export default function MobileMenu({
 
   const links = [
     { href: `/${lang}`, label: dict.navigation.screening },
-    { href: `/${lang}/history`, label: "History" },
+    { href: `/${lang}/history`, label: dict.navigation.history },
     { href: `/${lang}/about`, label: dict.navigation.about },
     { href: `/${lang}/performance`, label: dict.navigation.performance },
   ];
-
 
   const isActive = (href: string) => {
     if (href === `/${lang}`) {
@@ -125,12 +129,12 @@ export default function MobileMenu({
                   <span className="bg-blue-600 text-white p-1 rounded-md text-sm">
                     NAIC
                   </span>
-                  <span>DR Screening</span>
+                  <span>{dict.navigation.screening}</span>
                 </Link>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-slate-900 rounded-xl transition-colors"
-                  aria-label="Close menu"
+                  aria-label={dict.navigation.close_menu}
                 >
                   <HiX className="w-6 h-6" />
                 </button>
@@ -171,20 +175,24 @@ export default function MobileMenu({
                   <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-slate-900 rounded-2xl border border-zinc-100 dark:border-slate-800">
                     <div className="flex flex-col">
                       <span className="text-sm font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-                        Appearance
+                        {dict.navigation.appearance}
                       </span>
                       <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                        Dark or Light Mode
+                        {dict.navigation.appearance_desc}
                       </span>
                     </div>
-                    <ThemeToggle />
+                    <ThemeToggle dict={dict} />
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-slate-900 rounded-2xl border border-zinc-100 dark:border-slate-800">
                     <span className="text-sm font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-                      Language Select
+                      {dict.navigation.language_select}
                     </span>
-                    <LanguageSwitcher currentLocale={lang} isMobile={true} />
+                    <LanguageSwitcher
+                      currentLocale={lang}
+                      dict={dict}
+                      isMobile={true}
+                    />
                   </div>
 
                   {!user || user.isAnonymous ? (
@@ -197,16 +205,57 @@ export default function MobileMenu({
                       {dict.auth?.login || "Login"}
                     </Link>
                   ) : (
-                    <button
-                      onClick={handleSignOut}
-                      className="flex items-center justify-center gap-3 w-full p-4 bg-rose-500 text-white rounded-2xl font-bold transition-all shadow-lg shadow-rose-500/20"
-                    >
-                      <HiLogout className="w-5 h-5" />
-                      {dict.auth?.sign_out || "Logout"}
-                    </button>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-zinc-50 dark:bg-slate-900 rounded-2xl border border-zinc-100 dark:border-slate-800">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1 px-1">
+                          {dict.auth?.account || "Account"}
+                        </div>
+                        <div className="flex items-center gap-3 px-1">
+                          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white text-[10px] font-black shadow-sm overflow-hidden">
+                            {user.photoURL ? (
+                              <Image
+                                src={user.photoURL}
+                                alt="Profile"
+                                width={32}
+                                height={32}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              user.displayName?.[0]?.toUpperCase() ||
+                              user.email?.[0]?.toUpperCase() ||
+                              "U"
+                            )}
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-zinc-900 dark:text-white truncate max-w-37.5">
+                              {user.displayName || user.email?.split("@")[0]}
+                            </span>
+                            <span className="text-[10px] text-zinc-500 truncate max-w-37.5">
+                              {user.email}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Link
+                        href={`/${lang}/account/settings`}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-3 w-full p-4 bg-zinc-100 dark:bg-slate-800 text-zinc-900 dark:text-white rounded-2xl font-bold transition-all border border-zinc-200 dark:border-slate-700"
+                      >
+                        <HiOutlineUserCircle className="w-5 h-5" />
+                        {dict.auth?.settings || "Settings"}
+                      </Link>
+
+                      <button
+                        onClick={handleSignOut}
+                        className="flex items-center justify-center gap-3 w-full p-4 bg-rose-500 text-white rounded-2xl font-bold transition-all shadow-lg shadow-rose-500/20"
+                      >
+                        <HiLogout className="w-5 h-5" />
+                        {dict.auth?.sign_out || "Logout"}
+                      </button>
+                    </div>
                   )}
                 </div>
-
               </motion.div>
             </main>
           </motion.div>
@@ -220,7 +269,7 @@ export default function MobileMenu({
       <button
         onClick={() => setIsOpen(true)}
         className="p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-slate-900 rounded-xl transition-colors"
-        aria-label="Open menu"
+        aria-label={dict.navigation.open_menu}
       >
         <HiOutlineMenuAlt3 className="w-6 h-6" />
       </button>

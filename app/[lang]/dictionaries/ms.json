@@ -3,7 +3,14 @@
     "screening": "Saringan",
     "about": "Info Model",
     "performance": "Prestasi",
-    "history": "Sejarah"
+    "history": "Sejarah",
+    "select_language": "Pilih Bahasa",
+    "appearance": "Penampilan",
+    "appearance_desc": "Mod Gelap atau Terang",
+    "language_select": "Pilihan Bahasa",
+    "open_menu": "Buka menu",
+    "close_menu": "Tutup menu",
+    "toggle_theme": "Tukar tema"
 
   },
   "screening": {
@@ -81,8 +88,10 @@
     "no_account": "Tiada akaun? Daftar",
     "already_have_account": "Sudah ada akaun? Log Masuk",
     "forgot_password": "Lupa Kata Laluan?",
+    "forgot_password_subtitle": "Masukkan e-mel anda untuk menerima pautan set semula.",
     "send_reset_link": "Hantar Pautan Set Semula",
     "reset_password": "Set Semula Kata Laluan",
+    "reset_link_sent": "Pautan set semula kata laluan telah dihantar ke alamat e-mel anda.",
     "check_email": "Semak emel anda",
     "verify_email_sent": "Pautan pengesahan telah dihantar ke alamat emel anda.",
     "agree_to_terms": "Saya telah membaca dan bersetuju dengan Terma Perkhidmatan dan Dasar Privasi",
@@ -97,7 +106,17 @@
     "verification_resent": "E-mel pengesahan telah berjaya dihantar semula!",
     "please_verify_captcha": "Sila lengkapkan reCAPTCHA terlebih dahulu.",
     "unverified_error": "Sila sahkan alamat e-mel anda sebelum log masuk. Semak peti masuk anda untuk pautan atau",
-    "resend_link": "Klik di sini untuk hantar semula"
+    "resend_link": "Klik di sini untuk hantar semula",
+    "error_email_in_use": "E-mel ini sudah digunakan.",
+    "error_invalid_login": "E-mel atau kata laluan tidak sah.",
+    "error_password_complexity": "Kata laluan mesti memenuhi keperluan kerumitan",
+    "password_req_length": "Sekurang-kurangnya 8 aksara",
+    "password_req_upper": "Sekurang-kurangnya satu huruf besar (A-Z)",
+    "password_req_lower": "Sekurang-kurangnya satu huruf kecil (a-z)",
+    "password_req_number": "Sekurang-kurangnya satu nombor (0-9)",
+    "password_req_symbol": "Sekurang-kurangnya satu simbol (!@#$%^&*)",
+    "error_password_mismatch": "Kata laluan tidak sepadan",
+    "error_agree_to_terms": "Sila bersetuju dengan Terma dan Dasar Privasi"
   },
   "settings": {
     "title": "Tetapan Akaun",
@@ -147,7 +166,9 @@
     "start_new": "Mulakan Saringan Baru",
     "prediction_label": "Ramalan",
     "confidence_label": "Keyakinan AI",
-    "analyzing": "Menganalisis..."
+    "analyzing": "Menganalisis...",
+    "status_completed": "Selesai",
+    "status_processing": "Sedang diproses"
   },
   "screening_ui": {
     "background_note": "Setelah dimulakan, imbasan anda akan diproses di latar belakang. Anda boleh menjejaki kemajuan mereka dalam halaman Sejarah. Berpindah sekarang akan membatalkan imbasan yang belum dimulakan.",
@@ -159,8 +180,19 @@
     "image_not_loaded": "Imej tidak dimuatkan",
     "soft": "Lembut",
     "intense": "Intens",
-    "platform_badge": "Platform saringan prototip"
+    "platform_badge": "Platform prototaip saringan"
+  },
+  "metadata": {
+    "home": "Laman Utama",
+    "history": "Sejarah Saringan",
+    "about": "Mengenai Model",
+    "performance": "Analitik Validasi",
+    "login": "Log Masuk",
+    "register": "Daftar Akaun",
+    "settings": "Tetapan Akaun",
+    "privacy": "Dasar Privasi",
+    "terms": "Syarat Perkhidmatan",
+    "title_suffix": "| NAIC 2026",
+    "default_title": "NAIC 2026 - Alat Saringan DR"
   }
 }
-
-

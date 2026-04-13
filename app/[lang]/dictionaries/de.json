@@ -3,7 +3,14 @@
     "screening": "Screening",
     "about": "Modell-Info",
     "performance": "Leistung",
-    "history": "Verlauf"
+    "history": "Verlauf",
+    "select_language": "Sprache wählen",
+    "appearance": "Erscheinungsbild",
+    "appearance_desc": "Dunkler oder heller Modus",
+    "language_select": "Sprachwahl",
+    "open_menu": "Menü öffnen",
+    "close_menu": "Menü schließen",
+    "toggle_theme": "Thema wechseln"
 
   },
   "screening": {
@@ -81,8 +88,10 @@
     "no_account": "Noch kein Konto? Registrieren",
     "already_have_account": "Bereits ein Konto? Anmelden",
     "forgot_password": "Passwort vergessen?",
+    "forgot_password_subtitle": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen zu erhalten.",
     "send_reset_link": "Reset-Link senden",
     "reset_password": "Passwort zurücksetzen",
+    "reset_link_sent": "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.",
     "check_email": "Überprüfen Sie Ihre E-Mails",
     "verify_email_sent": "Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.",
     "agree_to_terms": "Ich habe die Nutzungsbedingungen und die Datenschutzrichtlinie gelesen und stimme ihnen zu",
@@ -97,7 +106,17 @@
     "verification_resent": "Bestätigungs-E-Mail erfolgreich erneut gesendet!",
     "please_verify_captcha": "Bitte schließen Sie zuerst das reCAPTCHA ab.",
     "unverified_error": "Bitte bestätigen Sie Ihre E-Mail-Adresse vor dem Anmelden. Überprüfen Sie Ihren Posteingang auf den Link oder",
-    "resend_link": "Klicken Sie hier zum Erneuten Senden"
+    "resend_link": "Klicken Sie hier zum Erneuten Senden",
+    "error_email_in_use": "Diese E-Mail-Adresse wird bereits verwendet.",
+    "error_invalid_login": "Ungültige E-Mail-Adresse oder Passwort.",
+    "error_password_complexity": "Das Passwort muss den Komplexitätsanforderungen entsprechen",
+    "password_req_length": "Mindestens 8 Zeichen",
+    "password_req_upper": "Mindestens ein Großbuchstabe (A-Z)",
+    "password_req_lower": "Mindestens ein Kleinbuchstabe (a-z)",
+    "password_req_number": "Mindestens eine Zahl (0-9)",
+    "password_req_symbol": "Mindestens ein Symbol (!@#$%^&*)",
+    "error_password_mismatch": "Passwörter stimmen nicht überein",
+    "error_agree_to_terms": "Bitte stimmen Sie den Bedingungen und der Datenschutzrichtlinie zu"
   },
   "settings": {
     "title": "Kontoeinstellungen",
@@ -147,7 +166,9 @@
     "start_new": "Neues Screening starten",
     "prediction_label": "Vorhersage",
     "confidence_label": "KI-Konfidenz",
-    "analyzing": "Analysiere..."
+    "analyzing": "Analysiere...",
+    "status_completed": "Abgeschlossen",
+    "status_processing": "In Bearbeitung"
   },
   "screening_ui": {
     "background_note": "Einmal gestartet, werden Ihre Scans im Hintergrund verarbeitet. Sie können deren Fortschritt auf der Verlaufsseite verfolgen. Wenn Sie die Seite jetzt verlassen, werden nicht gestartete Scans abgebrochen.",
@@ -160,6 +181,19 @@
     "soft": "Weich",
     "intense": "Intensiv",
     "platform_badge": "Prototyp-Screening-Plattform"
+  },
+  "metadata": {
+    "home": "Startseite",
+    "history": "Screening-Verlauf",
+    "about": "Über das Modell",
+    "performance": "Validierungsanalyse",
+    "login": "Anmelden",
+    "register": "Konto erstellen",
+    "settings": "Kontoeinstellungen",
+    "privacy": "Datenschutzerklärung",
+    "terms": "Nutzungsbedingungen",
+    "title_suffix": "| NAIC 2026",
+    "default_title": "NAIC 2026 - DR-Screening-Tool"
   }
 }
 

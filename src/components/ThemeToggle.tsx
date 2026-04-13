@@ -1,8 +1,9 @@
 "use client";
 
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import { Dictionary } from "@/app/[lang]/dictionaries";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ dict }: { dict: Dictionary }) {
   const toggleTheme = () => {
     const currentTheme = document.documentElement.classList.contains("dark")
       ? "dark"
@@ -25,7 +26,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       className="w-10 h-10 flex items-center justify-center rounded-2xl bg-zinc-100 hover:bg-zinc-200 dark:bg-slate-900 border border-zinc-200 dark:border-slate-800 dark:hover:bg-slate-800 transition-all text-zinc-600 dark:text-zinc-400 shadow-sm"
-      aria-label="Toggle theme"
+      aria-label={dict.navigation.toggle_theme}
     >
       <MdOutlineDarkMode className="w-5 h-5 block dark:hidden animate-in zoom-in duration-300" />
 

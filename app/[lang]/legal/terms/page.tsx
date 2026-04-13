@@ -1,5 +1,18 @@
+import { Metadata } from "next";
 import { Locale, getDictionary } from "../../dictionaries";
 import { HiOutlineDocumentText } from "react-icons/hi";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
+  return {
+    title: dict.metadata.terms,
+  };
+}
 
 export default async function TermsPage({
   params,

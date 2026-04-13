@@ -3,7 +3,14 @@
     "screening": "筛查",
     "about": "模型信息",
     "performance": "性能",
-    "history": "历史记录"
+    "history": "历史记录",
+    "select_language": "选择语言",
+    "appearance": "外观",
+    "appearance_desc": "深色或浅色模式",
+    "language_select": "语言选择",
+    "open_menu": "打开菜单",
+    "close_menu": "关闭菜单",
+    "toggle_theme": "切换主题"
 
   },
   "screening": {
@@ -81,8 +88,10 @@
     "no_account": "没有账号？注册",
     "already_have_account": "已有账号？登录",
     "forgot_password": "忘记密码？",
+    "forgot_password_subtitle": "输入您的电子邮件以接收重置链接。",
     "send_reset_link": "发送重置链接",
     "reset_password": "重置密码",
+    "reset_link_sent": "密码重置链接已发送到您的电子邮件地址。",
     "check_email": "检查您的邮箱",
     "verify_email_sent": "验证链接已发送到您的电子邮箱。",
     "agree_to_terms": "我已阅读并同意服务条款和隐私政策",
@@ -97,7 +106,17 @@
     "verification_resent": "验证邮件已成功重新发送！",
     "please_verify_captcha": "请先完成 reCAPTCHA 验证。",
     "unverified_error": "登录前请先验证您的电子邮件地址。请检查您的收件箱以获取链接或",
-    "resend_link": "点击此处重新发送"
+    "resend_link": "点击此处重新发送",
+    "error_email_in_use": "此电子邮件已在使用中。",
+    "error_invalid_login": "无效的电子邮件或密码。",
+    "error_password_complexity": "密码必须符合复杂度要求",
+    "password_req_length": "至少 8 个字符",
+    "password_req_upper": "至少一个大写字母 (A-Z)",
+    "password_req_lower": "至少一个小写字母 (a-z)",
+    "password_req_number": "至少一个数字 (0-9)",
+    "password_req_symbol": "至少一个符号 (!@#$%^&*)",
+    "error_password_mismatch": "密码不匹配",
+    "error_agree_to_terms": "请同意服务条款和隐私政策"
   },
   "settings": {
     "title": "账户设置",
@@ -147,7 +166,9 @@
     "start_new": "开始新筛查",
     "prediction_label": "预测",
     "confidence_label": "AI 置信度",
-    "analyzing": "分析中..."
+    "analyzing": "分析中...",
+    "status_completed": "已完成",
+    "status_processing": "处理中"
   },
   "screening_ui": {
     "background_note": "一旦开始，您的扫描将在后台进行处理。您可以在“历史记录”页面中追踪其进度。现在离开将取消未开始的扫描。",
@@ -160,6 +181,19 @@
     "soft": "柔和",
     "intense": "强烈",
     "platform_badge": "原型筛查平台"
+  },
+  "metadata": {
+    "home": "首页",
+    "history": "历史记录",
+    "about": "模型信息",
+    "performance": "性能分析",
+    "login": "登录",
+    "register": "注册",
+    "settings": "账户设置",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "title_suffix": "| NAIC 2026",
+    "default_title": "NAIC 2026 - DR 筛查工具"
   }
 }
 
