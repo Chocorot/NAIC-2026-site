@@ -68,10 +68,10 @@ export default function ImageUpload({
         <label
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
-          className="flex flex-col items-center justify-center w-full h-80 border-2 border-dashed border-zinc-300 rounded-[2.5rem] cursor-pointer bg-white hover:bg-zinc-50 transition-all dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800/50 group"
+          className="flex flex-col items-center justify-center w-full h-80 border-2 border-dashed border-zinc-300 rounded-2xl cursor-pointer bg-white hover:bg-zinc-50 transition-all dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800/50 group"
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
-            <div className="w-16 h-16 mb-4 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform dark:bg-blue-900/20">
+            <div className="w-16 h-16 mb-4 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform dark:bg-blue-900/20">
               <svg
                 className="w-8 h-8"
                 fill="none"
@@ -106,7 +106,7 @@ export default function ImageUpload({
             {files.map((f) => (
               <div
                 key={f.id}
-                className="relative group aspect-square rounded-2xl overflow-hidden border dark:border-slate-800"
+                className="relative group aspect-square rounded-xl overflow-hidden border dark:border-slate-800"
               >
                 <Image
                   src={f.preview}
@@ -140,7 +140,7 @@ export default function ImageUpload({
 
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-zinc-200 rounded-2xl hover:bg-zinc-50 dark:border-slate-800 dark:hover:bg-slate-800/50 transition-colors group"
+              className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-zinc-200 rounded-xl hover:bg-zinc-50 dark:border-slate-800 dark:hover:bg-slate-800/50 transition-colors group"
             >
               <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center mb-2 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors dark:bg-slate-800">
                 <svg
@@ -163,7 +163,7 @@ export default function ImageUpload({
             </button>
           </div>
 
-          <div className="flex justify-between items-center p-4 bg-zinc-50 dark:bg-slate-800/50 rounded-2xl border dark:border-slate-800">
+          <div className="flex justify-between items-center p-4 bg-zinc-50 dark:bg-slate-800/50 rounded-xl border dark:border-slate-800">
             <div className="flex flex-col">
               <span className="text-sm font-bold">
                 {files.length} {dict.screening.batch_count}

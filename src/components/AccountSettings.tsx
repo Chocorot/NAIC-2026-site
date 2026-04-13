@@ -95,7 +95,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
       <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-4xl bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 shadow-xl shadow-zinc-200 dark:shadow-none">
+        <div className="w-16 h-16 rounded-2xl bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 shadow-xl shadow-zinc-200 dark:shadow-none">
           <HiOutlineUser className="w-8 h-8" />
         </div>
         <div>
@@ -110,7 +110,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Profile Info */}
-        <section className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-xl shadow-zinc-200/50 dark:shadow-none border dark:border-slate-800 space-y-6">
+        <section className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-xl shadow-zinc-200/50 dark:shadow-none border dark:border-slate-800 space-y-6">
           <div className="flex items-center gap-3 mb-2">
             <HiOutlineUser className="w-5 h-5 text-blue-600" />
             <h2 className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tight">
@@ -163,7 +163,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
         </section>
 
         {/* Security / Password */}
-        <section className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-xl shadow-zinc-200/50 dark:shadow-none border dark:border-slate-800 space-y-6">
+        <section className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-xl shadow-zinc-200/50 dark:shadow-none border dark:border-slate-800 space-y-6">
           <div className="flex items-center gap-3 mb-2">
             <HiOutlineLockClosed className="w-5 h-5 text-rose-600" />
             <h2 className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tight">
@@ -172,7 +172,7 @@ export default function AccountSettings({ dict }: AccountSettingsProps) {
           </div>
 
           {isGoogleUser ? (
-            <div className="p-6 rounded-3xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 text-blue-600 dark:text-blue-400">
+            <div className="p-6 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 text-blue-600 dark:text-blue-400">
               <p className="text-sm font-medium leading-relaxed">
                 {dict.settings.oauth_label}
               </p>

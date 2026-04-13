@@ -21,7 +21,7 @@ interface GCSConfig {
 
 const config: GCSConfig = {
   bucketName: process.env.GCS_BUCKET_NAME || '',
-  keyFilename: path.join(process.cwd(), process.env.GCS_KEY_PATH || 'service-account.json'),
+  keyFilename: path.join(/*turbopackIgnore: true*/ process.cwd(), process.env.GCS_KEY_PATH || 'service-account.json'),
 };
 
 let storage: Storage | null = null;

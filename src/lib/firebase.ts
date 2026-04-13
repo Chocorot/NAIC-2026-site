@@ -18,7 +18,7 @@ import {
 } from 'firebase/auth';
 
 
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, updateDoc, doc, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, updateDoc, doc, orderBy, Timestamp } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
@@ -61,7 +61,8 @@ export {
   sendEmailVerification,
   sendPasswordResetEmail,
   updatePassword,
-  reauthenticateWithCredential
+  reauthenticateWithCredential,
+  Timestamp
 };
 
 

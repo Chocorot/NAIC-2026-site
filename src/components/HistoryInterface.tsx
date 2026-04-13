@@ -11,21 +11,47 @@ import {
   onSnapshot,
   updateDoc,
   doc,
+  Timestamp,
 } from "@/src/lib/firebase";
 import Image from "next/image";
 import { Dictionary } from "@/app/[lang]/dictionaries";
-import { Scan, ScreeningResult } from "@/src/types";
+import { Scan, ScreeningResult, ScanStatus } from "@/src/types";
 import {
-  HiOutlineRefresh,
-  HiOutlineDatabase,
   HiOutlineClock,
+  HiOutlineDatabase,
   HiOutlineTrash,
+  HiOutlineX,
 } from "react-icons/hi";
+import AnalysisResults from "./AnalysisResults";
+import HeatmapView from "./HeatmapView";
 
 export default function HistoryInterface({ dict }: { dict: Dictionary }) {
   const { user } = useAuth();
   const [scans, setScans] = useState<Scan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedScan, setSelectedScan] = useState<Scan | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedScan) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedScan]);
+
+  // Handle Escape key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedScan(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -33,16 +59,27 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
     const q = query(
       collection(db, "scans"),
       where("ownerId", "==", user.uid),
+      where("isDeleted", "!=", true), // Filter out soft-deleted scans
+      orderBy("isDeleted"), // Required for inequality index
       orderBy("createdAt", "desc"),
     );
 
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const docs = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as unknown[] as Scan[];
+        const docs = snapshot.docs.map((d) => {
+          const data = d.data();
+          return {
+            id: d.id,
+            ownerId: data.ownerId as string,
+            fileName: data.fileName as string,
+            url: data.url as string,
+            status: data.status as ScanStatus,
+            result: data.result as ScreeningResult | null,
+            storagePath: data.storagePath as string | undefined,
+            createdAt: data.createdAt as Timestamp,
+          } satisfies Scan;
+        });
 
         setScans(docs);
         setLoading(false);
@@ -67,9 +104,19 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
 
       // Simulate AI analysis again
       setTimeout(async () => {
+        const classesCount = 5;
+        const randomIdx = Math.floor(Math.random() * classesCount);
+        const rawProbs = Array.from(
+          { length: classesCount },
+          () => Math.random() * 0.2,
+        );
+        rawProbs[randomIdx] += 0.8;
+        const sum = rawProbs.reduce((a, b) => a + b, 0);
+        const probabilities = rawProbs.map((p) => p / sum);
+
         const mockResult: ScreeningResult = {
-          prediction: Math.random() > 0.6 ? "Referable DR" : "No DR",
-          probabilities: [0.89, 0.11],
+          prediction: randomIdx,
+          probabilities: probabilities,
         };
         await updateDoc(docRef, {
           status: "completed",
@@ -78,6 +125,21 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
       }, 5000);
     } catch (err) {
       console.error("Rescan failed:", err);
+    }
+  };
+
+  const handleDelete = async (scanId: string) => {
+    try {
+      setDeletingId(scanId);
+      const docRef = doc(db, "scans", scanId);
+      await updateDoc(docRef, {
+        isDeleted: true,
+      });
+      setSelectedScan(null);
+    } catch (err) {
+      console.error("Delete failed:", err);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -100,9 +162,9 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
             {dict.history.subtitle}
           </p>
         </div>
-        <div className="bg-white dark:bg-slate-900 px-6 py-4 rounded-4xl shadow-xl shadow-zinc-200/50 dark:shadow-none border dark:border-slate-800 flex items-center gap-4">
+        <div className="bg-white dark:bg-slate-900 px-6 py-4 rounded-2xl shadow-xl shadow-zinc-200/50 dark:shadow-none border dark:border-slate-800 flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20">
-            {user?.displayName?.[0] || user?.email?.[0].toUpperCase() || "?"}
+            {user?.displayName?.[0] || user?.email?.[0]?.toUpperCase() || "?"}
           </div>
           <div>
             <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
@@ -116,11 +178,13 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
       </div>
 
       {scans.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 border-2 border-dashed dark:border-slate-800 rounded-[3rem] p-24 text-center">
+        <div className="bg-white dark:bg-slate-900 border-2 border-dashed dark:border-slate-800 rounded-3xl p-24 text-center">
           <div className="w-24 h-24 bg-zinc-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-8 opacity-50">
             <HiOutlineDatabase className="w-12 h-12 text-zinc-400" />
           </div>
-          <h3 className="text-2xl font-black mb-3">{dict.history.empty_title}</h3>
+          <h3 className="text-2xl font-black mb-3">
+            {dict.history.empty_title}
+          </h3>
           <p className="text-zinc-500 max-w-xs mx-auto mb-10 font-medium">
             {dict.history.empty_desc}
           </p>
@@ -136,19 +200,20 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
           {scans.map((scan) => (
             <div
               key={scan.id}
-              className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[2.5rem] overflow-hidden shadow-xl shadow-zinc-200/40 dark:shadow-none hover:shadow-2xl transition-all group hover:-translate-y-2 flex flex-col"
+              onClick={() => setSelectedScan(scan)}
+              className="bg-white dark:bg-slate-900 border border-zinc-100 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:border-blue-500/50 transition-all group flex flex-col cursor-pointer"
             >
               <div className="relative aspect-square w-full">
                 <Image
                   src={scan.url}
                   alt={scan.fileName}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover transition-transform duration-700"
                   unoptimized
                 />
-                <div className="absolute top-5 right-5">
+                <div className="absolute top-4 right-4">
                   <div
-                    className={`px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-lg backdrop-blur-md ${
+                    className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border shadow-sm backdrop-blur-md ${
                       scan.status === "completed" || scan.status === "done"
                         ? "bg-emerald-500/90 border-emerald-400 text-white"
                         : scan.status === "processing" ||
@@ -160,7 +225,7 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                     <div className="flex items-center gap-2">
                       {(scan.status === "processing" ||
                         scan.status === "analyzing") && (
-                        <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <div className="w-2.5 h-2.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       )}
                       {scan.status}
                     </div>
@@ -168,14 +233,14 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                 </div>
               </div>
 
-              <div className="p-8 flex-1 flex flex-col justify-between">
+              <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex justify-between items-start mb-6">
+                  <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-black text-zinc-900 dark:text-white truncate max-w-40 mb-1">
+                      <h3 className="text-base font-black text-zinc-900 dark:text-white truncate max-w-35 mb-0.5">
                         {scan.fileName}
                       </h3>
-                      <div className="flex items-center gap-2 text-zinc-400">
+                      <div className="flex items-center gap-1.5 text-zinc-400">
                         <HiOutlineClock className="w-3 h-3" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">
                           {scan.createdAt
@@ -186,10 +251,10 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                     </div>
                     {scan.result && (
                       <div className="text-right">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">
+                        <div className="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-0.5">
                           {dict.history.prediction_label}
                         </div>
-                        <div className="font-black text-xl text-zinc-900 dark:text-white leading-none">
+                        <div className="font-black text-lg text-zinc-900 dark:text-white leading-none">
                           {scan.result.prediction}
                         </div>
                       </div>
@@ -197,8 +262,8 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                   </div>
 
                   {scan.result ? (
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-zinc-400">
                         <span>{dict.history.confidence_label}</span>
                         <span className="text-blue-600 dark:text-blue-400">
                           {(
@@ -207,7 +272,7 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                           %
                         </span>
                       </div>
-                      <div className="w-full h-2 bg-zinc-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-zinc-50 dark:bg-slate-800 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-blue-600 rounded-full transition-all duration-1000"
                           style={{
@@ -217,32 +282,101 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                       </div>
                     </div>
                   ) : (
-                    <div className="py-6 flex flex-col items-center justify-center bg-zinc-50 dark:bg-slate-950/50 rounded-3xl border-2 border-dashed border-zinc-100 dark:border-slate-800">
-                      <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-3" />
-                      <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+                    <div className="py-4 flex flex-col items-center justify-center bg-zinc-50 dark:bg-slate-950/50 rounded-2xl border border-zinc-100 dark:border-slate-800">
+                      <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2" />
+                      <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">
                         {dict.history.analyzing}
                       </span>
                     </div>
                   )}
                 </div>
-
-                <div className="mt-8 pt-6 border-t border-zinc-50 dark:border-slate-800 flex items-center justify-between gap-4">
-                  {(scan.status === "completed" || scan.status === "done") && (
-                    <button
-                      onClick={() => handleRescan(scan.id)}
-                      className="flex-1 py-3 px-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
-                    >
-                      <HiOutlineRefresh className="w-4 h-4" />
-                      {dict.screening.rescan}
-                    </button>
-                  )}
-                  <button className="p-3 text-zinc-400 hover:text-rose-500 transition-colors">
-                    <HiOutlineTrash className="w-5 h-5" />
-                  </button>
-                </div>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {selectedScan && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/40 backdrop-blur-sm animate-in fade-in duration-300"
+          onClick={() => setSelectedScan(null)}
+        >
+          <div
+            className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-500 relative cursor-default premium-scrollbar"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedScan(null)}
+              className="absolute top-6 right-6 p-2 bg-zinc-100 dark:bg-slate-800 rounded-xl hover:bg-rose-500 hover:text-white transition-all z-10"
+            >
+              <HiOutlineX className="w-5 h-5" />
+            </button>
+            <div className="p-8 lg:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                  <header>
+                    <h3 className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-1">
+                      {dict.screening.heatmap_title}
+                    </h3>
+                    <h2 className="text-3xl font-black text-zinc-900 dark:text-white">
+                      {dict.screening.heatmap_view_label}
+                    </h2>
+                  </header>
+                  <HeatmapView
+                    src={selectedScan.url}
+                    intensity={60}
+                    isLoading={false}
+                    dict={dict}
+                  />
+                </div>
+                <div className="space-y-8">
+                  <div>
+                    <h3 className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-1">
+                      {dict.history.scan_metadata}
+                    </h3>
+                    <h2 className="text-3xl font-black text-zinc-900 dark:text-white mb-2">
+                      {selectedScan.fileName}
+                    </h2>
+                    <p className="text-zinc-500 font-medium text-sm">
+                      Processed on{" "}
+                      {selectedScan.createdAt instanceof Timestamp
+                        ? selectedScan.createdAt.toDate().toLocaleString()
+                        : "Unknown Date"}
+                    </p>
+                  </div>
+
+                  {selectedScan.result && (
+                    <AnalysisResults
+                      prediction={selectedScan.result.prediction}
+                      probabilities={selectedScan.result.probabilities}
+                      dict={dict}
+                    />
+                  )}
+
+                  <div className="pt-8 border-t dark:border-slate-800 flex items-center gap-4">
+                    <button
+                      onClick={() => {
+                        handleRescan(selectedScan.id);
+                        setSelectedScan(null);
+                      }}
+                      className="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition-all"
+                    >
+                      {dict.screening.rescan}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(selectedScan.id)}
+                      disabled={deletingId === selectedScan.id}
+                      className="p-4 bg-rose-50 dark:bg-rose-900/10 text-rose-500 rounded-2xl hover:bg-rose-500 hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                    >
+                      <HiOutlineTrash
+                        className={`w-6 h-6 ${deletingId === selectedScan.id ? "animate-pulse" : ""}`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

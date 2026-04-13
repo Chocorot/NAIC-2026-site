@@ -58,8 +58,8 @@ export default function AccountMenu({
           {user.photoURL ? (
             <Image src={user.photoURL} alt="Profile" width={32} height={32} />
           ) : (
-            user.displayName?.[0].toUpperCase() ||
-            user.email?.[0].toUpperCase() ||
+            user.displayName?.[0]?.toUpperCase() ||
+            user.email?.[0]?.toUpperCase() ||
             "U"
           )}
         </div>

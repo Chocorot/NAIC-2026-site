@@ -217,8 +217,8 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
   if (view === "verify_sent" || view === "reset_sent") {
     return (
       <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in zoom-in-95 duration-500">
-        <div className="bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl p-10 border dark:border-slate-800 text-center">
-          <div className="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-3xl flex items-center justify-center text-emerald-600 mx-auto mb-8">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-10 border dark:border-slate-800 text-center">
+          <div className="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center text-emerald-600 mx-auto mb-8">
             {view === "verify_sent" ? (
               <HiOutlineMail className="w-10 h-10" />
             ) : (
@@ -318,7 +318,7 @@ export default function AuthForm({ mode, dict, lang }: AuthFormProps) {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 border border-zinc-100 dark:border-slate-800">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 border border-zinc-100 dark:border-slate-800">
         <form
           onSubmit={
             mode === "forgot-password" ? handleForgotPassword : handleSubmit

@@ -24,20 +24,55 @@ import {
   HiOutlineInformationCircle,
   HiOutlineMail,
 } from "react-icons/hi";
+import AnalysisResults from "./AnalysisResults";
+import HeatmapView from "./HeatmapView";
+import { onSnapshot } from "firebase/firestore";
 
 interface PendingItem {
   file: File;
   previewUrl: string;
   status: ScanStatus;
   progress: number;
+  scanId?: string;
+  result?: ScreeningResult | null;
 }
 
 export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
+  const { user } = useAuth();
   const [pendingItems, setPendingItems] = useState<PendingItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
-  const { user } = useAuth();
+  /**
+   * Listen for updates on submitted scans
+   */
+  React.useEffect(() => {
+    if (!user || pendingItems.length === 0) return;
+
+    const submittedItems = pendingItems.filter((it) => it.scanId);
+    if (submittedItems.length === 0) return;
+
+    // We only create one listener for all currently processing items in the local state
+    const unsubscribers = submittedItems.map((item) => {
+      if (!item.scanId) return () => {};
+
+      return onSnapshot(doc(db, "scans", item.scanId), (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          const result = data.result as ScreeningResult | null;
+          const status = data.status as ScanStatus;
+
+          setPendingItems((prev) =>
+            prev.map((it) =>
+              it.scanId === snapshot.id ? { ...it, status, result } : it,
+            ),
+          );
+        }
+      });
+    });
+
+    return () => unsubscribers.forEach((unsub) => unsub());
+  }, [pendingItems, user]); // Only re-run if the set of scanIds changes
 
   /**
    * Run a mock screening process for the started scan
@@ -50,20 +85,33 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
       async () => {
         try {
           const docRef = doc(db, "scans", scanId);
+
+          // Generate 5 probabilities for the 5 severity classes
+          const classesCount = 5;
+          const randomIdx = Math.floor(Math.random() * classesCount);
+          const rawProbs = Array.from(
+            { length: classesCount },
+            () => Math.random() * 0.2,
+          );
+          rawProbs[randomIdx] += 0.8; // Boost the "prediction" class
+          const sum = rawProbs.reduce((a, b) => a + b, 0);
+          const probabilities = rawProbs.map((p) => p / sum);
+
           const mockResult: ScreeningResult = {
-            prediction: Math.random() > 0.7 ? "Referable DR" : "No DR",
-            probabilities: [0.92, 0.08],
+            prediction: randomIdx,
+            probabilities: probabilities,
           };
 
           await updateDoc(docRef, {
             status: "completed",
             result: mockResult,
           });
-        } catch (err) {
-          console.error("Mock analysis failed:", err);
+        } catch (err: unknown) {
+          const error = err as Error;
+          console.error("Mock analysis failed:", error);
         }
       },
-      5000 + Math.random() * 3000,
+      3000 + Math.random() * 2000,
     );
   };
 
@@ -125,19 +173,30 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
           status: "processing",
           result: null,
           createdAt: serverTimestamp(),
+          isDeleted: false,
         });
 
         // 3. Trigger mock background analysis
         triggerMockAnalysis(scanDoc.id);
+
+        // Update local state with scanId immediately
+        setPendingItems((prev) => {
+          const next = [...prev];
+          next[idx] = {
+            ...next[idx],
+            scanId: scanDoc.id,
+            status: "processing",
+          };
+          return next;
+        });
+
         return scanDoc.id;
       });
 
       await Promise.all(uploadPromises);
-
-      // Clear local state - moved to History
-      handleReset();
-    } catch (err) {
-      console.error("Failed to start scanning queue:", err);
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("Failed to start scanning queue:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -168,7 +227,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
             )}
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[2.5rem] p-4 shadow-xl shadow-zinc-200/50 dark:shadow-none">
+          <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-4 shadow-xl shadow-zinc-200/50 dark:shadow-none">
             <ImageUpload
               dict={dict}
               onUpload={handleUpload}
@@ -178,7 +237,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
 
           {pendingItems.length > 0 && (
             <div className="mt-8 space-y-4">
-              <div className="p-6 rounded-4xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl flex items-center justify-between">
+              <div className="p-6 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl flex items-center justify-between">
                 <div>
                   <p className="text-xl font-black">
                     {pendingItems.length} {dict.screening.batch_count}
@@ -214,7 +273,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
         {pendingItems.length > 0 && (
           <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <h3 className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-4 px-2">
-                {dict.screening_ui.queue_preview}
+              {dict.screening_ui.queue_preview}
             </h3>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 px-2">
               {pendingItems.map((item, idx) => (
@@ -254,37 +313,86 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
 
       <div className="lg:sticky lg:top-24">
         {currentItem ? (
-          <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-[3rem] p-10 shadow-2xl space-y-8 animate-in zoom-in-95 duration-500">
-            <div className="relative aspect-square rounded-4xl overflow-hidden bg-zinc-50 dark:bg-slate-950 border dark:border-slate-800">
-              <Image
-                src={currentItem.previewUrl}
-                alt="Current Selection"
-                fill
-                className="object-contain"
-                unoptimized
-              />
-              <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm">
-                {dict.screening.pending_upload}
+          <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-8 lg:p-10 shadow-2xl space-y-8 animate-in zoom-in-95 duration-500 overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <h3 className="text-xl font-black text-zinc-900 dark:text-white mb-1 truncate max-w-50">
+                  {currentItem.file.name}
+                </h3>
+                <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest">
+                  {Math.round(currentItem.file.size / 1024)} KB •{" "}
+                  {currentItem.scanId
+                    ? "Cloud Scan"
+                    : dict.screening_ui.local_draft}
+                </p>
+              </div>
+              <div
+                className={`px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-sm ${
+                  currentItem.status === "completed"
+                    ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600"
+                    : currentItem.status === "processing"
+                      ? "bg-blue-500/10 border-blue-500/20 text-blue-600"
+                      : "bg-zinc-100 dark:bg-slate-800 border-transparent text-zinc-500"
+                }`}
+              >
+                {currentItem.status}
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-black text-zinc-900 dark:text-white mb-1 truncate">
-                {currentItem.file.name}
-              </h3>
-              <p className="text-zinc-400 text-xs font-bold uppercase tracking-widest">
-                {Math.round(currentItem.file.size / 1024)} KB • {dict.screening_ui.local_draft}
-              </p>
-            </div>
+            {currentItem.status === "completed" && currentItem.result ? (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <HeatmapView
+                  src={currentItem.previewUrl}
+                  intensity={60}
+                  isLoading={false}
+                  dict={dict}
+                />
+                <AnalysisResults
+                  prediction={currentItem.result.prediction}
+                  probabilities={currentItem.result.probabilities}
+                  dict={dict}
+                />
+              </div>
+            ) : (
+              <>
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 dark:bg-slate-950 border dark:border-slate-800">
+                  <Image
+                    src={currentItem.previewUrl}
+                    alt="Current Selection"
+                    fill
+                    className="object-contain"
+                    unoptimized
+                  />
+                  {currentItem.status === "processing" && (
+                    <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+                      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                      <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600">
+                        Analyzing...
+                      </p>
+                    </div>
+                  )}
+                  {!currentItem.scanId && (
+                    <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm">
+                      {dict.screening.pending_upload}
+                    </div>
+                  )}
+                </div>
 
-            <div className="pt-6 border-t dark:border-slate-800">
-              <p className="text-sm text-zinc-500 leading-relaxed font-medium">
-                {dict.screening_ui.local_queue_label.replace("{start_btn}", dict.screening.start_scan)}
-              </p>
-            </div>
+                {!currentItem.scanId && (
+                  <div className="pt-6 border-t dark:border-slate-800">
+                    <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                      {dict.screening_ui.local_queue_label.replace(
+                        "{start_btn}",
+                        dict.screening.start_scan,
+                      )}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ) : (
-          <div className="hidden lg:flex flex-col items-center justify-center h-125 border-3 border-dashed border-zinc-200 dark:border-slate-800 rounded-[3rem] text-zinc-400 bg-white/30 dark:bg-slate-900/30 backdrop-blur-sm">
+          <div className="hidden lg:flex flex-col items-center justify-center h-125 border-3 border-dashed border-zinc-200 dark:border-slate-800 rounded-2xl text-zinc-400 bg-white/30 dark:bg-slate-900/30 backdrop-blur-sm">
             <div className="w-20 h-20 rounded-3xl bg-zinc-100 dark:bg-slate-800 flex items-center justify-center mb-6 opacity-50">
               <HiOutlineMail className="w-10 h-10" />
             </div>
