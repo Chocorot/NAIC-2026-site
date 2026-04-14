@@ -11,7 +11,6 @@
     "open_menu": "メニューを開く",
     "close_menu": "メニューを閉じる",
     "toggle_theme": "テーマを切り替え"
-
   },
   "screening": {
     "title": "DRスクリーニング・プロトタイプ",
@@ -22,8 +21,6 @@
     "results": "分析結果",
     "prediction": "予測された重症度",
     "confidence": "信頼度スコア",
-    "heatmap_title": "視覚的評価（ヒートマップ）",
-    "tune_heatmap": "ヒートマップ強度の調整",
     "source_material": "素材",
     "visualization_engine": "可視化エンジン",
     "active_overlay": "アクティブ・オーバーレイ",
@@ -178,8 +175,6 @@
     "clear_all": "すべてクリア",
     "queue_preview": "キュープレビュー",
     "image_not_loaded": "画像が読み込まれていません",
-    "soft": "ソフト",
-    "intense": "インテンシブ",
     "platform_badge": "プロトタイプスクリーニングプラットフォーム"
   },
   "metadata": {
@@ -194,5 +189,13 @@
     "terms": "利用規約",
     "title_suffix": "| NAIC 2026",
     "default_title": "NAIC 2026 - DRスクリーニングツール"
+  },
+  "common": {
+    "confirm_title": "本気ですか？",
+    "confirm_delete_item": "このアイテムをリストから削除してもよろしいですか？",
+    "confirm_clear_all": "現在のキュー内のすべてのアイテムが消去されます。続行しますか？",
+    "confirm_permanent_delete": "この操作は取り消せません。履歴からこのスキャンを削除してもよろしいですか？",
+    "action_confirm": "はい、削除",
+    "action_cancel": "キャンセル"
   }
 }

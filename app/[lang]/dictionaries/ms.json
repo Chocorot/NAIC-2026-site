@@ -11,7 +11,6 @@
     "open_menu": "Buka menu",
     "close_menu": "Tutup menu",
     "toggle_theme": "Tukar tema"
-
   },
   "screening": {
     "title": "Prototaip Saringan DR",
@@ -22,8 +21,6 @@
     "results": "Keputusan Analisis",
     "prediction": "Keterukan Diramal",
     "confidence": "Skor Keyakinan",
-    "heatmap_title": "Penilaian Visual (Heatmap)",
-    "tune_heatmap": "Laraskan Intensiti Heatmap",
     "source_material": "Bahan Mentah",
     "visualization_engine": "Enjin Visualisasi",
     "active_overlay": "Pertindihan Aktif",
@@ -178,8 +175,6 @@
     "clear_all": "Kosongkan Semua",
     "queue_preview": "Pratonton Barisan",
     "image_not_loaded": "Imej tidak dimuatkan",
-    "soft": "Lembut",
-    "intense": "Intens",
     "platform_badge": "Platform prototaip saringan"
   },
   "metadata": {
@@ -194,5 +189,13 @@
     "terms": "Syarat Perkhidmatan",
     "title_suffix": "| NAIC 2026",
     "default_title": "NAIC 2026 - Alat Saringan DR"
+  },
+  "common": {
+    "confirm_title": "Adakah anda pasti?",
+    "confirm_delete_item": "Adakah anda pasti ingin membuang item ini daripada senarai?",
+    "confirm_clear_all": "Ini akan memadamkan semua item dalam barisan semasa. Teruskan?",
+    "confirm_permanent_delete": "Tindakan ini tidak boleh dibatalkan. Adakah anda pasti ingin memadamkan imbasan ini daripada sejarah anda?",
+    "action_confirm": "Ya, Padam",
+    "action_cancel": "Batal"
   }
 }

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Dictionary } from "@/app/[lang]/dictionaries";
 import ImageUpload from "./ImageUpload";
+import ConfirmationModal from "./ConfirmationModal";
 import LoadingSpinner from "./LoadingSpinner";
 import { useAuth } from "@/src/context/AuthContext";
 import {
@@ -26,7 +27,6 @@ import {
   HiOutlineMail,
 } from "react-icons/hi";
 import AnalysisResults from "./AnalysisResults";
-import HeatmapView from "./HeatmapView";
 import { onSnapshot } from "firebase/firestore";
 
 interface PendingItem {
@@ -40,21 +40,26 @@ interface PendingItem {
 
 export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
   const { user } = useAuth();
-  const [pendingItems, setPendingItems] = useState<PendingItem[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [inboxItems, setInboxItems] = useState<PendingItem[]>([]);
+  const [resultItems, setResultItems] = useState<PendingItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<{
+    type: "inbox" | "results";
+    index: number;
+  } | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [uploadKey, setUploadKey] = useState<number>(0);
+  const [pendingAction, setPendingAction] = useState<{
+    type: "remove" | "clear";
+    index?: number;
+  } | null>(null);
 
   /**
    * Listen for updates on submitted scans
    */
   React.useEffect(() => {
-    if (!user || pendingItems.length === 0) return;
+    if (!user || resultItems.length === 0) return;
 
-    const submittedItems = pendingItems.filter((it) => it.scanId);
-    if (submittedItems.length === 0) return;
-
-    // We only create one listener for all currently processing items in the local state
-    const unsubscribers = submittedItems.map((item) => {
+    const unsubscribers = resultItems.map((item) => {
       if (!item.scanId) return () => {};
 
       return onSnapshot(doc(db, "scans", item.scanId), (snapshot) => {
@@ -63,7 +68,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
           const result = data.result as ScreeningResult | null;
           const status = data.status as ScanStatus;
 
-          setPendingItems((prev) =>
+          setResultItems((prev) =>
             prev.map((it) =>
               it.scanId === snapshot.id ? { ...it, status, result } : it,
             ),
@@ -73,7 +78,7 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
     });
 
     return () => unsubscribers.forEach((unsub) => unsub());
-  }, [pendingItems, user]); // Only re-run if the set of scanIds changes
+  }, [resultItems.map((it) => it.scanId).join(","), user]);
 
   /**
    * Run a mock screening process for the started scan
@@ -120,45 +125,109 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
    * Handle image selections (Local only)
    */
   const handleUpload = (uploadedFiles: File[]) => {
-    const newItems: PendingItem[] = uploadedFiles.map((file) => ({
-      file,
-      previewUrl: URL.createObjectURL(file),
-      status: "pending",
-      progress: 0,
-    }));
-    setPendingItems((prev) => [...prev, ...newItems]);
+    setInboxItems((prev) => {
+      // Re-use objects for stable previews
+      const newList: PendingItem[] = uploadedFiles.map((file) => {
+        const existing = prev.find(
+          (it) =>
+            it.file.name === file.name &&
+            it.file.size === file.size &&
+            it.file.lastModified === file.lastModified,
+        );
+        if (existing) return existing;
+
+        return {
+          file,
+          previewUrl: URL.createObjectURL(file),
+          status: "pending",
+          progress: 0,
+        };
+      });
+
+      // Cleanup revoked URLs
+      prev.forEach((it) => {
+        if (!newList.some((n) => n.previewUrl === it.previewUrl)) {
+          URL.revokeObjectURL(it.previewUrl);
+        }
+      });
+
+      return newList;
+    });
+
+    setSelectedItem((prev) => {
+      if (!prev || prev.type === "inbox") {
+        return { type: "inbox", index: Math.max(0, uploadedFiles.length - 1) };
+      }
+      return prev;
+    });
   };
 
   /**
    * Remove item from local queue
    */
   const removeItem = (index: number) => {
-    setPendingItems((prev) => {
+    // This removeItem is only for resultItems (bottom queue)
+    setPendingAction({ type: "remove", index });
+  };
+
+  const confirmRemoveItem = async (index: number) => {
+    const item = resultItems[index];
+
+    if (item.scanId) {
+      try {
+        const docRef = doc(db, "scans", item.scanId);
+        await updateDoc(docRef, { isDeleted: true });
+      } catch (err) {
+        console.error("Failed to soft-delete scan from Firestore:", err);
+      }
+    }
+
+    setResultItems((prev) => {
       const next = [...prev];
       URL.revokeObjectURL(next[index].previewUrl);
       next.splice(index, 1);
       return next;
     });
-    if (currentIndex >= pendingItems.length - 1) {
-      setCurrentIndex(Math.max(0, pendingItems.length - 2));
-    }
+
+    setSelectedItem((prev) => {
+      if (prev?.type === "results") {
+        return {
+          type: "results",
+          index: Math.max(0, resultItems.length - 2),
+        };
+      }
+      return prev;
+    });
+    setPendingAction(null);
   };
 
   const handleReset = () => {
-    pendingItems.forEach((item) => URL.revokeObjectURL(item.previewUrl));
-    setPendingItems([]);
-    setCurrentIndex(0);
+    inboxItems.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+    resultItems.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+    setInboxItems([]);
+    setResultItems([]);
+    setSelectedItem(null);
+    setUploadKey((prev) => prev + 1);
   };
 
-  /**
-   * Commit the local queue to Firestore and Start Scan
-   */
+  const clearIncomingQueue = () => {
+    inboxItems.forEach((it) => URL.revokeObjectURL(it.previewUrl));
+    setInboxItems([]);
+    if (selectedItem?.type === "inbox") setSelectedItem(null);
+    setUploadKey((prev) => prev + 1);
+  };
+
+  const confirmClearIncomingQueue = () => {
+    // Unused in current architecture for Inbox
+    setPendingAction(null);
+  };
+
   const startScanning = async () => {
-    if (!user || pendingItems.length === 0) return;
+    if (!user || inboxItems.length === 0) return;
     setIsProcessing(true);
 
     try {
-      const uploadPromises = pendingItems.map(async (item, idx) => {
+      const uploadPromises = inboxItems.map(async (item, idx) => {
         // 1. Upload to Storage
         const storagePath = `uploads/${user.uid}/${Date.now()}_${idx}_${item.file.name}`;
         const storageRef = ref(storage, storagePath);
@@ -180,21 +249,25 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
         // 3. Trigger mock background analysis
         triggerMockAnalysis(scanDoc.id);
 
-        // Update local state with scanId immediately
-        setPendingItems((prev) => {
-          const next = [...prev];
-          next[idx] = {
-            ...next[idx],
-            scanId: scanDoc.id,
-            status: "processing",
-          };
-          return next;
-        });
-
-        return scanDoc.id;
+        return {
+          ...item,
+          scanId: scanDoc.id,
+          status: "processing" as ScanStatus,
+        };
       });
 
-      await Promise.all(uploadPromises);
+      const processedResults = await Promise.all(uploadPromises);
+
+      // Move from inbox to results
+      setResultItems((prev) => [...prev, ...processedResults]);
+      setInboxItems([]);
+      setSelectedItem({
+        type: "results",
+        index: resultItems.length,
+      });
+
+      // Reset the upload UI after starting all scans
+      setUploadKey((prev) => prev + 1);
     } catch (err: unknown) {
       const error = err as Error;
       console.error("Failed to start scanning queue:", error);
@@ -203,7 +276,12 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
     }
   };
 
-  const currentItem = pendingItems[currentIndex];
+  const currentItem =
+    selectedItem?.type === "inbox"
+      ? inboxItems[selectedItem.index]
+      : selectedItem?.type === "results"
+        ? resultItems[selectedItem.index]
+        : null;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start animate-in fade-in duration-700">
@@ -218,9 +296,9 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                 {dict.screening.source_material}
               </h2>
             </div>
-            {pendingItems.length > 0 && (
+            {inboxItems.length > 0 && (
               <button
-                onClick={handleReset}
+                onClick={clearIncomingQueue}
                 className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-rose-500 transition-colors"
               >
                 {dict.screening_ui.clear_queue}
@@ -230,18 +308,24 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
 
           <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-4 shadow-xl shadow-zinc-200/50 dark:shadow-none">
             <ImageUpload
+              key={uploadKey}
+              files={inboxItems.map((it) => ({
+                file: it.file,
+                preview: it.previewUrl,
+                id: it.file.name + it.file.size,
+              }))}
               dict={dict}
               onUpload={handleUpload}
-              onReset={handleReset}
+              onReset={clearIncomingQueue}
             />
           </div>
 
-          {pendingItems.length > 0 && (
+          {inboxItems.length > 0 && (
             <div className="mt-8 space-y-4">
               <div className="p-6 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl flex items-center justify-between">
                 <div>
                   <p className="text-xl font-black">
-                    {pendingItems.length} {dict.screening.batch_count}
+                    {inboxItems.length} {dict.screening.batch_count}
                   </p>
                   <p className="text-xs font-medium opacity-60 italic">
                     {dict.screening.batch_ready}
@@ -271,18 +355,18 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
           )}
         </section>
 
-        {pendingItems.length > 0 && (
+        {resultItems.length > 0 && (
           <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <h3 className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-4 px-2">
               {dict.screening_ui.queue_preview}
             </h3>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 px-2">
-              {pendingItems.map((item, idx) => (
+              {resultItems.map((item, idx) => (
                 <div
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
+                  key={item.scanId || idx}
+                  onClick={() => setSelectedItem({ type: "results", index: idx })}
                   className={`relative aspect-square rounded-2xl overflow-hidden border-2 transition-all group cursor-pointer ${
-                    currentIndex === idx
+                    selectedItem?.type === "results" && selectedItem.index === idx
                       ? "border-blue-600 scale-105 shadow-xl shadow-blue-100 dark:shadow-none"
                       : "border-transparent opacity-60 hover:opacity-100"
                   }`}
@@ -294,17 +378,15 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                     className="object-cover"
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-zinc-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeItem(idx);
-                      }}
-                      className="p-1.5 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-colors"
-                    >
-                      <HiOutlineTrash className="w-3 h-3" />
-                    </button>
-                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeItem(idx);
+                    }}
+                    className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-lg opacity-0 group-hover:opacity-100 hover:bg-rose-600 transition-all z-10 shadow-lg"
+                  >
+                    <HiOutlineTrash className="w-3 h-3" />
+                  </button>
                 </div>
               ))}
             </div>
@@ -340,57 +422,49 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
               </div>
             </div>
 
-            {currentItem.status === "completed" && currentItem.result ? (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <HeatmapView
-                  src={currentItem.previewUrl}
-                  intensity={60}
-                  isLoading={false}
-                  dict={dict}
-                />
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 dark:bg-slate-950 border dark:border-slate-800">
+              <Image
+                src={currentItem.previewUrl}
+                alt="Current Selection"
+                fill
+                className="object-contain"
+                unoptimized
+                priority
+              />
+              {currentItem.status === "processing" && (
+                <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+                  <LoadingSpinner size="lg" color="primary" />
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600">
+                    Analyzing...
+                  </p>
+                </div>
+              )}
+              {!currentItem.scanId && (
+                <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm">
+                  {dict.screening.pending_upload}
+                </div>
+              )}
+            </div>
+
+            {currentItem.status === "completed" && currentItem.result && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <AnalysisResults
                   prediction={currentItem.result.prediction}
                   probabilities={currentItem.result.probabilities}
                   dict={dict}
                 />
               </div>
-            ) : (
-              <>
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 dark:bg-slate-950 border dark:border-slate-800">
-                  <Image
-                    src={currentItem.previewUrl}
-                    alt="Current Selection"
-                    fill
-                    className="object-contain"
-                    unoptimized
-                    priority
-                  />
-                  {currentItem.status === "processing" && (
-                    <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-                      <LoadingSpinner size="lg" color="primary" />
-                      <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600">
-                        Analyzing...
-                      </p>
-                    </div>
-                  )}
-                  {!currentItem.scanId && (
-                    <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm">
-                      {dict.screening.pending_upload}
-                    </div>
-                  )}
-                </div>
+            )}
 
-                {!currentItem.scanId && (
-                  <div className="pt-6 border-t dark:border-slate-800">
-                    <p className="text-sm text-zinc-500 leading-relaxed font-medium">
-                      {dict.screening_ui.local_queue_label.replace(
-                        "{start_btn}",
-                        dict.screening.start_scan,
-                      )}
-                    </p>
-                  </div>
-                )}
-              </>
+            {!currentItem.scanId && (
+              <div className="pt-6 border-t dark:border-slate-800">
+                <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                  {dict.screening_ui.local_queue_label.replace(
+                    "{start_btn}",
+                    dict.screening.start_scan,
+                  )}
+                </p>
+              </div>
             )}
           </div>
         ) : (
@@ -403,7 +477,29 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
             </p>
           </div>
         )}
-      </div>
+        <ConfirmationModal
+        isOpen={!!pendingAction}
+        title={dict.common.confirm_title}
+        message={
+          pendingAction?.type === "clear"
+            ? dict.common.confirm_clear_all
+            : dict.common.confirm_delete_item
+        }
+        confirmText={dict.common.action_confirm}
+        cancelText={dict.common.action_cancel}
+        onConfirm={() => {
+          if (pendingAction?.type === "clear") {
+            confirmClearIncomingQueue();
+          } else if (
+            pendingAction?.type === "remove" &&
+            typeof pendingAction.index === "number"
+          ) {
+            confirmRemoveItem(pendingAction.index);
+          }
+        }}
+        onCancel={() => setPendingAction(null)}
+      />
+    </div>
     </div>
   );
 }

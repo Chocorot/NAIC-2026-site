@@ -11,7 +11,6 @@
     "open_menu": "Menü öffnen",
     "close_menu": "Menü schließen",
     "toggle_theme": "Thema wechseln"
-
   },
   "screening": {
     "title": "DR-Screening-Prototyp",
@@ -22,8 +21,6 @@
     "results": "Analyseergebnisse",
     "prediction": "Vorhergesagte Schwere",
     "confidence": "Konfidenzwerte",
-    "heatmap_title": "Visuelle Bewertung (Heatmap)",
-    "tune_heatmap": "Heatmap-Intensität anpassen",
     "source_material": "Ausgangsmaterial",
     "visualization_engine": "Visualisierungs-Engine",
     "active_overlay": "Aktives Overlay",
@@ -178,8 +175,6 @@
     "clear_all": "Alle löschen",
     "queue_preview": "Warteschlangen-Vorschau",
     "image_not_loaded": "Bild nicht geladen",
-    "soft": "Weich",
-    "intense": "Intensiv",
     "platform_badge": "Prototyp-Screening-Plattform"
   },
   "metadata": {
@@ -194,7 +189,13 @@
     "terms": "Nutzungsbedingungen",
     "title_suffix": "| NAIC 2026",
     "default_title": "NAIC 2026 - DR-Screening-Tool"
+  },
+  "common": {
+    "confirm_title": "Sind Sie sicher?",
+    "confirm_delete_item": "Sind Sie sicher, dass Sie diesen Artikel aus der Liste entfernen möchten?",
+    "confirm_clear_all": "Dadurch werden alle Elemente in der aktuellen Warteschlange gelöscht. Fortfahren?",
+    "confirm_permanent_delete": "Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie diesen Scan aus Ihrem Verlauf löschen möchten?",
+    "action_confirm": "Ja, löschen",
+    "action_cancel": "Abbrechen"
   }
 }
-
-

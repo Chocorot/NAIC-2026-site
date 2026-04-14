@@ -11,7 +11,6 @@
     "open_menu": "打開菜單",
     "close_menu": "關閉菜單",
     "toggle_theme": "切換主題"
-
   },
   "screening": {
     "title": "糖尿病視網膜病變篩查原型",
@@ -23,9 +22,6 @@
     "ai_classification": "AI 輔助初步分類",
     "prediction": "預測嚴重程度",
     "confidence": "置信度評分",
-    "heatmap_title": "視覺評估 (熱圖)",
-    "heatmap_view_label": "熱圖視圖",
-    "tune_heatmap": "調節熱圖強度",
     "source_material": "原材料",
     "visualization_engine": "可視化引擎",
     "active_overlay": "動態疊加層",
@@ -180,8 +176,6 @@
     "clear_all": "全部清空",
     "queue_preview": "隊列預覽",
     "image_not_loaded": "圖像未載入",
-    "soft": "柔和",
-    "intense": "強烈",
     "platform_badge": "原型篩查平台"
   },
   "metadata": {
@@ -196,7 +190,13 @@
     "terms": "服務條款",
     "title_suffix": "| NAIC 2026",
     "default_title": "NAIC 2026 - DR 篩查工具"
+  },
+  "common": {
+    "confirm_title": "您確定嗎？",
+    "confirm_delete_item": "您確定要從列表中刪除此項目嗎？",
+    "confirm_clear_all": "這將清除當前隊列中的所有項目。是否繼續？",
+    "confirm_permanent_delete": "此操作無法撤銷。您確定要從歷史記錄中刪除此掃描嗎？",
+    "action_confirm": "是的，立即刪除",
+    "action_cancel": "取消"
   }
 }
-
-

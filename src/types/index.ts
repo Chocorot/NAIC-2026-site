@@ -3,7 +3,6 @@ import { Timestamp } from "firebase/firestore";
 export interface ScreeningResult {
   prediction: string | number;
   probabilities: number[];
-  heatmapUrl?: string | null;
 }
 
 export type ScanStatus = "idle" | "pending" | "processing" | "analyzing" | "completed" | "error" | "done";

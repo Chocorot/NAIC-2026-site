@@ -9,15 +9,16 @@ interface FileWithPreview {
 }
 
 export default function ImageUpload({
+  files,
   onUpload,
   onReset,
   dict,
 }: {
+  files: FileWithPreview[];
   onUpload: (files: File[]) => void;
   onReset: () => void;
   dict: Dictionary;
 }) {
-  const [files, setFiles] = useState<FileWithPreview[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +36,6 @@ export default function ImageUpload({
     }));
 
     const updatedFiles = [...files, ...processed];
-    setFiles(updatedFiles);
     onUpload(updatedFiles.map((f) => f.file));
   };
 
@@ -49,7 +49,6 @@ export default function ImageUpload({
 
   const removeFile = (id: string) => {
     const updatedFiles = files.filter((f) => f.id !== id);
-    setFiles(updatedFiles);
     if (updatedFiles.length === 0) {
       onReset();
     } else {
@@ -58,7 +57,6 @@ export default function ImageUpload({
   };
 
   const clearAll = () => {
-    setFiles([]);
     onReset();
   };
 

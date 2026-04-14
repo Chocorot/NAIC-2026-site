@@ -11,7 +11,6 @@
     "open_menu": "메뉴 열기",
     "close_menu": "메뉴 닫기",
     "toggle_theme": "테마 전환"
-
   },
   "screening": {
     "title": "DR 스크리닝 프로토타입",
@@ -22,8 +21,6 @@
     "results": "분석 결과",
     "prediction": "예측된 중증도",
     "confidence": "신뢰도 점수",
-    "heatmap_title": "시각적 평가 (히트맵)",
-    "tune_heatmap": "히트맵 강도 조정",
     "source_material": "원본 데이터",
     "visualization_engine": "시각화 엔진",
     "active_overlay": "활성 오버레이",
@@ -178,8 +175,6 @@
     "clear_all": "모두 지우기",
     "queue_preview": "대기열 미리보기",
     "image_not_loaded": "이미지를 불러오지 못했습니다",
-    "soft": "부드럽게",
-    "intense": "강하게",
     "platform_badge": "프로토타입 스크리닝 플랫폼"
   },
   "metadata": {
@@ -194,7 +189,13 @@
     "terms": "서비스 이용약관",
     "title_suffix": "| NAIC 2026",
     "default_title": "NAIC 2026 - DR 스크리닝 도구"
+  },
+  "common": {
+    "confirm_title": "정말인가요?",
+    "confirm_delete_item": "이 항목을 리스트에서 삭제하시겠습니까?",
+    "confirm_clear_all": "현재 대기열의 모든 항목이 삭제됩니다. 계속하시겠습니까?",
+    "confirm_permanent_delete": "이 작업은 취소할 수 없습니다. 히스토리에서 이 스캔을 삭제하시겠습니까?",
+    "action_confirm": "네, 삭제",
+    "action_cancel": "취소"
   }
 }
-
-

@@ -24,8 +24,8 @@ import {
   HiOutlineX,
 } from "react-icons/hi";
 import AnalysisResults from "./AnalysisResults";
-import HeatmapView from "./HeatmapView";
 import LoadingSpinner from "./LoadingSpinner";
+import ConfirmationModal from "./ConfirmationModal";
 
 export default function HistoryInterface({ dict }: { dict: Dictionary }) {
   const { user } = useAuth();
@@ -35,6 +35,8 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
   const [loading, setLoading] = useState(true);
   const [selectedScan, setSelectedScan] = useState<Scan | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -132,10 +134,16 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
     }
   };
 
-  const handleDelete = async (scanId: string) => {
+  const handleDelete = (scanId: string) => {
+    setPendingDeleteId(scanId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!pendingDeleteId) return;
     try {
-      setDeletingId(scanId);
-      const docRef = doc(db, "scans", scanId);
+      setDeletingId(pendingDeleteId);
+      const docRef = doc(db, "scans", pendingDeleteId);
       await updateDoc(docRef, {
         isDeleted: true,
       });
@@ -144,6 +152,8 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
       console.error("Delete failed:", err);
     } finally {
       setDeletingId(null);
+      setPendingDeleteId(null);
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -325,20 +335,15 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
             <div className="p-8 lg:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <div className="space-y-6">
-                  <header>
-                    <h3 className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-1">
-                      {dict.screening.heatmap_title}
-                    </h3>
-                    <h2 className="text-3xl font-black text-zinc-900 dark:text-white">
-                      {dict.screening.heatmap_view_label}
-                    </h2>
-                  </header>
-                  <HeatmapView
-                    src={selectedScan.url}
-                    intensity={60}
-                    isLoading={false}
-                    dict={dict}
-                  />
+                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 dark:bg-slate-950 border dark:border-slate-800 shadow-inner">
+                    <Image
+                      src={selectedScan.url}
+                      alt={selectedScan.fileName}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
                 </div>
                 <div className="space-y-8">
                   <div>
@@ -393,6 +398,18 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
           </div>
         </div>
       )}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        title={dict.common.confirm_title}
+        message={dict.common.confirm_permanent_delete}
+        confirmText={dict.common.action_confirm}
+        cancelText={dict.common.action_cancel}
+        onConfirm={confirmDelete}
+        onCancel={() => {
+          setIsDeleteModalOpen(false);
+          setPendingDeleteId(null);
+        }}
+      />
     </div>
   );
 }

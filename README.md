@@ -6,7 +6,6 @@ This is a high-performance, AI-aided Diabetic Retinopathy (DR) screening interfa
 
 - **Batch Upload**: Process multiple retinal fundus images simultaneously.
 - **AI-Aided Analysis**: Preliminary classification of DR severity (No DR to Proliferative DR).
-- **Interactive Heatmaps**: Visual assessment overlays with adjustable intensity to identify areas of concern.
 - **Multilingual Support**: Fully localized interface (EN, ZH, MS, JA, DE).
 - **Responsive & Dark Mode**: Premium, fluid UI that adapts to all devices and lighting preferences.
 
@@ -15,7 +14,7 @@ This is a high-performance, AI-aided Diabetic Retinopathy (DR) screening interfa
 1. **Upload**: Drag and drop multiple images or click the upload zone in the "Source Material" section.
 2. **Review Batch**: View the gallery of selected images. You can add more or remove individual files.
 3. **Analyze**: Click "Run Batch Screening" to process all images sequentially.
-4. **View Results**: Click on any thumbnail in the batch tray to switch between results, confidence scores, and visual heatmaps.
+4. **View Results**: Click on any thumbnail in the batch tray to switch between results and confidence scores.
 
 ## Getting Started
 
