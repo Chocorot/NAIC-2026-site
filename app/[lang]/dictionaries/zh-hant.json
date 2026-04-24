@@ -166,7 +166,8 @@
     "confidence_label": "AI 置信度",
     "analyzing": "分析中...",
     "status_completed": "已完成",
-    "status_processing": "處理中"
+    "status_processing": "處理中",
+    "status_error": "錯誤"
   },
   "screening_ui": {
     "background_note": "一旦開始，您的掃描將在後台進行處理。您可以在「歷史記錄」頁面中追蹤其進度。現在離開將取消未開始的掃描。",

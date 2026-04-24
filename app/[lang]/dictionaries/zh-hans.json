@@ -165,7 +165,8 @@
     "confidence_label": "AI 置信度",
     "analyzing": "分析中...",
     "status_completed": "已完成",
-    "status_processing": "处理中"
+    "status_processing": "处理中",
+    "status_error": "错误"
   },
   "screening_ui": {
     "background_note": "一旦开始，您的扫描将在后台进行处理。您可以在“历史记录”页面中追踪其进度。现在离开将取消未开始的扫描。",

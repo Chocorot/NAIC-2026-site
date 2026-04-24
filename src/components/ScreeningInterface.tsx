@@ -25,6 +25,7 @@ import {
   HiOutlineTrash,
   HiOutlineInformationCircle,
   HiOutlineMail,
+  HiOutlineExclamationCircle,
 } from "react-icons/hi";
 import { analysisService } from "@/src/services/AnalysisService";
 import AnalysisResults from "./AnalysisResults";
@@ -402,7 +403,9 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                     ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600"
                     : currentItem.status === "processing"
                       ? "bg-blue-500/10 border-blue-500/20 text-blue-600"
-                      : "bg-zinc-100 dark:bg-slate-800 border-transparent text-zinc-500"
+                      : currentItem.status === "error"
+                        ? "bg-rose-500/10 border-rose-500/20 text-rose-600"
+                        : "bg-zinc-100 dark:bg-slate-800 border-transparent text-zinc-500"
                 }`}
               >
                 {currentItem.status}
@@ -422,7 +425,17 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
                 <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
                   <LoadingSpinner size="lg" color="primary" />
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600">
-                    Analyzing...
+                    {dict.screening.analyzing}
+                  </p>
+                </div>
+              )}
+              {currentItem.status === "error" && (
+                <div className="absolute inset-0 bg-rose-50/60 dark:bg-rose-900/20 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center">
+                    <HiOutlineExclamationCircle className="w-8 h-8 text-rose-500" />
+                  </div>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-rose-600">
+                    {dict.history.status_error}
                   </p>
                 </div>
               )}

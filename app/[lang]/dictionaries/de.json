@@ -165,7 +165,8 @@
     "confidence_label": "KI-Konfidenz",
     "analyzing": "Analysiere...",
     "status_completed": "Abgeschlossen",
-    "status_processing": "In Bearbeitung"
+    "status_processing": "In Bearbeitung",
+    "status_error": "Fehler"
   },
   "screening_ui": {
     "background_note": "Einmal gestartet, werden Ihre Scans im Hintergrund verarbeitet. Sie können deren Fortschritt auf der Verlaufsseite verfolgen. Wenn Sie die Seite jetzt verlassen, werden nicht gestartete Scans abgebrochen.",

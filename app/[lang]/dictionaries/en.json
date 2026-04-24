@@ -166,7 +166,8 @@
     "confidence_label": "AI Confidence",
     "analyzing": "Analyzing...",
     "status_completed": "Completed",
-    "status_processing": "Processing"
+    "status_processing": "Processing",
+    "status_error": "Error"
   },
   "screening_ui": {
     "background_note": "Once started, your scans will be processed in the background. You can track their progress in the History page. Navigating away now will cancel unstarted scans.",

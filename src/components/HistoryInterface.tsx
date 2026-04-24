@@ -228,7 +228,9 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                         : scan.status === "processing" ||
                             scan.status === "analyzing"
                           ? "bg-blue-500/90 border-blue-400 text-white"
-                          : "bg-zinc-800/90 border-zinc-700 text-white"
+                          : scan.status === "error"
+                            ? "bg-rose-500/90 border-rose-400 text-white"
+                            : "bg-zinc-800/90 border-zinc-700 text-white"
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -241,7 +243,9 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                         : scan.status === "processing" ||
                             scan.status === "analyzing"
                           ? dict.history.status_processing
-                          : scan.status}
+                          : scan.status === "error"
+                            ? dict.history.status_error
+                            : scan.status}
                     </div>
                   </div>
                 </div>
@@ -296,6 +300,15 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
                           }}
                         />
                       </div>
+                    </div>
+                  ) : scan.status === "error" ? (
+                    <div className="py-4 flex flex-col items-center justify-center bg-rose-50 dark:bg-rose-950/30 rounded-2xl border border-rose-100 dark:border-rose-900/50">
+                      <div className="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center mb-2">
+                        <HiOutlineX className="w-4 h-4 text-rose-500" />
+                      </div>
+                      <span className="text-[9px] font-black text-rose-500 uppercase tracking-widest">
+                        {dict.history.status_error}
+                      </span>
                     </div>
                   ) : (
                     <div className="py-4 flex flex-col items-center justify-center bg-zinc-50 dark:bg-slate-950/50 rounded-2xl border border-zinc-100 dark:border-slate-800">

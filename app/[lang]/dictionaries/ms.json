@@ -165,7 +165,8 @@
     "confidence_label": "Keyakinan AI",
     "analyzing": "Menganalisis...",
     "status_completed": "Selesai",
-    "status_processing": "Sedang diproses"
+    "status_processing": "Memproses",
+    "status_error": "Ralat"
   },
   "screening_ui": {
     "background_note": "Setelah dimulakan, imbasan anda akan diproses di latar belakang. Anda boleh menjejaki kemajuan mereka dalam halaman Sejarah. Berpindah sekarang akan membatalkan imbasan yang belum dimulakan.",
