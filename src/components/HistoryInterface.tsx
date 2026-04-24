@@ -27,6 +27,8 @@ import AnalysisResults from "./AnalysisResults";
 import LoadingSpinner from "./LoadingSpinner";
 import ConfirmationModal from "./ConfirmationModal";
 
+import { analysisService } from "@/src/services/AnalysisService";
+
 export default function HistoryInterface({ dict }: { dict: Dictionary }) {
   const { user } = useAuth();
   const params = useParams();
@@ -102,35 +104,28 @@ export default function HistoryInterface({ dict }: { dict: Dictionary }) {
 
   const handleRescan = async (scanId: string) => {
     try {
+      const scan = scans.find((s) => s.id === scanId);
+      if (!scan) return;
+
       const docRef = doc(db, "scans", scanId);
       await updateDoc(docRef, {
         status: "processing",
         result: null,
       });
 
-      // Simulate AI analysis again
-      setTimeout(async () => {
-        const classesCount = 5;
-        const randomIdx = Math.floor(Math.random() * classesCount);
-        const rawProbs = Array.from(
-          { length: classesCount },
-          () => Math.random() * 0.2,
-        );
-        rawProbs[randomIdx] += 0.8;
-        const sum = rawProbs.reduce((a, b) => a + b, 0);
-        const probabilities = rawProbs.map((p) => p / sum);
+      // Use real analysis service
+      const result = await analysisService.analyzeImageUrl(scan.url, scan.fileName);
 
-        const mockResult: ScreeningResult = {
-          prediction: randomIdx,
-          probabilities: probabilities,
-        };
-        await updateDoc(docRef, {
-          status: "completed",
-          result: mockResult,
-        });
-      }, 5000);
+      await updateDoc(docRef, {
+        status: "completed",
+        result: result,
+      });
     } catch (err) {
       console.error("Rescan failed:", err);
+      const docRef = doc(db, "scans", scanId);
+      await updateDoc(docRef, {
+        status: "error",
+      });
     }
   };
 

@@ -1,8 +1,8 @@
 export const modelConfig = {
-  name: "EfficientNet-B7",
-  version: "1.2.0",
-  lastUpdated: "2026-04-10",
-  inputSize: "600x600 px",
+  name: "ConvNextSmall + ECA Ensemble",
+  version: "1.0.0",
+  lastUpdated: "2026-04-24",
+  inputSize: "224x224 px",
   numClasses: 5,
   performance: {
     accuracy: 0.942,

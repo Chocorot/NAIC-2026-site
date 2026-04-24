@@ -26,6 +26,7 @@ import {
   HiOutlineInformationCircle,
   HiOutlineMail,
 } from "react-icons/hi";
+import { analysisService } from "@/src/services/AnalysisService";
 import AnalysisResults from "./AnalysisResults";
 import { onSnapshot } from "firebase/firestore";
 
@@ -81,44 +82,30 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
   }, [resultItems.map((it) => it.scanId).join(","), user]);
 
   /**
-   * Run a mock screening process for the started scan
-   * This updates the status in Firestore so History picks it up
+   * Run the actual image analysis using the FastAPI backend
    */
-  const triggerMockAnalysis = async (scanId: string) => {
-    // In a real app, a Cloud Function would trigger on write.
-    // For this prototype, we simulate the backend picking it up.
-    setTimeout(
-      async () => {
-        try {
-          const docRef = doc(db, "scans", scanId);
+  const performAnalysis = async (scanId: string, file: File) => {
+    try {
+      const docRef = doc(db, "scans", scanId);
+      
+      // Use the centralized analysis service
+      const result = await analysisService.analyzeImage(file);
 
-          // Generate 5 probabilities for the 5 severity classes
-          const classesCount = 5;
-          const randomIdx = Math.floor(Math.random() * classesCount);
-          const rawProbs = Array.from(
-            { length: classesCount },
-            () => Math.random() * 0.2,
-          );
-          rawProbs[randomIdx] += 0.8; // Boost the "prediction" class
-          const sum = rawProbs.reduce((a, b) => a + b, 0);
-          const probabilities = rawProbs.map((p) => p / sum);
-
-          const mockResult: ScreeningResult = {
-            prediction: randomIdx,
-            probabilities: probabilities,
-          };
-
-          await updateDoc(docRef, {
-            status: "completed",
-            result: mockResult,
-          });
-        } catch (err: unknown) {
-          const error = err as Error;
-          console.error("Mock analysis failed:", error);
-        }
-      },
-      3000 + Math.random() * 2000,
-    );
+      // Update Firestore with the real ensemble results
+      await updateDoc(docRef, {
+        status: "completed",
+        result: result,
+      });
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("Analysis failed:", error);
+      
+      // Mark as error in Firestore
+      const docRef = doc(db, "scans", scanId);
+      await updateDoc(docRef, { 
+        status: "error"
+      });
+    }
   };
 
   /**
@@ -246,8 +233,8 @@ export default function ScreeningInterface({ dict }: { dict: Dictionary }) {
           isDeleted: false,
         });
 
-        // 3. Trigger mock background analysis
-        triggerMockAnalysis(scanDoc.id);
+        // 3. Trigger real analysis via FastAPI
+        performAnalysis(scanDoc.id, item.file);
 
         return {
           ...item,
