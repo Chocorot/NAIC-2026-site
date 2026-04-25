@@ -65,6 +65,8 @@
     "accuracy": "Accuracy",
     "recall": "Recall",
     "f1_score": "F1 Score",
+    "precision": "Precision",
+    "roc_auc": "ROC AUC",
     "confusion_matrix": "Confusion Matrix",
     "validation_analytics": "Validation Analytics",
     "hit": "Hit",

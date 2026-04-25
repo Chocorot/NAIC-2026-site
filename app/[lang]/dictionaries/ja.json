@@ -64,6 +64,8 @@
     "accuracy": "正確度",
     "recall": "再現率",
     "f1_score": "F1スコア",
+    "precision": "適合率",
+    "roc_auc": "ROC AUC",
     "confusion_matrix": "混乱行列",
     "validation_analytics": "バリデーション分析",
     "hit": "的中",

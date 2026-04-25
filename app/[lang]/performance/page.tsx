@@ -40,6 +40,19 @@ export default async function PerformancePage({
     },
   ];
 
+  const secondaryMetrics = [
+    {
+      label: dict.performance.precision,
+      value: (modelConfig.performance.precision * 100).toFixed(1) + "%",
+      color: "text-indigo-600",
+    },
+    {
+      label: dict.performance.roc_auc,
+      value: (modelConfig.performance.roc_auc * 100).toFixed(1) + "%",
+      color: "text-rose-600",
+    },
+  ];
+
   return (
     <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 max-w-5xl animate-in fade-in duration-1000">
       <div className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-100 dark:bg-slate-800 text-zinc-600 dark:text-zinc-400 rounded-full text-[10px] font-black uppercase tracking-widest w-fit mb-4">
@@ -49,8 +62,24 @@ export default async function PerformancePage({
         {dict.performance.title}
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         {metrics.map((m, idx) => (
+          <div
+            key={idx}
+            className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl p-8 shadow-sm group hover:shadow-md transition-shadow"
+          >
+            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-4">
+              {m.label}
+            </div>
+            <div className={`text-5xl font-black ${m.color} tracking-tighter`}>
+              {m.value}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        {secondaryMetrics.map((m, idx) => (
           <div
             key={idx}
             className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl p-8 shadow-sm group hover:shadow-md transition-shadow"

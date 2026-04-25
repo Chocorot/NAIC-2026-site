@@ -64,6 +64,8 @@
     "accuracy": "Ketepatan",
     "recall": "Recall",
     "f1_score": "Skor F1",
+    "precision": "Presisi",
+    "roc_auc": "ROC AUC",
     "confusion_matrix": "Matriks Kekeliruan",
     "validation_analytics": "Analitis Pengesahan",
     "hit": "Kenalan",

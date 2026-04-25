@@ -64,6 +64,8 @@
     "accuracy": "Genauigkeit",
     "recall": "Trefferquote",
     "f1_score": "F1-Wert",
+    "precision": "Präzision",
+    "roc_auc": "ROC AUC",
     "confusion_matrix": "Konfusionsmatrix",
     "validation_analytics": "Validierungsanalyse",
     "hit": "Treffer",

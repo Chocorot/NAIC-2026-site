@@ -9,6 +9,7 @@ export const modelConfig = {
     recall: 0.915,
     f1: 0.928,
     precision: 0.931,
+    roc_auc: 0.985,
   },
   confusionMatrix: [
     [450, 20, 5, 0, 0],   // No DR

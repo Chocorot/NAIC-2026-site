@@ -64,6 +64,8 @@
     "accuracy": "Точность",
     "recall": "Полнота",
     "f1_score": "F1-мера",
+    "precision": "Точность",
+    "roc_auc": "ROC AUC",
     "confusion_matrix": "Матрица ошибок",
     "validation_analytics": "Аналитика валидации",
     "hit": "Попадание",

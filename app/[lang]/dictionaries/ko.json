@@ -64,6 +64,8 @@
     "accuracy": "정확도",
     "recall": "재현율",
     "f1_score": "F1 스코어",
+    "precision": "정밀도",
+    "roc_auc": "ROC AUC",
     "confusion_matrix": "혼동 행렬",
     "validation_analytics": "검증 분석",
     "hit": "적중",
