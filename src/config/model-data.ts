@@ -1,5 +1,5 @@
 export const modelConfig = {
-  name: "ConvNextSmall + ECA Ensemble",
+  name: "ConvNextSmall + EfficientNet-b3 + ECA Ensemble",
   version: "1.0.0",
   lastUpdated: "2026-04-24",
   inputSize: "224x224 px",
