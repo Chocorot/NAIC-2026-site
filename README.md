@@ -16,6 +16,10 @@ This is a high-performance, AI-aided Diabetic Retinopathy (DR) screening interfa
 3. **Analyze**: Click "Run Batch Screening" to process all images sequentially.
 4. **View Results**: Click on any thumbnail in the batch tray to switch between results and confidence scores.
 
+## Main Interface
+
+![DR Screening Interface](/dr-main-interface.png)
+
 ## Getting Started
 
 First, install dependencies:
